@@ -10,6 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,6 +23,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+  Joystick controller = new Joystick(1);
+  Spark left = new Spark(0);
+  Spark right = new Spark(1);
+  DifferentialDrive drive = new DifferentialDrive(left, right);
+  
+
+
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
@@ -86,6 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+      drive.arcadeDrive(controller.getRawAxis(1), controller.getRawAxis(0));
   }
 
   /**
