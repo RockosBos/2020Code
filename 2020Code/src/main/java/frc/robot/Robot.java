@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Controller;
 
 
 /**
@@ -23,10 +25,11 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * project.
  */
 public class Robot extends TimedRobot {
-  Joystick controller = new Joystick(1);
-  Spark left = new Spark(0);
-  Spark right = new Spark(1);
-  DifferentialDrive drive = new DifferentialDrive(left, right);
+
+    Controller left = new Controller(0);
+    Controller right = new Controller(1);
+
+    
   
 
 
@@ -56,7 +59,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  }//Nick likes dicks
+  }//Nick likes ducks
+  
+
 
   /**
    * This autonomous (along with the chooser code above) shows how to select
@@ -97,12 +102,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-      drive.arcadeDrive(controller.getRawAxis(1), controller.getRawAxis(0));
-  }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+
+`
+  }
   @Override
   public void testPeriodic() {
   }
