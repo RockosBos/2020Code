@@ -10,18 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import edu.wpi.first.wpilibj.Spark;
-
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Controller;
 
-
-
-
-
+import com.revrobotics.ColorSensorV3;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -48,12 +43,12 @@ public class Robot extends TimedRobot {
     MotorController liftRotate = new MotorController("Talon", 12);
     MotorController lifter = new MotorController("Talon", 13);
 
-
     SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.talon, rightDrive2.talon);
     SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.talon);
     DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
   
-
+    private final I2C.port i2cPort = I2C.Port.kOnboard;
+    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -81,6 +76,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    Color detectedColor = colorSensor.getColor();
+    double IR = colorSensor.getColor();
+
+
   }//Nick likes ducks
   
 
