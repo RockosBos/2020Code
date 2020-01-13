@@ -28,10 +28,31 @@ public class Robot extends TimedRobot {
 
     Controller left = new Controller(0);
     Controller right = new Controller(1);
+<<<<<<< Updated upstream
+=======
+    MotorController leftDrive1 = new MotorController("Talon", 1);
+    MotorController leftDrive2 = new MotorController("Victor", 2);
+    MotorController rightDrive1 = new MotorController("Victor", 3);
+    MotorController rightDrive2 = new MotorController("Talon", 4);
+    MotorController intakeLift = new MotorController("Talon", 5);
+    MotorController intakeWheels = new MotorController("Talon", 6);
+    MotorController lowerFeed = new MotorController("Talon", 7);
+    MotorController upperFeed = new MotorController("Talon", 8);
+    MotorController shooters = new MotorController("Talon", 9);
+    MotorController controlWheelRotate = new MotorController("Talon", 10);
+    MotorController controlWheel = new MotorController("Talon", 11);
+    MotorController liftRotate = new MotorController("Talon", 12);
+    MotorController lifter = new MotorController("Talon", 13);
+>>>>>>> Stashed changes
 
     
   
+<<<<<<< Updated upstream
 
+=======
+    private final I2C.Port i2cPort = I2C.Port.kOnboard;
+    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+>>>>>>> Stashed changes
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -59,6 +80,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+<<<<<<< Updated upstream
+=======
+
+    //Color detectedColor = colorSensor.getColor();
+    //double IR = colorSensor.getIR();
+
+
+>>>>>>> Stashed changes
   }//Nick likes ducks
   
 
