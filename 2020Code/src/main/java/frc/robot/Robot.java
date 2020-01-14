@@ -29,10 +29,17 @@ public class Robot extends TimedRobot {
     Controller left = new Controller(0);
     Controller right = new Controller(1);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     MotorController leftDrive1 = new MotorController("Talon", 1);
     MotorController leftDrive2 = new MotorController("Victor", 2);
     MotorController rightDrive1 = new MotorController("Victor", 3);
+=======
+    //MotorController leftDrive1 = new MotorController("Talon", 1);
+    MotorController testMC = new MotorController("Talon", 1);
+    MotorController leftDrive2 = new MotorController("Talon", 2);
+    MotorController rightDrive1 = new MotorController("Talon", 3);
+>>>>>>> Stashed changes
     MotorController rightDrive2 = new MotorController("Talon", 4);
     MotorController intakeLift = new MotorController("Talon", 5);
     MotorController intakeWheels = new MotorController("Talon", 6);
@@ -45,14 +52,22 @@ public class Robot extends TimedRobot {
     MotorController lifter = new MotorController("Talon", 13);
 >>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
     
   
 <<<<<<< Updated upstream
 
 =======
+=======
+    //SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.talon, rightDrive2.talon);
+    //SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.talon);
+    //DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+  
+>>>>>>> Stashed changes
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 >>>>>>> Stashed changes
+
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -68,6 +83,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    
   }
 
   /**
@@ -83,8 +99,13 @@ public class Robot extends TimedRobot {
 <<<<<<< Updated upstream
 =======
 
+<<<<<<< Updated upstream
     //Color detectedColor = colorSensor.getColor();
     //double IR = colorSensor.getIR();
+=======
+    Color detectedColor = colorSensor.getColor();
+    double IR = colorSensor.getIR();
+>>>>>>> Stashed changes
 
 
 >>>>>>> Stashed changes
@@ -131,7 +152,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
 
+=======
+    //diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+    if(right.js.getRawButton(1)){
+      testMC.talon.set(0.6);
+    }
+    else{
+      testMC.talon.set(0);
+    }
+>>>>>>> Stashed changes
 
 `
   }
