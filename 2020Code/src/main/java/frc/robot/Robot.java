@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
 
   
   
-    leftDrive1.talon.setInverted(true);
+    //leftDrive1.talon.setInverted(true);
     
 
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    String color;
   }
 
   /**
@@ -86,10 +87,40 @@ public class Robot extends TimedRobot {
     final Color detectedColor = colorSensor.getColor();
     final double IR = colorSensor.getIR();
     
-    System.out.println("Red: " + detectedColor.red);
-    System.out.println("Green: "+ detectedColor.green);
-    System.out.println("Blue: "+ detectedColor.blue);
-    System.out.println("IR: "+ IR);
+    //System.out.println("Red: " + detectedColor.red);
+    //System.out.println("Green: "+ detectedColor.green);
+    //System.out.println("Blue: "+ detectedColor.blue);
+    //System.out.println("IR: "+ IR);
+    
+    if ((detectedColor.red < 0.35 && detectedColor.red > 0.3)
+     && (detectedColor.green < .6 && detectedColor.green > .53)
+      && (detectedColor.blue < 0.13 && detectedColor.blue > .12))
+      {
+      System.out.println("Yellow");
+    }
+    else if((detectedColor.red < 0.55 && detectedColor.red > 0.5)
+     && (detectedColor.green < .36 && detectedColor.green > .32)
+      && (detectedColor.blue < 0.14 && detectedColor.blue > .13))
+      {
+      System.out.println("Red");
+    }
+    else if((detectedColor.red < 0.18 && detectedColor.red > 0.16)
+     && (detectedColor.green < .58 && detectedColor.green > .56)
+      && (detectedColor.blue < 0.27 && detectedColor.blue > .25))
+      {
+      System.out.println("Green");
+    }
+    else if((detectedColor.red < 0.125 && detectedColor.red > 0.115)
+     && (detectedColor.green < .43 && detectedColor.green > .410)
+      && (detectedColor.blue < 0.48 && detectedColor.blue > .44))
+      {
+      System.out.println("Blue");
+    }
+    else{
+      System.out.println("Not Recognized");
+    }
+    
+    } 
 
     /* YELLOW
     Red = 0.314453125
@@ -108,9 +139,9 @@ public class Robot extends TimedRobot {
     Blue: 0.260009765625
     */
     /* Blue
-    Red: 0.12060546875
-    Green: 0.420166015625
-    Blue: 0.459228515625
+    Red: 0.126953125
+    Green: 0.4248046875
+    Blue: 0.448486328125
     /*
 
     
