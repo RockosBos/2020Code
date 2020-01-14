@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Controller;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
 /**
@@ -26,8 +27,8 @@ import com.revrobotics.ColorSensorV3;
  * project.
  */
 public class Robot extends TimedRobot {
-
-    Controller left = new Controller(0);
+    WPI_TalonSRX left =new WPI_TalonSRX(0);
+    //Controller left = new Controller(0);
     Controller right = new Controller(1);
     MotorController leftDrive1 = new MotorController("Talon", 1);
     MotorController leftDrive2 = new MotorController("Victor", 2);
