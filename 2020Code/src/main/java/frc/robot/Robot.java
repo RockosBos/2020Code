@@ -30,8 +30,8 @@ public class Robot extends TimedRobot {
     Controller left = new Controller(0);
     Controller right = new Controller(1);
     MotorController leftDrive1 = new MotorController("Talon", 1);
-    MotorController leftDrive2 = new MotorController("Talon", 2);
-    MotorController rightDrive1 = new MotorController("Talon", 3);
+    MotorController leftDrive2 = new MotorController("Victor", 2);
+    MotorController rightDrive1 = new MotorController("Victor", 3);
     MotorController rightDrive2 = new MotorController("Talon", 4);
     MotorController intakeLift = new MotorController("Talon", 5);
     MotorController intakeWheels = new MotorController("Talon", 6);
@@ -43,17 +43,20 @@ public class Robot extends TimedRobot {
     MotorController liftRotate = new MotorController("Talon", 12);
     MotorController lifter = new MotorController("Talon", 13);
 
-    SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.talon, rightDrive2.talon);
-    SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.talon);
+    SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.victor, rightDrive2.talon);
+    SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.victor);
     DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+
   
-    private final I2C.port i2cPort = I2C.Port.kOnboard;
+  
+    private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -77,9 +80,37 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    Color detectedColor = colorSensor.getColor();
-    double IR = colorSensor.getColor();
+    final Color detectedColor = colorSensor.getColor();
+    final double IR = colorSensor.getIR();
+    
+    System.out.println("Red: " + detectedColor.red);
+    System.out.println("Green: "+ detectedColor.green);
+    System.out.println("Blue: "+ detectedColor.blue);
+    System.out.println("IR: "+ IR);
 
+    /* YELLOW
+    Red = 0.314453125
+    Green = 0.56127929296875
+    Blue = 0.1240234375 
+    */ 
+
+    /* Red
+    Red: 0.527099609375
+    Green: 0.340576171875
+    Blue: 0.13232421875
+    */
+    /* Green
+    Red: 0.16259765625
+    Green: 0.577392578125
+    Blue: 0.260009765625
+    */
+    /* Blue
+    Red: 0.12060546875
+    Green: 0.420166015625
+    Blue: 0.459228515625
+    /*
+
+    
 
   }//Nick likes ducks
   
