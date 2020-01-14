@@ -27,7 +27,8 @@ import com.revrobotics.ColorSensorV3;
  * project.
  */
 public class Robot extends TimedRobot {
-    WPI_TalonSRX left =new WPI_TalonSRX(0);
+    ColorSensor colorBoi = new ColorSensor();
+    WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
     Controller right = new Controller(1);
     MotorController leftDrive1 = new MotorController("Talon", 1);
@@ -53,8 +54,7 @@ public class Robot extends TimedRobot {
     //leftDrive1.talon.setInverted(true);
     
 
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -85,15 +85,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    final Color detectedColor = colorSensor.getColor();
-    final double IR = colorSensor.getIR();
+    System.out.println(colorBoi.getColor());
+    
     
     //System.out.println("Red: " + detectedColor.red);
     //System.out.println("Green: "+ detectedColor.green);
     //System.out.println("Blue: "+ detectedColor.blue);
     //System.out.println("IR: "+ IR);
     
-    if ((detectedColor.red < 0.35 && detectedColor.red > 0.3)
+    /*if ((detectedColor.red < 0.35 && detectedColor.red > 0.3)
      && (detectedColor.green < .6 && detectedColor.green > .53)
       && (detectedColor.blue < 0.13 && detectedColor.blue > .12))
       {
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     else{
       System.out.println("Not Recognized");
     }
-    
+    */
     } 
 
     /* YELLOW
