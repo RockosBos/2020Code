@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
 
   
   
+    leftDrive1.talon.setInverted(true);
+    
+
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
