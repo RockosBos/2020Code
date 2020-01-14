@@ -47,6 +47,9 @@ public class Robot extends TimedRobot {
     SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.talon);
     DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
   
+    leftDrive1.talon.setInverted(true);
+    
+
     private final I2C.port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
