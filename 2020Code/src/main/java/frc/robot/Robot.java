@@ -12,12 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.util.Color;
+
 import frc.robot.Controller;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.ColorSensorV3;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,27 +26,8 @@ import com.revrobotics.ColorSensorV3;
  */
 public class Robot extends TimedRobot {
     ColorSensor colorBoi = new ColorSensor();
-    WPI_TalonSRX left = new WPI_TalonSRX(0);
-    //Controller left = new Controller(0);
-    Controller right = new Controller(1);
-    MotorController leftDrive1 = new MotorController("Talon", 1);
-    MotorController leftDrive2 = new MotorController("Victor", 2);
-    MotorController rightDrive1 = new MotorController("Victor", 3);
-    MotorController rightDrive2 = new MotorController("Talon", 4);
-    MotorController intakeLift = new MotorController("Talon", 5);
-    MotorController intakeWheels = new MotorController("Talon", 6);
-    MotorController lowerFeed = new MotorController("Talon", 7);
-    MotorController upperFeed = new MotorController("Talon", 8);
-    MotorController shooters = new MotorController("Talon", 9);
-    MotorController controlWheelRotate = new MotorController("Talon", 10);
-    MotorController controlWheel = new MotorController("Talon", 11);
-    MotorController liftRotate = new MotorController("Talon", 12);
-    MotorController lifter = new MotorController("Talon", 13);
-
-    SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.victor, rightDrive2.talon);
-    SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.victor);
-    DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-
+    
+    
   
   
     //leftDrive1.talon.setInverted(true);
@@ -71,7 +50,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    String color;
   }
 
   /**
@@ -85,42 +63,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    System.out.println(colorBoi.getColor());
+    //System.out.println(colorBoi.getColor());
     
     
-    //System.out.println("Red: " + detectedColor.red);
-    //System.out.println("Green: "+ detectedColor.green);
-    //System.out.println("Blue: "+ detectedColor.blue);
-    //System.out.println("IR: "+ IR);
     
-    /*if ((detectedColor.red < 0.35 && detectedColor.red > 0.3)
-     && (detectedColor.green < .6 && detectedColor.green > .53)
-      && (detectedColor.blue < 0.13 && detectedColor.blue > .12))
-      {
-      System.out.println("Yellow");
-    }
-    else if((detectedColor.red < 0.55 && detectedColor.red > 0.5)
-     && (detectedColor.green < .36 && detectedColor.green > .32)
-      && (detectedColor.blue < 0.14 && detectedColor.blue > .13))
-      {
-      System.out.println("Red");
-    }
-    else if((detectedColor.red < 0.18 && detectedColor.red > 0.16)
-     && (detectedColor.green < .58 && detectedColor.green > .56)
-      && (detectedColor.blue < 0.27 && detectedColor.blue > .25))
-      {
-      System.out.println("Green");
-    }
-    else if((detectedColor.red < 0.125 && detectedColor.red > 0.115)
-     && (detectedColor.green < .43 && detectedColor.green > .410)
-      && (detectedColor.blue < 0.48 && detectedColor.blue > .44))
-      {
-      System.out.println("Blue");
-    }
-    else{
-      System.out.println("Not Recognized");
-    }
-    */
+    
+   
     } 
 
     /* YELLOW
@@ -147,7 +95,7 @@ public class Robot extends TimedRobot {
 
     
 
-  }//Nick likes ducks
+  }//Nick likes ducks that eat pickles
   
 
 
@@ -191,6 +139,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+    //Motor();
 
 
   }
