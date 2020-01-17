@@ -26,6 +26,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  */
 public class Robot extends TimedRobot {
     ColorSensor colorBoi = new ColorSensor();
+
+    DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+    SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.victor, rightDrive2.talon);
+     SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.victor);
+
     
     
   
@@ -138,7 +143,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+  diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
     //Motor();
 
 
