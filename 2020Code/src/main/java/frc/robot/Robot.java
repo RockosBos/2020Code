@@ -55,14 +55,7 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
     
-    
-    
-  
-  
-    //leftDrive1.talon.setInverted(true);
-    
-
-    
+     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -80,7 +73,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight"); 
+     
     NetworkTableEntry tx = table.getEntry("tx"); 
     NetworkTableEntry ty = table.getEntry("ty"); 
     NetworkTableEntry ta = table.getEntry("ta");
@@ -89,7 +82,9 @@ double x = tx.getDouble(0.0);
 double y = ty.getDouble(0.0); 
 double area = ta.getDouble(0.0);
 //post to smart dashboard periodically 
-SmartDashboard.putNumber("LimelightX", x); SmartDashboard.putNumber("LimelightY", y); SmartDashboard.putNumber("LimelightArea", area);
+SmartDashboard.putNumber("LimelightX", x); 
+SmartDashboard.putNumber("LimelightY", y); 
+SmartDashboard.putNumber("LimelightArea", area);
 
   }
 
@@ -106,36 +101,6 @@ SmartDashboard.putNumber("LimelightX", x); SmartDashboard.putNumber("LimelightY"
 
     //System.out.println(colorBoi.getColor());
     
-    
-    
-    
-   
-    } 
-
-    /* YELLOW
-    Red = 0.314453125
-    Green = 0.56127929296875
-    Blue = 0.1240234375 
-    */ 
-
-    /* Red
-    Red: 0.527099609375
-    Green: 0.340576171875
-    Blue: 0.13232421875
-    */
-    /* Green
-    Red: 0.16259765625
-    Green: 0.577392578125
-    Blue: 0.260009765625
-    */
-    /* Blue
-    Red: 0.126953125
-    Green: 0.4248046875
-    Blue: 0.448486328125
-    /*
-
-    
-
   }//Nick likes ducks that eat pickles
   
 
@@ -179,10 +144,33 @@ SmartDashboard.putNumber("LimelightX", x); SmartDashboard.putNumber("LimelightY"
    */
   @Override
   public void teleopPeriodic() {
+<<<<<<< HEAD
     diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
     
     //limelight turn boi
   
+=======
+  diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+  /*if(right.Trigger){
+      table.getEntry("camMode").setNumber(0);
+      table.getEntry("ledMode").setNumber(2);
+  }
+  else{
+      table.getEntry("camMode").setNumber(1);
+      table.getEntry("ledMode").setNumber(0);
+  }*/
+  NetworkTableEntry tx = table.getEntry("tx"); 
+  NetworkTableEntry ty = table.getEntry("ty"); 
+  NetworkTableEntry ta = table.getEntry("ta");
+  //read values periodically 
+    double x = tx.getDouble(0.0); 
+    double y = ty.getDouble(0.0); 
+    double area = ta.getDouble(0.0);
+  //post to smart dashboard periodically 
+    SmartDashboard.putNumber("LimelightX", x); 
+    SmartDashboard.putNumber("LimelightY", y); 
+    SmartDashboard.putNumber("LimelightArea", area);
+>>>>>>> f6f2a911f991c09dbe6c8da08224fad9e2c83010
    
     
 
