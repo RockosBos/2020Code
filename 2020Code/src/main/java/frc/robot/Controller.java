@@ -37,12 +37,15 @@ public class Controller {
         joyStickSlot = value;
     }
 
-    /*public boolean getTrigger(){
+    public boolean getTrigger(){
         setTrigger(js.getRawButton(1));
         return Trigger;
     }
     public void setTrigger(boolean value){
          Trigger = value;
-    }*/
+    }
+    public boolean getR1() {
+        return R1;
+    }
 }
 
