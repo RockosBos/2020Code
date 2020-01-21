@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.networktables.NetworkTable; 
 import edu.wpi.first.networktables.NetworkTableEntry; 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Spark;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -34,9 +35,9 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
      Controller right = new Controller(1);
-     WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(1);
+     Spark leftDrive1 = new Spark(1);
      WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
-     WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(3);
+     Spark rightDrive1 = new Spark(0);
      WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
      WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
      WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
@@ -144,13 +145,13 @@ SmartDashboard.putNumber("LimelightArea", area);
    */
   @Override
   public void teleopPeriodic() {
-<<<<<<< HEAD
-    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
-    
-    //limelight turn boi
-  
-=======
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+  
+
+  
+  
+  
+  
   /*if(right.Trigger){
       table.getEntry("camMode").setNumber(0);
       table.getEntry("ledMode").setNumber(2);
@@ -170,9 +171,20 @@ SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("LimelightX", x); 
     SmartDashboard.putNumber("LimelightY", y); 
     SmartDashboard.putNumber("LimelightArea", area);
->>>>>>> f6f2a911f991c09dbe6c8da08224fad9e2c83010
    
-    
+      ////Lime Light turning
+  
+  if(x < -5){
+    leftDrive.set(0.1);
+    rightDrive.set(-0.1);
+  } else if(x > 5){
+    leftDrive.set(-0.1);
+    rightDrive.set(0.1);
+  } else{
+    leftDrive.set(0);
+    rightDrive.set(0);
+  } 
+
 
 
   }
