@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
      WPI_TalonSRX controlWheel = new WPI_TalonSRX(11);
      WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
      WPI_TalonSRX lifter = new WPI_TalonSRX(13);
+
+     Intake Robotintake = new Intake(intakeLift);
      
      
     
@@ -181,6 +183,14 @@ SmartDashboard.putNumber("LimelightX", x); SmartDashboard.putNumber("LimelightY"
   public void teleopPeriodic() {
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
+  if (right.BottomFace){
+    
+    Robotintake.RunIntake(.5);
+
+  }
+  else{
+    Robotintake.RunIntake(0);
+  }
    
     
 
