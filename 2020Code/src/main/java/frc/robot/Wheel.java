@@ -1,14 +1,10 @@
 package frc.robot;
 
-//Color Wheel Stuff?
+//Color Wheel Stuff
 
 public class Wheel{
-    String boop = "Red";
-    
-    public Wheel(String color){
+    public void wheelPosition(String color, String desiredColor){
         
-        boop = color;
-
     }
 }
 
