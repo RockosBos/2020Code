@@ -12,6 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+<<<<<<< HEAD
+=======
+import frc.robot.ColorSensor; //This is our color sensor class, 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.*;
+
+//without this the program will not add that other file, we need to do this with all other files.
+>>>>>>> cc28847281b2cd414a4c359c36ebccdbb2efbe0e
 
 import frc.robot.Controller;
 
@@ -27,10 +35,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class Robot extends TimedRobot {
     ColorSensor colorBoi = new ColorSensor();
 
+<<<<<<< HEAD
     
 
     
     
+=======
+    // DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+    // SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.victor, rightDrive2.talon);
+    //  SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.victor);
+
+    
+    // DifferentialDrive diffDrive;
+    Controller right = new Controller(0);
+    Controller left = new Controller(1);
+    //We do need to add in motor controllers if we want to run the bot.
+>>>>>>> cc28847281b2cd414a4c359c36ebccdbb2efbe0e
   
   
     //leftDrive1.talon.setInverted(true);
@@ -50,9 +70,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    
+    //read values periodically
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
+    
+    //post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
   }
 
   /**
@@ -141,7 +179,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-  diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+  // diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
     //Motor();
 
 
