@@ -146,6 +146,12 @@ SmartDashboard.putNumber("LimelightArea", area);
    */
   @Override
   public void teleopPeriodic() {
+<<<<<<< HEAD
+    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+    
+    //limelight turn boi
+  
+=======
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
   if (right.BottomFace){
@@ -175,6 +181,7 @@ SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("LimelightX", x); 
     SmartDashboard.putNumber("LimelightY", y); 
     SmartDashboard.putNumber("LimelightArea", area);
+>>>>>>> f6f2a911f991c09dbe6c8da08224fad9e2c83010
    
     
 
