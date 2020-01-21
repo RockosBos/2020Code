@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.ColorSensor; //This is our color sensor class, 
-//without this the program will not add that other file, we need to do this with all other files.
 
-import frc.robot.Controller; //This is our joystick class
+import frc.robot.Controller;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -29,15 +27,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class Robot extends TimedRobot {
     ColorSensor colorBoi = new ColorSensor();
 
-    DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-    SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1.victor, rightDrive2.talon);
-     SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1.talon, leftDrive2.victor);
+    
 
     
-    DifferentialDrive diffDrive;
-    Controller right = new Controller(0);
-    Controller left = new Controller(1);
-    //We do need to add in motor controllers if we want to run the bot.
+    
   
   
     //leftDrive1.talon.setInverted(true);
