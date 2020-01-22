@@ -149,13 +149,6 @@ SmartDashboard.putNumber("LimelightArea", area);
   public void teleopPeriodic() {
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
-<<<<<<< HEAD
-
-  
-  
-  
-  
-=======
   if (right.BottomFace){
     
     Robotintake.RunIntake(.5);
@@ -164,7 +157,6 @@ SmartDashboard.putNumber("LimelightArea", area);
   else{
     Robotintake.RunIntake(0);
   }
->>>>>>> 489544b5d508bd0989426c355c4199854071fee0
   /*if(right.Trigger){
       table.getEntry("camMode").setNumber(0);
       table.getEntry("ledMode").setNumber(2);
@@ -187,12 +179,12 @@ SmartDashboard.putNumber("LimelightArea", area);
    
       ////Lime Light turning
   
-  if(x < -5){
-    leftDrive.set(0.1);
-    rightDrive.set(-0.1);
-  } else if(x > 5){
-    leftDrive.set(-0.1);
-    rightDrive.set(0.1);
+  if(x < -2){
+    leftDrive.set(-0.3);
+    rightDrive.set(-0.3);
+  } else if(x > 2){
+    leftDrive.set(0.3);
+    rightDrive.set(0.3);
   } else{
     leftDrive.set(0);
     rightDrive.set(0);
