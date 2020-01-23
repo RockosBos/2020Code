@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Controller;
 
@@ -33,26 +34,27 @@ public class Robot extends TimedRobot {
 
     WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
-     Controller right = new Controller(1);
-     Spark leftDrive1 = new Spark(1);
-     WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
-     Spark rightDrive1 = new Spark(0);
-     WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
-     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
-     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
-     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
-     WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
-     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
-     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
-     WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
-     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
+    Controller right = new Controller(1);
+    Spark leftDrive1 = new Spark(1);
+    WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
+    Spark rightDrive1 = new Spark(0);
+    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
+    WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
+    WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
+    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
+    WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
+    WPI_TalonSRX shooters = new WPI_TalonSRX(9);
+    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
+    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
+    WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
+    WPI_TalonSRX lifter = new WPI_TalonSRX(13);
 
-     Intake Robotintake = new Intake(intakeLift);
-     LimeLight robotLimeLight = new LimeLight();
-     AddressableLED led = new AddressableLED(9);
-     ControlWheel robotControlWheel = new ControlWheel();
-     
+      Intake Robotintake = new Intake(intakeLift);
+    LimeLight robotLimeLight = new LimeLight();
+    AddressableLED led = new AddressableLED(9);
+    ControlWheel robotControlWheel = new ControlWheel();
+    String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
+  
      
     
 
@@ -174,7 +176,7 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(),"red", controlWheelWheel);
+    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor, controlWheelWheel);
 
   }
   @Override
