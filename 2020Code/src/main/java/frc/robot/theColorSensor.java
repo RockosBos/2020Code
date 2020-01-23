@@ -8,7 +8,7 @@ public class TheColorSensor {
     private final static I2C.Port i2cPort = I2C.Port.kOnboard;
     private final static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
-    public static String getColor() {
+    public String getColor() {
 
         final Color detectedColor = colorSensor.getColor();
 

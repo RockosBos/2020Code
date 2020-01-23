@@ -164,7 +164,7 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    controlWheel.wheelPosition(theColorSensor.getColor(),"red", controlWheelWheel);
+    controlWheel.wheelPosition(colorBoi.getColor(),"red", controlWheelWheel);
 
 
 
