@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
 
-public class theColorSensor {
+public class TheColorSensor {
     private final static I2C.Port i2cPort = I2C.Port.kOnboard;
     private final static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 

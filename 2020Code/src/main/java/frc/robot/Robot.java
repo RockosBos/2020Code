@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.AddressableLED;
 
 import frc.robot.Controller;
 
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.Spark;
  * project.
  */
 public class Robot extends TimedRobot {
-    public theColorSensor colorBoi = new theColorSensor();
+    public TheColorSensor colorBoi = new TheColorSensor();
 
     WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
 
      Intake Robotintake = new Intake(intakeLift);
      LimeLight robotLimeLight = new LimeLight();
+     AddressableLED led = new AddressableLED(9);
      
      
     
