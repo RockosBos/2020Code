@@ -16,8 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 //Color Wheel Stuff
 
-public class controlWheel{//wheel position
-    public static void wheelPosition(String color, String desiredColor, WPI_TalonSRX motor){
+public class ControlWheel{//wheel position
+    public void wheelPosition(String color, String desiredColor, WPI_TalonSRX motor){
         double ss = 0.5;//slow speed
         double fs = 0.7;//fast speed
         
