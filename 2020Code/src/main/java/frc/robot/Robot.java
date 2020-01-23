@@ -18,9 +18,7 @@ import frc.robot.Controller;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.networktables.NetworkTable; 
-import edu.wpi.first.networktables.NetworkTableEntry; 
-import edu.wpi.first.networktables.NetworkTableInstance;
+
 import edu.wpi.first.wpilibj.Spark;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,6 +48,7 @@ public class Robot extends TimedRobot {
      WPI_TalonSRX lifter = new WPI_TalonSRX(13);
 
      Intake Robotintake = new Intake(intakeLift);
+     LimeLight robotLimeLight = new LimeLight();
      
      
     
@@ -58,7 +57,8 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
 
-     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+     //NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -75,19 +75,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-     
-    NetworkTableEntry tx = table.getEntry("tx"); 
-    NetworkTableEntry ty = table.getEntry("ty"); 
-    NetworkTableEntry ta = table.getEntry("ta");
-//read values periodically 
-double x = tx.getDouble(0.0); 
-double y = ty.getDouble(0.0); 
-double area = ta.getDouble(0.0);
-//post to smart dashboard periodically 
-SmartDashboard.putNumber("LimelightX", x); 
-SmartDashboard.putNumber("LimelightY", y); 
-SmartDashboard.putNumber("LimelightArea", area);
 
   }
 
@@ -149,11 +136,6 @@ SmartDashboard.putNumber("LimelightArea", area);
   public void teleopPeriodic() {
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
-
-  
-  
-  
-  
   if (right.BottomFace){
     
     Robotintake.RunIntake(.5);
@@ -162,34 +144,17 @@ SmartDashboard.putNumber("LimelightArea", area);
   else{
     Robotintake.RunIntake(0);
   }
-  /*if(right.Trigger){
-      table.getEntry("camMode").setNumber(0);
-      table.getEntry("ledMode").setNumber(2);
-  }
-  else{
-      table.getEntry("camMode").setNumber(1);
-      table.getEntry("ledMode").setNumber(0);
-  }*/
-  NetworkTableEntry tx = table.getEntry("tx"); 
-  NetworkTableEntry ty = table.getEntry("ty"); 
-  NetworkTableEntry ta = table.getEntry("ta");
-  //read values periodically 
-    double x = tx.getDouble(0.0); 
-    double y = ty.getDouble(0.0); 
-    double area = ta.getDouble(0.0);
-  //post to smart dashboard periodically 
-    SmartDashboard.putNumber("LimelightX", x); 
-    SmartDashboard.putNumber("LimelightY", y); 
-    SmartDashboard.putNumber("LimelightArea", area);
-   
-      ////Lime Light turning
+
+      //Limelight Update
+      
+      robotLimeLight.displayData();
   
-  if(x < -5){
-    leftDrive.set(0.1);
-    rightDrive.set(-0.1);
-  } else if(x > 5){
-    leftDrive.set(-0.1);
-    rightDrive.set(0.1);
+  if(robotLimeLight.getX() < -2){
+    leftDrive.set(-0.3);
+    rightDrive.set(-0.3);
+  } else if(robotLimeLight.getY() > 2){
+    leftDrive.set(0.3);
+    rightDrive.set(0.3);
   } else{
     leftDrive.set(0);
     rightDrive.set(0);
