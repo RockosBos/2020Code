@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
      Intake Robotintake = new Intake(intakeLift);
      LimeLight robotLimeLight = new LimeLight();
      AddressableLED led = new AddressableLED(9);
-     ControlWheel robotControlWheel = new ControlWheel();
      
      
     
@@ -137,15 +136,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
-  /*-----------------------------------------------------
-      Drive Logic
-  ------------------------------------------------------*/
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
-  /*----------------------------------------------------
-      Intake Logic
-  ----------------------------------------------------*/
   if (right.BottomFace){
     
     Robotintake.RunIntake(.5);
@@ -154,9 +146,7 @@ public class Robot extends TimedRobot {
   else{
     Robotintake.RunIntake(0);
   }
-  /*----------------------------------------------------
-    Limelight Logic
-  ------------------------------------------------------*/
+
       //Limelight Update
       
       robotLimeLight.displayData();
@@ -174,7 +164,9 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(),"red", controlWheelWheel);
+    ControlWheel.wheelPosition(colorBoi.getColor(),"red", controlWheelWheel);
+
+
 
   }
   @Override
