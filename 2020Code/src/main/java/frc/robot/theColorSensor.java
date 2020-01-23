@@ -4,12 +4,11 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
 
-public class ColorSensor{
-    private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+public class theColorSensor {
+    private final static I2C.Port i2cPort = I2C.Port.kOnboard;
+    private final static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
-
-    public String getColor(){
+    public static String getColor() {
 
         final Color detectedColor = colorSensor.getColor();
 

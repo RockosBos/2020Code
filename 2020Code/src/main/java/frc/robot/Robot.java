@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.Spark;
  * project.
  */
 public class Robot extends TimedRobot {
-    public ColorSensor colorBoi = new ColorSensor();
+    public theColorSensor colorBoi = new theColorSensor();
 
     WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
      WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
      WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
      WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(10);
-     WPI_TalonSRX controlWheel = new WPI_TalonSRX(11);
+     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
+     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
      WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
      WPI_TalonSRX lifter = new WPI_TalonSRX(13);
 
@@ -159,6 +159,10 @@ public class Robot extends TimedRobot {
     leftDrive.set(0);
     rightDrive.set(0);
   } 
+
+  //color wheel start
+  if(right.R6)
+    controlWheel.wheelPosition(theColorSensor.getColor(),"red", controlWheelWheel);
 
 
 
