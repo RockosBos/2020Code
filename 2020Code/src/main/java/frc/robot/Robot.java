@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
      WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
      WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
      WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
+     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(10);
      WPI_TalonSRX controlWheel = new WPI_TalonSRX(11);
      WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
      WPI_TalonSRX lifter = new WPI_TalonSRX(13);
@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-    
+
      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
   private static final String kDefaultAuto = "Default";
