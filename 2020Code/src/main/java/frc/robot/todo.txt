@@ -1,0 +1,14 @@
+What needs to get done
+
+Testing:
+*Positon Wheel Spin
+*Shooter Manual Fire
+*Intake
+*LimeLight Light On and Off
+
+Needs to be Writen:
+*Auto Fire: Rotate
+*Auto Fie: Distance
+*Rotate Wheel Spin
+*Manual Rotate Shooter
+

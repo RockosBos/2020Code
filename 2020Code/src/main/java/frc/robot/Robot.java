@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
-
-      Intake Robotintake = new Intake(intakeLift);
+    Shooter robotShooter = new Shooter();
+    Intake robotIntake = new Intake();
     LimeLight robotLimeLight = new LimeLight();
     AddressableLED led = new AddressableLED(9);
     ControlWheel robotControlWheel = new ControlWheel();
@@ -150,11 +150,11 @@ public class Robot extends TimedRobot {
   ----------------------------------------------------*/
   if (right.BottomFace){
     
-    Robotintake.RunIntake(.5);
+    
 
   }
   else{
-    Robotintake.RunIntake(0);
+    
   }
   /*----------------------------------------------------
     Limelight Logic
@@ -176,9 +176,28 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor, controlWheelWheel);
+    robotControlWheel.wheelPosition(colorBoi.getColor(),fieldColor, controlWheelWheel);
 
-  }
+  //lime light on 
+  if(right.L4)
+    robotLimeLight.setMode("ledMode", 3);
+   else
+    robotLimeLight.setMode("ledMode", 1);
+
+
+  //robot fires the ball manually
+  robotShooter.fireMan(right.L1, 0.0, shooters);
+
+
+
+
+
+  } 
+
+
+
+
+
   @Override
   public void testPeriodic() {
   }
