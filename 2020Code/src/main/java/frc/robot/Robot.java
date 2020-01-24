@@ -190,7 +190,8 @@ public class Robot extends TimedRobot {
   //robot fires the ball manually
   robotShooter.fireMan(right.L1, 0.0, shooters);
 
-
+  //robot pulls in the balls
+  robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
 
 
 

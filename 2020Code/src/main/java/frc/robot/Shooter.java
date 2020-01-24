@@ -43,3 +43,5 @@ public class Shooter{
             motor.set(offset);
     }
 }
+
+// public class 
