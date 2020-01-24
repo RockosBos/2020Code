@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import frc.robot.Controller;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 
 
 import edu.wpi.first.wpilibj.Spark;
@@ -49,10 +49,10 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
 
-      Intake Robotintake = new Intake(intakeLift);
+    Intake Robotintake = new Intake(intakeLift);
     LimeLight robotLimeLight = new LimeLight();
-    AddressableLED led = new AddressableLED(9);
     ControlWheel robotControlWheel = new ControlWheel();
+    LED ledStrip = new LED(9, 60);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
   
      
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    ledStrip.pattern("Solid", 0 , 100, 100);
     //System.out.println(colorBoi.getColor());
     
   }//Nick likes ducks that eat pickles
@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    ledStrip.pattern("Solid", 120, 100, 100);
   /*-----------------------------------------------------
       Drive Logic
   ------------------------------------------------------*/
