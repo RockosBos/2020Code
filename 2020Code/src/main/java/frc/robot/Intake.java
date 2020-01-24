@@ -23,25 +23,25 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 public class Intake{
     public void intakeBall(boolean button, double speed, WPI_TalonSRX motor){
         if(button){
-            motor.set(speed);
+            motor.set(-speed);
         } else motor.set(0);
     }
     public void intakeBall(boolean button, double speed, WPI_VictorSPX motor){
         if(button){
-            motor.set(speed);
+            motor.set(-speed);
         } else motor.set(0);
     }
 
     public void intakeBall(boolean button, double speed, double offset, WPI_TalonSRX motor){
         if(button){
-            motor.set(speed);
-        } else motor.set(offset);
+            motor.set(-speed);
+        } else motor.set(-offset);
     }
 
     public void intakeBall(boolean button, double speed, double offset, WPI_VictorSPX motor){
         if(button){
-            motor.set(speed);
-        } else motor.set(offset);
+            motor.set(-speed);
+        } else motor.set(-offset);
     }
 }
 	

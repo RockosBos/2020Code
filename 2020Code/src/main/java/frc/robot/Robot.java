@@ -188,10 +188,15 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.fireMan(right.L1, 0.0, shooters);
+  robotShooter.manFire(right.L1, 0.0, shooters);
+
+  //robot will spin the shooter manually
+  robotShooter.manRotate(right.LeftFace, right.RightFace, .5, liftRotate);
 
   //robot pulls in the balls
   robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
+
+  
 
 
 
