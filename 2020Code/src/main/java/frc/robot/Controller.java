@@ -7,7 +7,7 @@ public class Controller {
 
     public int joyStickSlot;
 
-    public Joystick js = new Joystick(1);
+    public Joystick js;
 
     public boolean Trigger = js.getRawButton(1);
 
@@ -32,7 +32,9 @@ public class Controller {
     public boolean R6 = js.getRawButton(16);
 
     //Class Functions--------------------------------------
-
+    public Controller(int joystickPort){
+        js = new Joystick(joystickPort);
+    }
     public boolean getTrigger(){
         setTrigger(js.getRawButton(1));
         return Trigger;

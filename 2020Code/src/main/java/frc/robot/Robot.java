@@ -13,16 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import frc.robot.Controller;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-
-
-import edu.wpi.first.wpilibj.Spark;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -31,15 +25,13 @@ import edu.wpi.first.wpilibj.Spark;
  * project.
  */
 public class Robot extends TimedRobot {
-    public TheColorSensor colorBoi = new TheColorSensor();
 
-    WPI_TalonSRX left = new WPI_TalonSRX(0);
-    //Controller left = new Controller(0);
-    Controller right = new Controller();
-    Spark leftDrive1 = new Spark(1);
+
+  //Motor Controllers
+    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(0);
+    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(1);
     WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
-    Spark rightDrive1 = new Spark(0);
-    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
+    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(3);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
@@ -52,20 +44,22 @@ public class Robot extends TimedRobot {
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
 
-    
+    //Joysticks
+
+    Controller left = new Controller(0);
+    Controller right = new Controller(1);
+
+    //Custom class mechanisms
+    TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
     ControlWheel robotControlWheel = new ControlWheel();
     LED ledStrip = new LED(9, 60);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
-  
-     
-    
 
+    //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-
-     //NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     
 
   private static final String kDefaultAuto = "Default";
@@ -205,10 +199,6 @@ public class Robot extends TimedRobot {
    
 
   } 
-
-
-
-
 
   @Override
   public void testPeriodic() {

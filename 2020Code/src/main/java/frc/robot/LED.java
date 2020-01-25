@@ -6,13 +6,11 @@ import edu.wpi.first.wpilibj.Timer;
 
 class LED{
     private AddressableLED led;
-    private int stripLength;
     private Timer ledTimer;
     private AddressableLEDBuffer ledBuffer;
 
     LED(int port, int length){
         led = new AddressableLED(port);
-        stripLength = length;
         ledBuffer = new AddressableLEDBuffer(length);
         led.setLength(ledBuffer.getLength());
         led.setData(ledBuffer);
