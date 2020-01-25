@@ -13,6 +13,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+
 //Everything assosiated with the shooter goes here (Shooter, Feeder, Turret)
 public class Shooter{
     public void manFire(boolean trigger, double speed, WPI_TalonSRX motor){

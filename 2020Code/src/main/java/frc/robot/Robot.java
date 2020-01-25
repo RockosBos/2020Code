@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Controller;
 
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
 
     WPI_TalonSRX left = new WPI_TalonSRX(0);
     //Controller left = new Controller(0);
-    Controller right = new Controller(1);
+    Controller right = new Controller();
     Spark leftDrive1 = new Spark(1);
     WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
     Spark rightDrive1 = new Spark(0);
@@ -142,6 +143,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     ledStrip.pattern("Solid", 120, 100, 100);
+    right.updateValues();
   /*-----------------------------------------------------
       Drive Logic
   ------------------------------------------------------*/
@@ -181,10 +183,12 @@ public class Robot extends TimedRobot {
     robotControlWheel.wheelPosition(colorBoi.getColor(),fieldColor, controlWheelWheel);
 
   //lime light on 
-  if(right.L4)
-    robotLimeLight.setMode("ledMode", 3);
-   else
-    robotLimeLight.setMode("ledMode", 1);
+  if(right.Trigger){
+      robotLimeLight.setMode("ledMode", 0);
+  }
+   else{
+      robotLimeLight.setMode("ledMode", 1);
+   }
 
 
   //robot fires the ball manually
@@ -197,8 +201,8 @@ public class Robot extends TimedRobot {
   robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
 
   
-
-
+  SmartDashboard.putBoolean("Trigger", right.Trigger);
+   
 
   } 
 

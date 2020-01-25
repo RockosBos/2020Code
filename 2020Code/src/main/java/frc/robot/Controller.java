@@ -6,12 +6,12 @@ public class Controller {
     
 
     public int joyStickSlot;
-    
-    public Joystick js = new Joystick(joyStickSlot);
+
+    public Joystick js = new Joystick(1);
 
     public boolean Trigger = js.getRawButton(1);
 
-    public  boolean BottomFace = js.getRawButton(2);
+    public boolean BottomFace = js.getRawButton(2);
 
     public boolean LeftFace = js.getRawButton(3);
 
@@ -33,10 +33,6 @@ public class Controller {
 
     //Class Functions--------------------------------------
 
-    Controller(int value){
-        joyStickSlot = value;
-    }
-
     public boolean getTrigger(){
         setTrigger(js.getRawButton(1));
         return Trigger;
@@ -46,6 +42,29 @@ public class Controller {
     }
     public boolean getR1() {
         return R1;
+    }
+    public void updateValues(){
+        Trigger = js.getRawButton(1);
+
+        BottomFace = js.getRawButton(2);
+    
+        LeftFace = js.getRawButton(3);
+    
+        RightFace = js.getRawButton(4);
+        //(Left Side)
+        L1 = js.getRawButton(5);
+        L2 = js.getRawButton(6);
+        L3 = js.getRawButton(7);
+        L6 = js.getRawButton(8);
+        L5 = js.getRawButton(9);
+        L4 = js.getRawButton(10);
+        //(Right SIDE)
+        R1 = js.getRawButton(13);
+        R2 = js.getRawButton(12);
+        R3 = js.getRawButton(11);
+        R4 = js.getRawButton(14);
+        R5 = js.getRawButton(15);
+        R6 = js.getRawButton(16);
     }
 }
 
