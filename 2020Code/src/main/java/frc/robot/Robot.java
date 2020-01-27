@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(),fieldColor, controlWheelWheel);
+    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor, controlWheelWheel);
 
   //lime light on 
   if(right.Trigger){
