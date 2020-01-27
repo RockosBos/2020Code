@@ -23,6 +23,7 @@ public class ControlWheel{//wheel position
         double ss = 0.5;//slow speed
         double fs = 0.7;//fast speed
 
+        
         if(color == "R")
             color = "red";
         else if(color == "G")
@@ -32,11 +33,16 @@ public class ControlWheel{//wheel position
         else if(color == "B")
             color = "blue";
 
+
+            System.out.println(desiredColor);
+
+            System.out.println(color);
+    
         
         if(color != desiredColor){// left negitave right positive
             if(desiredColor == "green"){///////////////////////////////green///////////////////
                 if(color == "green")//green to green
-                    motor.set(0.0);
+                    motor.set(0.0); 
                 else if(color == "blue")// blue to green
                     motor.set(-ss);
                 else if(color == "yellow")// yellow to green
@@ -70,7 +76,7 @@ public class ControlWheel{//wheel position
                     motor.set(ss);
                 else if(color == "red")//red to blue
                     motor.set(fs);
-            } else motor.set(0.0);
+            } 
 
         }
     }
