@@ -25,6 +25,11 @@ public class ControlWheel{//wheel position
 
        
 
+
+            System.out.println(desiredColor);
+
+            System.out.println(color);
+    
         
         if(color != desiredColor){// left negitave right positive
             if(desiredColor == "G"){///////////////////////////////green///////////////////
@@ -63,7 +68,7 @@ public class ControlWheel{//wheel position
                     motor.set(ss);
                 else if(color == "R")//red to blue
                     motor.set(fs);
-            } else motor.set(0.0);
+            } 
 
         }
     }

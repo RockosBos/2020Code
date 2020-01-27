@@ -28,8 +28,8 @@ public class Robot extends TimedRobot {
 
 
   //Motor Controllers
-    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(0);
-    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(1);
+    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(10);
+    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(0);
     WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
     WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(3);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
     WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
+    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(1);
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
