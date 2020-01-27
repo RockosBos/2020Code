@@ -23,52 +23,45 @@ public class ControlWheel{//wheel position
         double ss = 0.5;//slow speed
         double fs = 0.7;//fast speed
 
-        if(color == "R")
-            color = "red";
-        else if(color == "G")
-            color = "red";
-        else if(color == "Y")
-            color = "yellow";
-        else if(color == "B")
-            color = "blue";
+       
 
         
         if(color != desiredColor){// left negitave right positive
-            if(desiredColor == "green"){///////////////////////////////green///////////////////
-                if(color == "green")//green to green
+            if(desiredColor == "G"){///////////////////////////////green///////////////////
+                if(color == "G")//green to green
                     motor.set(0.0);
-                else if(color == "blue")// blue to green
+                else if(color == "B")// blue to green
                     motor.set(-ss);
-                else if(color == "yellow")// yellow to green
+                else if(color == "Y")// yellow to green
                     motor.set(-fs);
-                else if(color == "red")//red to green
+                else if(color == "R")//red to green
                     motor.set(ss);
-            } else if(desiredColor == "red"){///////////////////////////red/////////////////////
-                if(color == "red")//red to red
+            } else if(desiredColor == "R"){///////////////////////////red/////////////////////
+                if(color == "R")//red to red
                     motor.set(0.0);
-                else if(color == "green")//green to red
+                else if(color == "G")//green to red
                     motor.set(-ss);
-                else if(color == "blue")//blue to red
+                else if(color == "B")//blue to red
                     motor.set(-fs);
-                else if(color == "yellow")//yellow to red
+                else if(color == "Y")//yellow to red
                     motor.set(ss);
-            } else if(desiredColor == "yellow"){//////////////////////////////yellow/////////////////
-                if(color == "yellow")//yellow to yellow
+            } else if(desiredColor == "Y"){//////////////////////////////yellow/////////////////
+                if(color == "Y")//yellow to yellow
                     motor.set(0.0);
-                else if(color == "blue")//blue to yellow
+                else if(color == "B")//blue to yellow
                     motor.set(ss);
-                else if(color == "red")//red to yellow
+                else if(color == "R")//red to yellow
                     motor.set(-ss);
-                else if(color == "green")// green to yellow
+                else if(color == "G")// green to yellow
                     motor.set(-fs);
-            } else if(desiredColor == "blue"){/////////////////////////blue////////////////////////////
-                if(color == "blue")//blue to blue
+            } else if(desiredColor == "B"){/////////////////////////blue////////////////////////////
+                if(color == "B")//blue to blue
                     motor.set(0);
-                else if(color == "green")//green to blue
+                else if(color == "G")//green to blue
                     motor.set(-ss);
-                else if(color == "yellow")//yellow to blue
+                else if(color == "Y")//yellow to blue
                     motor.set(ss);
-                else if(color == "red")//red to blue
+                else if(color == "R")//red to blue
                     motor.set(fs);
             } else motor.set(0.0);
 
@@ -81,51 +74,51 @@ public class ControlWheel{//wheel position
         double fs = 0.7;//fast speed
 
         if(color == "R")
-            color = "red";
+            color = "R";
         else if(color == "G")
-            color = "green";
+            color = "G";
         else if(color == "Y")
-            color = "yellow";
+            color = "Y";
         else if(color == "B")
-            color = "blue";
+            color = "B";
 
         
         if(color != desiredColor){// left negitave right positive
-            if(desiredColor == "green"){///////////////////////////////green///////////////////
-                if(color == "green")//green to green
+            if(desiredColor == "G"){///////////////////////////////green///////////////////
+                if(color == "G")//green to green
                     motor.set(0.0);
-                else if(color == "blue")// blue to green
+                else if(color == "B")// blue to green
                     motor.set(-ss);
-                else if(color == "yellow")// yellow to green
+                else if(color == "Y")// yellow to green
                     motor.set(-fs);
-                else if(color == "red")//red to green
+                else if(color == "R")//red to green
                     motor.set(ss);
-            } else if(desiredColor == "red"){///////////////////////////red/////////////////////
-                if(color == "red")//red to red
+            } else if(desiredColor == "R"){///////////////////////////red/////////////////////
+                if(color == "R")//red to red
                     motor.set(0.0);
-                else if(color == "green")//green to red
+                else if(color == "G")//green to red
                     motor.set(-ss);
-                else if(color == "blue")//blue to red
+                else if(color == "B")//blue to red
                     motor.set(-fs);
-                else if(color == "yellow")//yellow to red
+                else if(color == "Y")//yellow to red
                     motor.set(ss);
-            } else if(desiredColor == "yellow"){//////////////////////////////yellow/////////////////
-                if(color == "yellow")//yellow to yellow
+            } else if(desiredColor == "Y"){//////////////////////////////yellow/////////////////
+                if(color == "Y")//yellow to yellow
                     motor.set(0.0);
-                else if(color == "blue")//blue to yellow
+                else if(color == "B")//blue to yellow
                     motor.set(ss);
-                else if(color == "red")//red to yellow
+                else if(color == "R")//red to yellow
                     motor.set(-ss);
-                else if(color == "green")// green to yellow
+                else if(color == "G")// green to yellow
                     motor.set(-fs);
-            } else if(desiredColor == "blue"){/////////////////////////blue////////////////////////////
-                if(color == "blue")//blue to blue
+            } else if(desiredColor == "B"){/////////////////////////blue////////////////////////////
+                if(color == "B")//blue to blue
                     motor.set(0);
-                else if(color == "green")//green to blue
+                else if(color == "G")//green to blue
                     motor.set(-ss);
-                else if(color == "yellow")//yellow to blue
+                else if(color == "Y")//yellow to blue
                     motor.set(ss);
-                else if(color == "red")//red to blue
+                else if(color == "R")//red to blue
                     motor.set(fs);
             } else motor.set(0.0);
 
