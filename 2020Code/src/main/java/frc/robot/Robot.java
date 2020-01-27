@@ -179,9 +179,11 @@ public class Robot extends TimedRobot {
   //lime light on 
   if(right.Trigger){
       robotLimeLight.setMode("ledMode", 0);
+      robotLimeLight.setMode("camMode", 0);
   }
    else{
       robotLimeLight.setMode("ledMode", 1);
+      robotLimeLight.setMode("camMode", 1);
    }
 
 

@@ -9,31 +9,32 @@ public class Controller {
 
     public Joystick js;
 
-    public boolean Trigger = js.getRawButton(1);
+    public boolean Trigger;
 
-    public boolean BottomFace = js.getRawButton(2);
+    public boolean BottomFace;
 
-    public boolean LeftFace = js.getRawButton(3);
+    public boolean LeftFace;
 
-    public boolean RightFace = js.getRawButton(4);
+    public boolean RightFace;
     //(Left Side)
-    public boolean L1 = js.getRawButton(5);
-    public boolean L2 = js.getRawButton(6);
-    public boolean L3 = js.getRawButton(7);
-    public boolean L6 = js.getRawButton(8);
-    public boolean L5 = js.getRawButton(9);
-    public  boolean L4 = js.getRawButton(10);
+    public boolean L1;
+    public boolean L2;
+    public boolean L3;
+    public boolean L6;
+    public boolean L5;
+    public  boolean L4;
     //(Right SIDE)
-    public boolean R1 = js.getRawButton(13);
-    public boolean R2 = js.getRawButton(12);
-    public boolean R3 = js.getRawButton(11);
-    public boolean R4 = js.getRawButton(14);
-    public boolean R5 = js.getRawButton(15);
-    public boolean R6 = js.getRawButton(16);
+    public boolean R1;
+    public boolean R2;
+    public boolean R3;
+    public boolean R4;
+    public boolean R5;
+    public boolean R6;
 
     //Class Functions--------------------------------------
-    public Controller(int joystickPort){
+    Controller(int joystickPort){
         js = new Joystick(joystickPort);
+        
     }
     public boolean getTrigger(){
         setTrigger(js.getRawButton(1));
