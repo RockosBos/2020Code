@@ -90,10 +90,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    ledStrip.pattern("Solid", 0 , 100, 100);
-    //System.out.println(colorBoi.getColor());
     
   }//Nick likes ducks that eat pickles
+
+  @Override
+  public void disabledPeriodic(){
+    ledStrip.pattern("Solid", 0 , 100, 100);
+  }
   
 
 
@@ -162,14 +165,11 @@ public class Robot extends TimedRobot {
       robotLimeLight.displayData();
   
   if(robotLimeLight.getX() < -2){
-    leftDrive.set(-0.3);
-    rightDrive.set(-0.3);
+      robotLimeLight.limelightState = "TooFarLeft";
   } else if(robotLimeLight.getY() > 2){
-    leftDrive.set(0.3);
-    rightDrive.set(0.3);
+      robotLimeLight.limelightState = "TooFarRight";
   } else{
-    leftDrive.set(0);
-    rightDrive.set(0);
+      robotLimeLight.limelightState = "readyToShoot";
   } 
 
   //color wheel start

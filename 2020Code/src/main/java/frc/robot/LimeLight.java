@@ -11,6 +11,7 @@ public class LimeLight{
     private NetworkTableEntry tx = table.getEntry("tx"); 
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
+    public String limelightState;
 
     public double getX(){
         return tx.getDouble(0.0);
