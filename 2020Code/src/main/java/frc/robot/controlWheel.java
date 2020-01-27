@@ -12,6 +12,7 @@
                                                             
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -23,16 +24,16 @@ public class ControlWheel{//wheel position
         double ss = 0.5;//slow speed
         double fs = 0.7;//fast speed
 
-       
+          System.out.println(desiredColor);
+          SmartDashboard.putString("Desired Color", desiredColor);
+          SmartDashboard.putString("Current Color", color);
 
-
-            System.out.println(desiredColor);
-
-            System.out.println(color);
+          //  System.out.println(color);
     
         
         if(color != desiredColor){// left negitave right positive
             if(desiredColor == "G"){///////////////////////////////green///////////////////
+                System.out.println("Fuck");
                 if(color == "G")//green to green
                     motor.set(0.0);
                 else if(color == "B")// blue to green
