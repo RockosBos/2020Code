@@ -8,7 +8,7 @@ public class TheColorSensor {
     private final static I2C.Port i2cPort = I2C.Port.kOnboard;
     private final static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
-    public String getColor() {
+    public char getColor() {
 
         final Color detectedColor = colorSensor.getColor();
 
@@ -17,28 +17,28 @@ public class TheColorSensor {
             && (detectedColor.green < .6 && detectedColor.green > .53)
             && (detectedColor.blue < 0.13 && detectedColor.blue > .12))
         {
-            return "Y";
+            return 'Y';
         }
         else if((detectedColor.red < 0.55 && detectedColor.red > 0.5)
             && (detectedColor.green < .36 && detectedColor.green > .32)
             && (detectedColor.blue < 0.14 && detectedColor.blue > .13))
         {
-            return "R";
+            return 'R';
         }
         else if((detectedColor.red < 0.18 && detectedColor.red > 0.16)
             && (detectedColor.green < .58 && detectedColor.green > .56)
             && (detectedColor.blue < 0.27 && detectedColor.blue > .25))
         {
-            return "G";
+            return 'G';
         }
         else if((detectedColor.red < 0.125 && detectedColor.red > 0.115)
             && (detectedColor.green < .43 && detectedColor.green > .410)
             && (detectedColor.blue < 0.48 && detectedColor.blue > .44))
         {
-            return "B";
+            return 'B';
         }
         else{
-            return "None";
+            return 'N';
         }
     
          /* YELLOW

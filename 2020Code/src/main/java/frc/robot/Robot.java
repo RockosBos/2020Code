@@ -28,10 +28,10 @@ public class Robot extends TimedRobot {
 
 
   //Motor Controllers
-    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(0);
-    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(1);
-    WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(2);
-    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(3);
+    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(1);
+    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(2);
+    WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(3);
+    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
 
   //color wheel start
   if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor, controlWheelWheel);
+    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
 
   //lime light on 
   if(right.Trigger){
