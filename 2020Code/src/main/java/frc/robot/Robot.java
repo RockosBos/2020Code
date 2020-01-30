@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic(){
-    ledStrip.pattern("Solid", 0 , 100, 100);
+    ledStrip.rainbow();
   }
   
 

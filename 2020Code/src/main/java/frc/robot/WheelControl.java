@@ -10,5 +10,66 @@
                                                                              
 */                                                            
    ////fuck                                                         
-package frc.robot; import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX; public class WheelControl{public void wheelPosition(char color, char desiredColor, WPI_TalonSRX motor){ double ss = 0.5; double fs = 0.7; System.out.println(desiredColor); if(color != desiredColor){ if(desiredColor == 'G'){ if(color == 'B') motor.set(-ss); else if(color == 'Y') motor.set(-fs); else if(color == 'R') motor.set(ss);} else if(desiredColor == 'R'){ if(color == 'G') motor.set(-ss); else if(color == 'B') motor.set(-fs); else if(color == 'Y') motor.set(ss); } else if(desiredColor == 'Y'){ if(color == 'B') motor.set(ss); else if(color == 'R') motor.set(-ss); else if(color == 'G') motor.set(-fs); } else if(desiredColor == 'B'){ if(color == 'G')motor.set(-ss);else if(color == 'Y') motor.set(ss); else if(color == 'R')motor.set(fs);} else motor.set(0.0);}}}
+   package frc.robot;
 
+   import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+   import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+   import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+   
+   
+   //Color Wheel Stuff
+   
+   public class WheelControl{//wheel position
+       public void wheelPosition(char color, char desiredColor, WPI_TalonSRX motor){
+           double ss = 0.5;//slow speed
+           double fs = 0.7;//fast speed
+   
+             System.out.println(desiredColor);
+             //SmartDashboard.putString("Desired Color", desiredColor);
+             //SmartDashboard.putString("Current Color", color);
+   
+             //  System.out.println(color);
+       
+           
+           if(color != desiredColor){// left negitave right positive 
+               //System.out.println("Fuck");
+               if(desiredColor == 'G'){///////////////////////////////green///////////////////
+                   
+                   if(color == 'B')// blue to green
+                       motor.set(-ss);
+                   else if(color == 'Y')// yellow to green
+                       motor.set(-fs);
+                   else if(color == 'R')//red to green
+                       motor.set(ss);
+               } else if(desiredColor == 'R'){///////////////////////////red/////////////////////
+                   if(color == 'G')//green to red
+                       motor.set(-ss);
+                   else if(color == 'B')//blue to red
+                       motor.set(-fs);
+                   else if(color == 'Y')//yellow to red
+                       motor.set(ss);
+               } else if(desiredColor == 'Y'){//////////////////////////////yellow/////////////////
+                   if(color == 'B')//blue to yellow
+                       motor.set(ss);
+                   else if(color == 'R')//red to yellow
+                       motor.set(-ss);
+                   else if(color == 'G')// green to yellow
+                       motor.set(-fs);
+               } else if(desiredColor == 'B'){/////////////////////////blue////////////////////////////
+                   if(color == 'G')//green to blue
+                       motor.set(-ss);
+                   else if(color == 'Y')//yellow to blue
+                       motor.set(ss);
+                   else if(color == 'R')//red to blue
+                       motor.set(fs);
+               } else motor.set(0.0);
+   
+           }
+       }
+   
+   
+      
+       
+   }
+   
+   

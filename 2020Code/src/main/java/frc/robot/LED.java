@@ -8,6 +8,7 @@ class LED{
     private AddressableLED led;
     private Timer ledTimer;
     private AddressableLEDBuffer ledBuffer;
+    private int rainbowFirstPixelHue;
 
     LED(int port, int length){
         led = new AddressableLED(port);
@@ -51,6 +52,23 @@ class LED{
                     ledBuffer.setHSV(i, 0, 0, 0);
                 }
         }
+        led.setData(ledBuffer);
+        led.start();
+    }
+
+    public void rainbow(){
+        
+    for (var i = 0; i < ledBuffer.getLength(); i++) {
+        
+        final var hue = (rainbowFirstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
+        // Set the value
+        ledBuffer.setHSV(i, hue, 255, 128);
+      }
+      // Increase by to make the rainbow "move"
+      rainbowFirstPixelHue += 3;
+      // Check bounds
+      rainbowFirstPixelHue %= 180;
+      led.setData(ledBuffer);
     }
 
 
