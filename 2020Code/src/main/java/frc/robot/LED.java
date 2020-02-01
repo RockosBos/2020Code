@@ -9,6 +9,9 @@ class LED{
     private Timer ledTimer;
     private AddressableLEDBuffer ledBuffer;
     private int rainbowFirstPixelHue;
+    private int prevValue = 0;
+    private int currentValue = 0;
+    private char state = 'I';
 
     LED(int port, int length){
         led = new AddressableLED(port);
@@ -25,26 +28,7 @@ class LED{
                     ledBuffer.setHSV(i, hue, saturation, value);
                 }
                 break;
-            case "Blink":
-                if(ledTimer.get() == 0){
-                    ledTimer.start();
-                }
                 
-                if(ledTimer.get() < 0.5){
-                    for(int i = 0; i < ledBuffer.getLength(); i++){
-                        ledBuffer.setHSV(i, hue, saturation, value);
-                    }
-                }
-                else if(ledTimer.get() < 1){
-                    for(int i = 0; i < ledBuffer.getLength(); i++){
-                        ledBuffer.setHSV(i, 0, 0, 0);
-                    }
-                }
-                else{
-                    ledTimer.reset();
-                    ledTimer.stop();
-                }
-                break;
             case "Off":
             
             default:
@@ -54,6 +38,38 @@ class LED{
         }
         led.setData(ledBuffer);
         led.start();
+    }
+
+    public void pulse(int color){
+        if(state == 'I'){
+        
+            currentValue = (prevValue + 1);
+            for (var i = 0; i < ledBuffer.getLength(); i++) {
+
+                ledBuffer.setHSV(i, color, 255, currentValue);
+          }
+          if(currentValue == 128){
+              prevValue = currentValue;
+              state = 'D';
+          }
+        }
+        if(state == 'D'){
+            currentValue = (prevValue - 1);
+            for (var i = 0; i < ledBuffer.getLength(); i++) {
+
+                ledBuffer.setHSV(i, color, 255, currentValue);
+          }
+          if(currentValue == 0){
+              state = 'I';
+          }
+        }
+          // Increase by to make the rainbow "move"
+          rainbowFirstPixelHue += 3;
+          // Check bounds
+          rainbowFirstPixelHue %= 180;
+          led.setData(ledBuffer);
+          prevValue = currentValue;
+
     }
 
     public void rainbow(){

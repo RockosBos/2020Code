@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
     WheelControl robotControlWheel = new WheelControl();
-    LED ledStrip = new LED(9, 60);
+    LED ledStrip = new LED(5, 5);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
 
     //Drive Initialization
@@ -90,7 +90,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
   }//Nick likes ducks that eat pickles
 
   @Override
@@ -139,7 +138,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    ledStrip.pattern("Solid", 120, 100, 100);
+    ledStrip.pulse(0);
     right.updateValues();
   /*-----------------------------------------------------
       Drive Logic
