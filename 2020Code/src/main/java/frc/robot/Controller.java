@@ -70,16 +70,18 @@ public class Controller {
         R6 = js.getRawButton(16);
     }
 
-    public boolean toggleButton(boolean button, boolean state){
-        if(button != state){
-            if(button == true){
-                state = true;
+    public boolean toggleButton(ToggleLogic toggle){
+        if(toggle.currentState && !toggle.prevState){
+            if(toggle.value){
+                toggle.value = false;
             }
             else{
-                state = false;
+                toggle.value = true;
             }
+            
         }
-        return state;
+        toggle.prevState = toggle.currentState;
+        return toggle.value;
     }
 }
 
