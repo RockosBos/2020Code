@@ -60,6 +60,12 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+
+     class ToggleLogic{
+        boolean currentState = false;
+        boolean prevState = false;
+        boolean value = false;
+     }
     
 
   private static final String kDefaultAuto = "Default";
