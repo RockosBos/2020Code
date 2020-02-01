@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
-    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
-    WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
+    WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
+    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
@@ -206,6 +206,17 @@ public class Robot extends TimedRobot {
 
   //robot pulls in the balls
   robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
+
+  if(right.R3)
+   {lowerFeed.set(1.0); upperFeed.set(1.0);}
+  else if(right.R6)
+   {lowerFeed.set(-1.0); upperFeed.set(-1.0);}
+  else
+   lowerFeed.set(0);
+
+ 
+   
+  
 
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
