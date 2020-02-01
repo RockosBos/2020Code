@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
-
+    ToggleLogic servoToggle = new ToggleLogic();  
     //Joysticks
 
     Controller left = new Controller(0);
@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
      Servo servoBoi = new Servo(0);
+     
 
      class ToggleLogic{
         boolean currentState = false;
@@ -208,14 +209,19 @@ public class Robot extends TimedRobot {
 
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
+
    
-  if(right.R3){
-  stateBoi = right.toggleButton(true, true);
+
+  servoToggle.currentState = right.R3;
+  if(right.toggleButton(servoToggle)){
+
   servoBoi.setAngle(90);
 
    }
-   if(right.R3 && stateBoi == true){
+   if(right.toggleButton(servoToggle)){
     servoBoi.setAngle(180);
+
+    ledStrip.rainbow();
    }
   } 
 
