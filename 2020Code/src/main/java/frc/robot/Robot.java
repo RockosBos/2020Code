@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
     WPI_TalonSRX lifter = new WPI_TalonSRX(13);
+    
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
 
@@ -55,6 +56,10 @@ public class Robot extends TimedRobot {
     WheelControl robotControlWheel = new WheelControl();
     LED ledStrip = new LED(9, 60);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
+    Climb robotClimb = new Climb();
+    
+    boolean leftS;
+    boolean rightS;
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
@@ -149,7 +154,7 @@ public class Robot extends TimedRobot {
   /*----------------------------------------------------
       Intake Logic
   ----------------------------------------------------*/
-  if (right.BottomFace){
+  if(right.BottomFace){
     
     
 
@@ -157,6 +162,13 @@ public class Robot extends TimedRobot {
   else{
     
   }
+
+
+
+  //////servo logic
+
+  
+
   /*----------------------------------------------------
     Limelight Logic
   ------------------------------------------------------*/
@@ -173,8 +185,8 @@ public class Robot extends TimedRobot {
   } 
 
   //color wheel start
-  if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
+  if(right.BottomFace)
+    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
 
   //lime light on 
   if(right.Trigger){
@@ -187,19 +199,35 @@ public class Robot extends TimedRobot {
    }
 
 
+
+  ////climb logic
+  
+
   //robot fires the ball manually
   robotShooter.manFire(right.L1, 0.0, shooters);
 
   //robot will spin the shooter manually
-  robotShooter.manRotate(right.LeftFace, right.RightFace, .5, liftRotate);
+  if(left.pov == 270)
+    leftS = true;
+  else
+    leftS = false;
 
-  //robot pulls in the balls
-  robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
+  if(left.pov == 90)
+    rightS = true;
+  else
+    rightS = false;
 
   
+
+  robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
+
+  //robot pulls in the balls
+  robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
+
+  //robotClimb.climber(1.0, right.L1, right.L4, motor);
+
   SmartDashboard.putBoolean("Trigger", right.Trigger);
    
-
   } 
 
   @Override

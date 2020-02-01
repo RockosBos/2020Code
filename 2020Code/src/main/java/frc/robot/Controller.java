@@ -31,6 +31,8 @@ public class Controller {
     public boolean R5;
     public boolean R6;
 
+    public int pov;
+    
     //Class Functions--------------------------------------
     Controller(int joystickPort){
         js = new Joystick(joystickPort);
@@ -68,6 +70,11 @@ public class Controller {
         R4 = js.getRawButton(14);
         R5 = js.getRawButton(15);
         R6 = js.getRawButton(16);
+        // POV
+        pov = js.getPOV(0);
+        
+
+
     }
 }
 
