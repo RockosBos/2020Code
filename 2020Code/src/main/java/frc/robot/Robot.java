@@ -221,8 +221,10 @@ public class Robot extends TimedRobot {
    if(right.toggleButton(servoToggle)){
     servoBoi.setAngle(180);
 
-    ledStrip.rainbow();
+    
    }
+
+   ledStrip.gageTest(60);
   } 
 
   @Override
