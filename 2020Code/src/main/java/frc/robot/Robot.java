@@ -38,10 +38,11 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
-    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
-    WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
-    WPI_TalonSRX lifter = new WPI_TalonSRX(13);
+    WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
+    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
+    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
+    WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
+    WPI_TalonSRX lifter = new WPI_TalonSRX(14);
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
     ToggleLogic servoToggle = new ToggleLogic();  
@@ -152,6 +153,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     ledStrip.pulse(0);
     right.updateValues();
+    left.updateValues();
   /*-----------------------------------------------------
       Drive Logic
   ------------------------------------------------------*/
@@ -184,8 +186,8 @@ public class Robot extends TimedRobot {
   } 
 
   //color wheel start
-  if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
+  // if(right.R6)
+  //   robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
 
   //lime light on 
   if(right.Trigger){
@@ -199,31 +201,53 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.manFire(right.L1, 0.0, shooters);
+  robotShooter.manFire(left.Trigger, 1.0, shooters);
 
   //robot will spin the shooter manually
   robotShooter.manRotate(right.LeftFace, right.RightFace, .5, liftRotate);
 
   //robot pulls in the balls
-  robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
+  robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
 
-  if(right.R3)
-   {lowerFeed.set(1.0); upperFeed.set(1.0);}
-  else if(right.R6)
-   {lowerFeed.set(-1.0); upperFeed.set(-1.0);}
-  else
+  if(left.R2){
+    lowerFeed.set(-0.2);
+  }
+  else if(left.R5){
+    lowerFeed.set(0.2);
+  }
+  else{
    lowerFeed.set(0);
+  }
 
- 
+  if(left.R1){
+    upperFeed.set(0.3);
+  }
+  else if(left.R4){
+    upperFeed.set(-0.3);
+  }
+  else{
+   upperFeed.set(0);
+  }
    
+  //robotShooter.manRotate(left.R1, left.R2, 0.2, shooterRotate);
   
+  if(left.R3)
+   intakeLift.set(0.5);
+  else if(left.R6)
+   intakeLift.set(-0.5);
+  else
+   intakeLift.set(0);
 
+   SmartDashboard.putBoolean("Left_R2", left.R2);
+   SmartDashboard.putBoolean("Left_R3", left.R3);
+   SmartDashboard.putBoolean("Left_R5", left.R5);
+   SmartDashboard.putBoolean("Left_R6", left.R6);
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
 
    
 
-  servoToggle.currentState = right.R3;
+  //servoToggle.currentState = right.R3;
   if(right.toggleButton(servoToggle)){
 
   servoBoi.setAngle(90);
