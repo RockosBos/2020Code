@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Servo;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -60,12 +61,15 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+     Servo servoBoi = new Servo(0);
     
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  boolean stateBoi;
   
 
   /**
@@ -77,6 +81,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    servoBoi.setAngle(0);
 
   }
 
@@ -198,7 +203,14 @@ public class Robot extends TimedRobot {
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
    
+  if(right.R3){
+  stateBoi = right.toggleButton(true, true);
+  servoBoi.setAngle(90);
 
+   }
+   if(right.R3 && stateBoi == true){
+    servoBoi.setAngle(180);
+   }
   } 
 
   @Override
