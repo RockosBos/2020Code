@@ -69,5 +69,17 @@ public class Controller {
         R5 = js.getRawButton(15);
         R6 = js.getRawButton(16);
     }
+
+    public boolean toggleButton(boolean button, boolean state){
+        if(button != state){
+            if(button == true){
+                state = true;
+            }
+            else{
+                state = false;
+            }
+        }
+        return state;
+    }
 }
 
