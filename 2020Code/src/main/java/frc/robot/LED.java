@@ -21,20 +21,9 @@ class LED{
         led.start();
     }
 
-    public void pattern(String patternName, int hue, int saturation, int value){
-        switch(patternName){
-            case "Solid": 
-                for(int i = 0; i < ledBuffer.getLength(); i++){
-                    ledBuffer.setHSV(i, hue, saturation, value);
-                }
-                break;
-                
-            case "Off":
-            
-            default:
-                for(int i = 0; i < ledBuffer.getLength(); i++){
-                    ledBuffer.setHSV(i, 0, 0, 0);
-                }
+    public void solid(int color){
+        for(int i = 0; i < ledBuffer.getLength(); i++){
+            ledBuffer.setHSV(i, color, 255, 128);
         }
         led.setData(ledBuffer);
         led.start();
