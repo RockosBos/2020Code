@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     WPI_TalonSRX lifter = new WPI_TalonSRX(14);
-    Shooter robotShooter = new Shooter();
+    Shooter robotShooter = new Shooter(shooters, shooterRotate);
     Intake robotIntake = new Intake();
     ToggleLogic servoToggle = new ToggleLogic();  
     //Joysticks
@@ -64,34 +64,34 @@ public class Robot extends TimedRobot {
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
      Servo servoBoi = new Servo(0);
      
-
-     class ToggleLogic{
+    //This class is uesd for toggle controls create an instance wherever you need to toggle.
+    class ToggleLogic{
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
-     }
+    }
     
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private static final String kDefaultAuto = "Default";
+    private static final String kCustomAuto = "My Auto";
+    private String m_autoSelected;
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  boolean stateBoi;
+    boolean stateBoi;
   
 
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-  @Override
-  public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-    servoBoi.setAngle(0);
-
-  }
+    @Override
+    public void robotInit() {
+      m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+      m_chooser.addOption("My Auto", kCustomAuto);
+      SmartDashboard.putData("Auto choices", m_chooser);
+      servoBoi.setAngle(0);
+    
+    }
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -101,14 +101,15 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
-  @Override
-  public void robotPeriodic() {
-  }//Nick likes ducks that eat pickles
+    @Override
+    public void robotPeriodic() {
+  
+    }
 
-  @Override
-  public void disabledPeriodic(){
-    ledStrip.rainbow();
-  }
+    @Override
+    public void disabledPeriodic(){
+        ledStrip.rainbow();
+    }
   
 
 
@@ -123,28 +124,28 @@ public class Robot extends TimedRobot {
    * the switch structure below with additional strings. If using the
    * SendableChooser make sure to add them to the chooser code above as well.
    */
-  @Override
-  public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-  }
+    @Override
+    public void autonomousInit() {
+        m_autoSelected = m_chooser.getSelected();
+       // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+        System.out.println("Auto selected: " + m_autoSelected);
+    }
 
   /**
    * This function is called periodically during autonomous.
    */
-  @Override
-  public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    @Override
+    public void autonomousPeriodic() {
+      switch (m_autoSelected) {
+        case kCustomAuto:
+          // Put custom auto code here
+          break;
+        case kDefaultAuto:
+        default:
+          // Put default auto code here
+          break;
+      }
     }
-  }
 
   /**
    * This function is called periodically during operator control.
@@ -152,7 +153,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     ledStrip.pulse(0);
-    right.updateValues();
+    right.updateValues(); //updates Joystick Class variables
     left.updateValues();
   /*-----------------------------------------------------
       Drive Logic
@@ -201,10 +202,10 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.manFire(left.Trigger, 1.0, shooters);
+  robotShooter.manFire(left.Trigger, 1.0);
 
   //robot will spin the shooter manually
-  robotShooter.manRotate(right.LeftFace, right.RightFace, .5, liftRotate);
+  robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
 
   //robot pulls in the balls
   robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
@@ -220,10 +221,10 @@ public class Robot extends TimedRobot {
   }
 
   if(left.R1){
-    upperFeed.set(0.3);
+    upperFeed.set(0.23);
   }
   else if(left.R4){
-    upperFeed.set(-0.3);
+    upperFeed.set(-0.23);
   }
   else{
    upperFeed.set(0);
@@ -264,5 +265,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+      
+      
   }
 }
