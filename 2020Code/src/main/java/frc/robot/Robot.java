@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Servo;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -34,8 +35,8 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
-    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
-    WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
+    WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
+    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
@@ -44,7 +45,7 @@ public class Robot extends TimedRobot {
     
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
-
+    ToggleLogic servoToggle = new ToggleLogic();  
     //Joysticks
 
     Controller left = new Controller(0);
@@ -54,7 +55,7 @@ public class Robot extends TimedRobot {
     TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
     WheelControl robotControlWheel = new WheelControl();
-    LED ledStrip = new LED(9, 60);
+    LED ledStrip = new LED(5, 5);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
     
@@ -65,12 +66,22 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+     Servo servoBoi = new Servo(0);
+     
+
+     class ToggleLogic{
+        boolean currentState = false;
+        boolean prevState = false;
+        boolean value = false;
+     }
     
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  boolean stateBoi;
   
 
   /**
@@ -82,6 +93,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    servoBoi.setAngle(0);
 
   }
 
@@ -95,7 +107,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
   }//Nick likes ducks that eat pickles
 
   @Override
@@ -144,7 +155,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    ledStrip.pattern("Solid", 120, 100, 100);
+    ledStrip.pulse(0);
     right.updateValues();
   /*-----------------------------------------------------
       Drive Logic
@@ -217,6 +228,17 @@ public class Robot extends TimedRobot {
   else
     rightS = false;
 
+  if(right.R3)
+   {lowerFeed.set(1.0); upperFeed.set(1.0);}
+  else if(right.R6)
+   {lowerFeed.set(-1.0); upperFeed.set(-1.0);}
+  else
+   lowerFeed.set(0);
+
+ 
+   
+  
+
   
 
   robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
@@ -227,7 +249,22 @@ public class Robot extends TimedRobot {
   //robotClimb.climber(1.0, right.L1, right.L4, motor);
 
   SmartDashboard.putBoolean("Trigger", right.Trigger);
+
    
+
+  servoToggle.currentState = right.R3;
+  if(right.toggleButton(servoToggle)){
+
+  servoBoi.setAngle(90);
+
+   }
+   if(right.toggleButton(servoToggle)){
+    servoBoi.setAngle(180);
+
+    
+   }
+
+   ledStrip.gageTest(60);
   } 
 
   @Override

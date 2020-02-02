@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Robot.ToggleLogic;
 
 public class Controller {
     
@@ -75,6 +76,20 @@ public class Controller {
         
 
 
+    }
+
+    public boolean toggleButton(ToggleLogic toggle){
+        if(toggle.currentState && !toggle.prevState){
+            if(toggle.value){
+                toggle.value = false;
+            }
+            else{
+                toggle.value = true;
+            }
+            
+        }
+        toggle.prevState = toggle.currentState;
+        return toggle.value;
     }
 }
 
