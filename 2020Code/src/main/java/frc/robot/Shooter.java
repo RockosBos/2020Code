@@ -66,7 +66,7 @@ public class Shooter{
         if(left)
             liftRotate.set(-lSpeed);
         else if(right)
-            liftRotate(lSpeed);
+            liftRotate.set(lSpeed);
         else liftRotate.set(0.0);
     }
 
