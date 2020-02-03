@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
     WheelControl robotControlWheel = new WheelControl();
     LED ledStrip = new LED(5, 5);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
+    DigitalInput feedSensor = new DigitalInput(0);
+    
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
@@ -91,7 +94,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     rightServo.setAngle(0);
     leftServo.setAngle(0);
-    ledStrip.ledRGB(255, 0, 0);
+   // ledStrip.ledRGB(255, 0, 0);
     SmartDashboard.putNumber("Servo 8 Value", leftServo.getAngle());
     SmartDashboard.putNumber("Servo 9 Value", rightServo.getAngle());  }
 
@@ -211,7 +214,7 @@ public class Robot extends TimedRobot {
   robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
 
   //robot pulls in the balls
-  robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
+  //robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
 
   if(left.R2){
     lowerFeed.set(-0.2);
@@ -233,6 +236,8 @@ public class Robot extends TimedRobot {
    upperFeed.set(0);
   }
    
+  
+
   //robotShooter.manRotate(left.R1, left.R2, 0.2, shooterRotate);
   
   if(left.R3)
@@ -249,7 +254,20 @@ public class Robot extends TimedRobot {
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
 
-   
+  //intake
+  if(left.BottomFace){
+    intakeWheels.set(1.0);
+    lowerFeed.set(0.2);
+    if(feedSensor.get())
+      upperFeed.set(0.23);
+    else upperFeed.set(0);
+
+  } else{
+    intakeWheels.set(0.0);
+    lowerFeed.set(0.0);
+    upperFeed.set(0.0);
+  }
+    
 
   //servoToggle.currentState = right.R3;
   if(right.toggleButton(servoToggle)){
