@@ -7,7 +7,7 @@ public class Controller {
     
 
     public int joyStickSlot;
-
+    
     public Joystick js;
 
     public boolean Trigger;
@@ -88,3 +88,12 @@ public class Controller {
     }
 }
 
+
+
+
+
+
+
+
+
+                                  

@@ -62,10 +62,10 @@ public class Robot extends TimedRobot {
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-     Servo servoBoi = new Servo(0);
-     
-    //This class is uesd for toggle controls create an instance wherever you need to toggle.
-    class ToggleLogic{
+     Servo leftServo = new Servo(8);
+     Servo rightServo = new Servo(9);
+
+     class ToggleLogic{
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
@@ -84,15 +84,16 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-    @Override
-    public void robotInit() {
-      m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-      m_chooser.addOption("My Auto", kCustomAuto);
-      SmartDashboard.putData("Auto choices", m_chooser);
-      servoBoi.setAngle(0);
-      SmartDashboard.putBoolean("Override", false);
-    
-    }
+  @Override
+  public void robotInit() {
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
+    rightServo.setAngle(0);
+    leftServo.setAngle(0);
+    ledStrip.ledRGB(255, 0, 0);
+    SmartDashboard.putNumber("Servo 8 Value", leftServo.getAngle());
+    SmartDashboard.putNumber("Servo 9 Value", rightServo.getAngle());  }
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -252,21 +253,28 @@ public class Robot extends TimedRobot {
 
   //servoToggle.currentState = right.R3;
   if(right.toggleButton(servoToggle)){
-
-  servoBoi.setAngle(90);
+  leftServo.setAngle(90);
+  rightServo.setAngle(90);
+  ledStrip.solid(120);
+  System.out.println("on");
 
    }
-   if(right.toggleButton(servoToggle)){
-    servoBoi.setAngle(180);
-
+  else{
+    leftServo.setAngle(180);
+    rightServo.setAngle(180);
+    ledStrip.solid(60);
+    System.out.println("off");
     
-   }
-
-   ledStrip.gageTest(60);
+  }
+  leftServo.setAngle(SmartDashboard.getNumber("Servo 8 Value", 0));
+  rightServo.setAngle(SmartDashboard.getNumber("Servo 9 Value", 0));
+   
   } 
 
   @Override
   public void testPeriodic() {
+
+
       
       
   }
