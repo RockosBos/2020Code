@@ -69,6 +69,8 @@ public class Controller {
         R4 = js.getRawButton(14);
         R5 = js.getRawButton(15);
         R6 = js.getRawButton(16);
+
+        
     }
 
     public boolean toggleButton(ToggleLogic toggle){

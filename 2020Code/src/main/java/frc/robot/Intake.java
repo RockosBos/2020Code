@@ -35,7 +35,8 @@ public class Intake{
     public void intakeBall(boolean button, double speed, double offset, WPI_TalonSRX motor){
         if(button){
             motor.set(-speed);
-        } else motor.set(-offset);
+            System.out.println("ahhhh");
+        } else motor.set(-offset); System.out.println("-ahhhh");
     }
 
     public void intakeBall(boolean button, double speed, double offset, WPI_VictorSPX motor){

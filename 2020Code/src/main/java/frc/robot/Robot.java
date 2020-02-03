@@ -35,14 +35,15 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
     WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
     WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
-    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(7);
-    WPI_TalonSRX upperFeed = new WPI_TalonSRX(8);
+    WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
+    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
-    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
-    WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
-    WPI_TalonSRX lifter = new WPI_TalonSRX(13);
-    Shooter robotShooter = new Shooter();
+    WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
+    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
+    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
+    WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
+    WPI_TalonSRX lifter = new WPI_TalonSRX(14);
+    Shooter robotShooter = new Shooter(shooters, shooterRotate);
     Intake robotIntake = new Intake();
     ToggleLogic servoToggle = new ToggleLogic();  
     //Joysticks
@@ -68,15 +69,15 @@ public class Robot extends TimedRobot {
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
-     }
+    }
     
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private static final String kDefaultAuto = "Default";
+    private static final String kCustomAuto = "My Auto";
+    private String m_autoSelected;
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  boolean stateBoi;
+    private boolean override = false;
   
 
   /**
@@ -102,14 +103,15 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
    */
-  @Override
-  public void robotPeriodic() {
-  }//Nick likes ducks that eat pickles
+    @Override
+    public void robotPeriodic() {
+  
+    }
 
-  @Override
-  public void disabledPeriodic(){
-    //ledStrip.ledRGB(76, 153, 0);
-  }
+    @Override
+    public void disabledPeriodic(){
+        ledStrip.rainbow();
+    }
   
 
 
@@ -124,36 +126,39 @@ public class Robot extends TimedRobot {
    * the switch structure below with additional strings. If using the
    * SendableChooser make sure to add them to the chooser code above as well.
    */
-  @Override
-  public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-  }
+    @Override
+    public void autonomousInit() {
+        m_autoSelected = m_chooser.getSelected();
+       // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+        System.out.println("Auto selected: " + m_autoSelected);
+    }
 
   /**
    * This function is called periodically during autonomous.
    */
-  @Override
-  public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    @Override
+    public void autonomousPeriodic() {
+      switch (m_autoSelected) {
+        case kCustomAuto:
+          // Put custom auto code here
+          break;
+        case kDefaultAuto:
+        default:
+          // Put default auto code here
+          break;
+      }
     }
-  }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    
-    right.updateValues();
+
+    override = SmartDashboard.getBoolean("Override", false);
+    ledStrip.pulse(0);
+    right.updateValues(); //updates Joystick Class variables
+    left.updateValues();
   /*-----------------------------------------------------
       Drive Logic
   ------------------------------------------------------*/
@@ -164,8 +169,7 @@ public class Robot extends TimedRobot {
   ----------------------------------------------------*/
   if (right.BottomFace){
     
-    
-
+  
   }
   else{
     
@@ -186,8 +190,8 @@ public class Robot extends TimedRobot {
   } 
 
   //color wheel start
-  if(right.R6)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
+  // if(right.R6)
+  //   robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
 
   //lime light on 
   if(right.Trigger){
@@ -201,20 +205,53 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.manFire(right.L1, 0.0, shooters);
+  robotShooter.manFire(left.Trigger, 1.0);
 
   //robot will spin the shooter manually
-  robotShooter.manRotate(right.LeftFace, right.RightFace, .5, liftRotate);
+  robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
 
   //robot pulls in the balls
-  robotIntake.intakeBall(right.BottomFace, 1, intakeWheels);
+  robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
 
+  if(left.R2){
+    lowerFeed.set(-0.2);
+  }
+  else if(left.R5){
+    lowerFeed.set(0.2);
+  }
+  else{
+   lowerFeed.set(0);
+  }
+
+  if(left.R1){
+    upperFeed.set(0.23);
+  }
+  else if(left.R4){
+    upperFeed.set(-0.23);
+  }
+  else{
+   upperFeed.set(0);
+  }
+   
+  //robotShooter.manRotate(left.R1, left.R2, 0.2, shooterRotate);
+  
+  if(left.R3)
+   intakeLift.set(0.5);
+  else if(left.R6)
+   intakeLift.set(-0.5);
+  else
+   intakeLift.set(0);
+
+   SmartDashboard.putBoolean("Left_R2", left.R2);
+   SmartDashboard.putBoolean("Left_R3", left.R3);
+   SmartDashboard.putBoolean("Left_R5", left.R5);
+   SmartDashboard.putBoolean("Left_R6", left.R6);
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
 
    
 
-  servoToggle.currentState = right.R3;
+  //servoToggle.currentState = right.R3;
   if(right.toggleButton(servoToggle)){
   leftServo.setAngle(90);
   rightServo.setAngle(90);
@@ -238,5 +275,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
 
 
+      
+      
   }
 }
