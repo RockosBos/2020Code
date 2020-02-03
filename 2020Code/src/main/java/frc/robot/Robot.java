@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-    private boolean override = false;
+    boolean stateBoi;
   
 
   /**
@@ -90,7 +90,6 @@ public class Robot extends TimedRobot {
       m_chooser.addOption("My Auto", kCustomAuto);
       SmartDashboard.putData("Auto choices", m_chooser);
       servoBoi.setAngle(0);
-      SmartDashboard.putBoolean("Override", false);
     
     }
 
@@ -153,8 +152,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
-    override = SmartDashboard.getBoolean("Override", false);
     ledStrip.pulse(0);
     right.updateValues(); //updates Joystick Class variables
     left.updateValues();
@@ -168,7 +165,8 @@ public class Robot extends TimedRobot {
   ----------------------------------------------------*/
   if (right.BottomFace){
     
-  
+    
+
   }
   else{
     
