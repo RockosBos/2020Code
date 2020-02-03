@@ -12,6 +12,9 @@ class LED{
     private int prevValue = 0;
     private int currentValue = 0;
     private char state = 'I';
+    int red = 100;
+    int green = 100;
+    int blue = 100;
 
     LED(int port, int length){
         led = new AddressableLED(port);
@@ -76,15 +79,15 @@ class LED{
       led.setData(ledBuffer);
     }
 
-    public void gageTest(int h){
+    public void ledRGB(int r, int g, int b){ //Same as Solid color function but with RGB instead of HSV
         for (var i = 0; i < ledBuffer.getLength(); i++){
-                ledBuffer.setHSV(i, h, 100, 100);
+            ledBuffer.setRGB(i, r, g, b);
+
         }
-                led.setData(ledBuffer);
-                led.start();
-        
-
-
+        led.setData(ledBuffer);
+        led.start();
     }
+
+    
 
 }
