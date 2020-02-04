@@ -166,16 +166,35 @@ public class Robot extends TimedRobot {
       Drive Logic
   ------------------------------------------------------*/
   diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+
+  servoToggle.currentState = right.R3;
+  if(right.toggleButton(servoToggle)){
+      leftServo.setAngle(90);
+      rightServo.setAngle(90);
+      ledStrip.solid(120);
+      System.out.println("on");
+  }
+  else{
+      leftServo.setAngle(180);
+      rightServo.setAngle(180);
+      ledStrip.solid(60);
+      System.out.println("off");
+  }
   
   /*----------------------------------------------------
       Intake Logic
   ----------------------------------------------------*/
-  if (right.BottomFace){
+  if(!override){
+      if(right.BottomFace){
+        
+        
+      }
+      else{
     
-  
+      }
   }
   else{
-    
+       
   }
   /*----------------------------------------------------
     Limelight Logic
@@ -217,23 +236,23 @@ public class Robot extends TimedRobot {
   robotIntake.intakeBall(left.BottomFace, -1, intakeWheels);
 
   if(left.R2){
-    lowerFeed.set(-0.2);
+      lowerFeed.set(-0.2);
   }
   else if(left.R5){
-    lowerFeed.set(0.2);
+      lowerFeed.set(0.2);
   }
   else{
-   lowerFeed.set(0);
+      lowerFeed.set(0);
   }
 
   if(left.R1){
-    upperFeed.set(0.23);
+      upperFeed.set(0.23);
   }
   else if(left.R4){
-    upperFeed.set(-0.23);
+      upperFeed.set(-0.23);
   }
   else{
-   upperFeed.set(0);
+      upperFeed.set(0);
   }
    
   
@@ -241,11 +260,11 @@ public class Robot extends TimedRobot {
   //robotShooter.manRotate(left.R1, left.R2, 0.2, shooterRotate);
   
   if(left.R3)
-   intakeLift.set(0.5);
+      intakeLift.set(0.5);
   else if(left.R6)
-   intakeLift.set(-0.5);
+      intakeLift.set(-0.5);
   else
-   intakeLift.set(0);
+      intakeLift.set(0);
 
    SmartDashboard.putBoolean("Left_R2", left.R2);
    SmartDashboard.putBoolean("Left_R3", left.R3);
@@ -253,6 +272,7 @@ public class Robot extends TimedRobot {
    SmartDashboard.putBoolean("Left_R6", left.R6);
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
+  }
 
   // //intake
   // if(left.BottomFace){
@@ -268,26 +288,6 @@ public class Robot extends TimedRobot {
   //   upperFeed.set(0.0);
   // }
     
-
-  //servoToggle.currentState = right.R3;
-  if(right.toggleButton(servoToggle)){
-  leftServo.setAngle(90);
-  rightServo.setAngle(90);
-  ledStrip.solid(120);
-  System.out.println("on");
-
-   }
-  else{
-    leftServo.setAngle(180);
-    rightServo.setAngle(180);
-    ledStrip.solid(60);
-    System.out.println("off");
-    
-  }
-  leftServo.setAngle(SmartDashboard.getNumber("Servo 8 Value", 0));
-  rightServo.setAngle(SmartDashboard.getNumber("Servo 9 Value", 0));
-   
-  } 
 
   @Override
   public void testPeriodic() {
