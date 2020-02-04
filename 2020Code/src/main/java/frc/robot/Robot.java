@@ -214,7 +214,7 @@ public class Robot extends TimedRobot {
   robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
 
   //robot pulls in the balls
-  //robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
+  robotIntake.intakeBall(left.BottomFace, -1, intakeWheels);
 
   if(left.R2){
     lowerFeed.set(-0.2);
@@ -254,19 +254,19 @@ public class Robot extends TimedRobot {
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
 
-  //intake
-  if(left.BottomFace){
-    intakeWheels.set(1.0);
-    lowerFeed.set(0.2);
-    if(feedSensor.get())
-      upperFeed.set(0.23);
-    else upperFeed.set(0);
+  // //intake
+  // if(left.BottomFace){
+  //   intakeWheels.set(1.0);
+  //   lowerFeed.set(0.2);
+  //   if(feedSensor.get())
+  //     upperFeed.set(0.23);
+  //   else upperFeed.set(0);
 
-  } else{
-    intakeWheels.set(0.0);
-    lowerFeed.set(0.0);
-    upperFeed.set(0.0);
-  }
+  // } else{
+  //   intakeWheels.set(0.0);
+  //   lowerFeed.set(0.0);
+  //   upperFeed.set(0.0);
+  // }
     
 
   //servoToggle.currentState = right.R3;
