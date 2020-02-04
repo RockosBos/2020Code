@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic(){
-        ledStrip.rainbow();
+        ledStrip.ledRGB(71, 7, 105);
     }
   
 
@@ -162,17 +162,31 @@ public class Robot extends TimedRobot {
   /*-----------------------------------------------------
       Drive Logic
   ------------------------------------------------------*/
-  diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+
+  if(!override){
+
+  }
+  else{
+    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+  }
   
   /*----------------------------------------------------
       Intake Logic
   ----------------------------------------------------*/
-  if (right.BottomFace){
-    
-  
+  if(!override){
+      //Automatic logic
   }
   else{
-    
+      //manual logic
+
+      robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
+      if(left.R3)
+      intakeLift.set(0.5);
+      else if(left.R6)
+      intakeLift.set(-0.5);
+      else
+   intakeLift.set(0);
+
   }
   /*----------------------------------------------------
     Limelight Logic
@@ -204,14 +218,21 @@ public class Robot extends TimedRobot {
    }
 
 
-  //robot fires the ball manually
-  robotShooter.manFire(left.Trigger, 1.0);
+  /*------------------------------------------------------------
+  -------------------------Shooter--------------------------
+  -------------------------------------------------------------*/
+  if(!override){
+  }
+  else{
+    robotShooter.manFire(left.Trigger, 1.0);
 
+
+  }
   //robot will spin the shooter manually
   robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
 
-  //robot pulls in the balls
-  robotIntake.intakeBall(right.BottomFace, .1, intakeWheels);
+  
+  
 
   if(left.R2){
     lowerFeed.set(-0.2);
@@ -235,12 +256,7 @@ public class Robot extends TimedRobot {
    
   //robotShooter.manRotate(left.R1, left.R2, 0.2, shooterRotate);
   
-  if(left.R3)
-   intakeLift.set(0.5);
-  else if(left.R6)
-   intakeLift.set(-0.5);
-  else
-   intakeLift.set(0);
+  
 
    SmartDashboard.putBoolean("Left_R2", left.R2);
    SmartDashboard.putBoolean("Left_R3", left.R3);
@@ -279,3 +295,8 @@ public class Robot extends TimedRobot {
       
   }
 }
+
+
+
+
+
