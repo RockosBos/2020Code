@@ -24,6 +24,7 @@ public class Intake{
     public void intakeBall(boolean button, double speed, WPI_TalonSRX motor){
         if(button){
             motor.set(-speed);
+            
         } else motor.set(0);
     }
     public void intakeBall(boolean button, double speed, WPI_VictorSPX motor){

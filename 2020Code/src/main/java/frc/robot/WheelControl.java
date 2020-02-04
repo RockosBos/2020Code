@@ -12,9 +12,9 @@
    ////fuck       Grape Fruit is a fruit then grapes come along like wtf                                                  
    package frc.robot;
 
-   import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+   //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
    import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-   import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+   //import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
    
    
    //Color Wheel Stuff
