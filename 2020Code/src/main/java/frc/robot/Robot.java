@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWMSpeedController;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -67,6 +68,8 @@ public class Robot extends TimedRobot {
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
+
+  //  leftDrive1.setInverted(true);     
 
      class ToggleLogic{
         boolean currentState = false;
@@ -202,14 +205,19 @@ public class Robot extends TimedRobot {
       //Limelight Update
       
       robotLimeLight.displayData();
+      SmartDashboard.putString("LLState", robotLimeLight.limelightState);
   
-  if(robotLimeLight.getX() < -2){
-      robotLimeLight.limelightState = "TooFarLeft";
-  } else if(robotLimeLight.getY() > 2){
-      robotLimeLight.limelightState = "TooFarRight";
+  if(robotLimeLight.getX() < -4){
+      robotLimeLight.limelightState = "fastLeft";
+  } else if(robotLimeLight.getX() > 4){
+      robotLimeLight.limelightState = "fastRight";
+  } else if(robotLimeLight.getX() < - 2){
+      robotLimeLight.limelightState = "slowLeft";
+  } else if(robotLimeLight.getX() > 2){
+      robotLimeLight.limelightState = "slowRight";
   } else{
-      robotLimeLight.limelightState = "readyToShoot";
-  } 
+      robotLimeLight.limelightState = "stop";
+  }
 
   //color wheel start
   // if(right.R6)
@@ -227,10 +235,28 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.manFire(left.Trigger, 1.0);
+  robotShooter.manFire(left.Trigger, 0.8);
 
   //robot will spin the shooter manually
-  robotShooter.manRotate(right.LeftFace, right.RightFace, .5);
+  //robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5);
+  if(right.Trigger){
+    switch(LimeLight.limelightState){
+        case "fastRight":
+            shooterRotate.set(.2);
+            break;
+        case "fastLeft":
+            shooterRotate.set(.2);
+            break;
+        case "slowLeft":
+            shooterRotate.set(-.1);
+            break;
+        case "slowRight":
+            shooterRotate.set(-.1);
+            break;
+        default:
+            shooterRotate.set(0);
+  }
+}
 
   //robot pulls in the balls
   robotIntake.intakeBall(left.BottomFace, -1, intakeWheels);
@@ -246,10 +272,10 @@ public class Robot extends TimedRobot {
   }
 
   if(left.R1){
-      upperFeed.set(0.23);
+      upperFeed.set(0.30);
   }
   else if(left.R4){
-      upperFeed.set(-0.23);
+      upperFeed.set(-0.30);
   }
   else{
       upperFeed.set(0);
