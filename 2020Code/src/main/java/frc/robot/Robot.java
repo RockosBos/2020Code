@@ -68,6 +68,8 @@ public class Robot extends TimedRobot {
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
+    
+    
 
   //  leftDrive1.setInverted(true);     
 
@@ -95,12 +97,13 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    rightServo.setAngle(0);
-    leftServo.setAngle(0);
+    rightServo.setAngle(160);
+    leftServo.setAngle(50);
    // ledStrip.ledRGB(255, 0, 0);
     SmartDashboard.putNumber("Servo 8 Value", leftServo.getAngle());
     SmartDashboard.putNumber("Servo 9 Value", rightServo.getAngle());  }
-
+    
+    
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -172,16 +175,16 @@ public class Robot extends TimedRobot {
 
   servoToggle.currentState = right.R3;
   if(right.toggleButton(servoToggle)){
-      leftServo.setAngle(90);
-      rightServo.setAngle(90);
-      ledStrip.solid(120);
-      System.out.println("on");
+      leftServo.setAngle(50);
+      rightServo.setAngle(160);
+     // ledStrip.solid(120);
+      System.out.println("off");
   }
   else{
-      leftServo.setAngle(180);
-      rightServo.setAngle(180);
-      ledStrip.solid(60);
-      System.out.println("off");
+      leftServo.setAngle(120);
+      rightServo.setAngle(85);
+     // ledStrip.solid(60);
+      System.out.println("on");
   }
   
   /*----------------------------------------------------
