@@ -275,7 +275,6 @@ public class Robot extends TimedRobot {
     
    }
 
-   ledStrip.gageTest(60);
   } 
 
   @Override
