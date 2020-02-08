@@ -227,9 +227,10 @@ public class Robot extends TimedRobot {
   //   robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), controlWheelWheel);
 
   //lime light on 
-  if(right.Trigger){
+  if(left.Trigger){
       robotLimeLight.setMode("ledMode", 0);
       robotLimeLight.setMode("camMode", 0);
+      robotShooter.manFire(left.Trigger, 0.8);
   }
    else{
       robotLimeLight.setMode("ledMode", 1);
