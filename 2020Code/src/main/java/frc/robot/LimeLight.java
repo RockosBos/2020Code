@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable; 
 import edu.wpi.first.networktables.NetworkTableEntry; 
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableInstance;                    
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LimeLight{
@@ -11,7 +11,7 @@ public class LimeLight{
     private NetworkTableEntry tx = table.getEntry("tx"); 
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
-    public String limelightState;
+    public static String limelightState = "";
 
     public double getX(){
         return tx.getDouble(0.0);

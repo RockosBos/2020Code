@@ -43,7 +43,7 @@ public class TheColorSensor {
     
          /* YELLOW
     Red = 0.314453125
-    Green = 0.56127929296875
+    Green = 0.56127929296875                                      
     Blue = 0.1240234375 
     */ 
 
