@@ -215,7 +215,7 @@ public class Robot extends TimedRobot {
   
 
   //robot fires the ball manually
-  robotShooter.manFire(right.L1, 0.0, shooters);
+  //robotShooter.manFire(left.Trigger, 0.8, shooters);
 
   //robot will spin the shooter manually
   if(left.pov == 270)
