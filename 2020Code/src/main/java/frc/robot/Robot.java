@@ -238,10 +238,10 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  robotShooter.manFire(left.Trigger, 0.8);
+  //robotShooter.manFire(left.Trigger, 0.8);
 
   //robot will spin the shooter manually
-  //robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5);
+  robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5);
   if(right.Trigger){
     switch(LimeLight.limelightState){
         case "fastRight":
@@ -262,23 +262,23 @@ public class Robot extends TimedRobot {
 }
 
   //robot pulls in the balls
-  robotIntake.intakeBall(left.BottomFace, -1, intakeWheels);
+  robotIntake.intakeBall(left.BottomFace, -0.9, intakeWheels);
 
   if(left.R2){
-      lowerFeed.set(-0.2);
+      lowerFeed.set(-1);
   }
   else if(left.R5){
-      lowerFeed.set(0.2);
+      lowerFeed.set(1);
   }
   else{
       lowerFeed.set(0);
   }
 
   if(left.R1){
-      upperFeed.set(0.30);
+      upperFeed.set(-0.30);
   }
   else if(left.R4){
-      upperFeed.set(-0.30);
+      upperFeed.set(0.30);
   }
   else{
       upperFeed.set(0);
@@ -299,6 +299,7 @@ public class Robot extends TimedRobot {
    SmartDashboard.putBoolean("Left_R3", left.R3);
    SmartDashboard.putBoolean("Left_R5", left.R5);
    SmartDashboard.putBoolean("Left_R6", left.R6);
+   SmartDashboard.putString("TestData", "Version 1");
   
   SmartDashboard.putBoolean("Trigger", right.Trigger);
   }
