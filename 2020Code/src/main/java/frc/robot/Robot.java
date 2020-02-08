@@ -238,20 +238,20 @@ public class Robot extends TimedRobot {
 
 
   //robot fires the ball manually
-  //robotShooter.manFire(left.Trigger, 0.8);
+  robotShooter.manFire(left.Trigger, 0.8);
 
   //robot will spin the shooter manually
   robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5);
   if(right.Trigger){
     switch(LimeLight.limelightState){
         case "fastRight":
-            shooterRotate.set(.2);
+            shooterRotate.set(-.2);
             break;
         case "fastLeft":
             shooterRotate.set(.2);
             break;
         case "slowLeft":
-            shooterRotate.set(-.1);
+            shooterRotate.set(.1);
             break;
         case "slowRight":
             shooterRotate.set(-.1);
