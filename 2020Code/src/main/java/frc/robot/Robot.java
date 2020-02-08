@@ -98,6 +98,8 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("My Auto", kCustomAuto);
         SmartDashboard.putData("Auto choices", m_chooser);
         servoBoi.setAngle(0);
+        SmartDashboard.putString("Version", "1.0.1");
+
   }
 
   /**
@@ -161,6 +163,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         ledStrip.pulse(0);
         right.updateValues();
+        left.updateValues();
     /*-----------------------------------------------------
         Drive Logic
     ------------------------------------------------------*/
@@ -189,36 +192,41 @@ public class Robot extends TimedRobot {
       
         robotLimeLight.displayData();
   
-    if(robotLimeLight.getX() < -2){
-        robotLimeLight.limelightState = "TooFarLeft";
-    } else if(robotLimeLight.getY() > 2){
-         robotLimeLight.limelightState = "TooFarRight";
-    } else{
-        robotLimeLight.limelightState = "readyToShoot";
-    } 
+        if(robotLimeLight.getX() < -4){
+            robotLimeLight.limelightState = "fastLeft";
+        } else if(robotLimeLight.getX() > 4){
+            robotLimeLight.limelightState = "fastRight";
+        } else if(robotLimeLight.getX() < - 2){
+            robotLimeLight.limelightState = "slowLeft";
+        } else if(robotLimeLight.getX() > 2){
+            robotLimeLight.limelightState = "slowRight";
+        } else{
+            robotLimeLight.limelightState = "stop";
+        }
 
     //color wheel start
     if(right.BottomFace)
         robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
 
     //lime light on 
-    if(left.Trigger){
+    if(right.Trigger){
         robotLimeLight.setMode("ledMode", 0);
         robotLimeLight.setMode("camMode", 0);
-        robotShooter.manFire(left.Trigger, 0.8, shooters);
+        
     }
     else{
         robotLimeLight.setMode("ledMode", 1);
         robotLimeLight.setMode("camMode", 1);
     }
 
+    robotShooter.manFire(left.Trigger, .1, shooters);
 
 
     ////climb logic
   
 
     //robot fires the ball manually
-    robotShooter.manFire(right.L1, 0.0, shooters);
+    robotShooter.manFire(left.Trigger, 1, shooters);
 
     //robot will spin the shooter manually
     robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5, shooterRotate);
