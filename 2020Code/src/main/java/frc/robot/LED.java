@@ -76,15 +76,6 @@ class LED{
       led.setData(ledBuffer);
     }
 
-    public void gageTest(int h){
-        for (var i = 0; i < ledBuffer.getLength(); i++){
-                ledBuffer.setHSV(i, h, 100, 100);
-        }
-                led.setData(ledBuffer);
-                led.start();
-        
-
-
-    }
+   
 
 }
