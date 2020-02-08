@@ -265,20 +265,20 @@ public class Robot extends TimedRobot {
   robotIntake.intakeBall(left.BottomFace, -1, intakeWheels);
 
   if(left.R2){
-      lowerFeed.set(-0.2);
+      lowerFeed.set(-0.8);
   }
   else if(left.R5){
-      lowerFeed.set(0.2);
+      lowerFeed.set(0.8);
   }
   else{
       lowerFeed.set(0);
   }
 
   if(left.R1){
-      upperFeed.set(0.30);
+      upperFeed.set(-0.30);
   }
   else if(left.R4){
-      upperFeed.set(-0.30);
+      upperFeed.set(0.30);
   }
   else{
       upperFeed.set(0);
