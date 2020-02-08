@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -43,6 +44,8 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     WPI_TalonSRX lifter = new WPI_TalonSRX(14);
+
+    DigitalInput lineSensor = new DigitalInput(0);
     
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
@@ -282,6 +285,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Left_R5", left.R5);
     SmartDashboard.putBoolean("Left_R6", left.R6);
     SmartDashboard.putString("TestData", "Version 1");
+    SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
   
     robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
 
@@ -306,6 +310,6 @@ public class Robot extends TimedRobot {
 
   @Override
     public void testPeriodic() {
-        
+
     }
 }
