@@ -58,6 +58,21 @@ public class LimeLight{
          ***************************************/
         table.getEntry(tableEntry).setNumber(value);
     }
+
+    public String getState(){
+        if(getX() < -4){
+            limelightState = "fastLeft";
+     } else if(getX() > 4){
+            limelightState = "fastRight";
+     } else if(getX() < - 2){
+            limelightState = "slowLeft";
+     } else if(getX() > 2){
+            limelightState = "slowRight";
+     } else{
+            limelightState = "stop";
+     }
+        return limelightState;
+    }
     public void displayData(){
         SmartDashboard.putNumber("LimelightX", getX()); 
         SmartDashboard.putNumber("LimelightY", getY()); 

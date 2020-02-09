@@ -65,12 +65,14 @@ public class Robot extends TimedRobot {
     
     boolean leftS;
     boolean rightS;
+    boolean isOverrideOn = false;
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
-     Servo servoBoi = new Servo(0);
+     Servo leftServo = new Servo(8);
+     Servo rightServo = new Servo(9);
      
 
      class ToggleLogic{
@@ -83,7 +85,8 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<String> auto_chooser = new SendableChooser<>();
+  private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
 
   boolean stateBoi;
   
@@ -94,10 +97,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-        m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-        m_chooser.addOption("My Auto", kCustomAuto);
-        SmartDashboard.putData("Auto choices", m_chooser);
-        servoBoi.setAngle(0);
+        auto_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+        auto_chooser.addOption("My Auto", kCustomAuto);
+        override_chooser.setDefaultOption("Override Off", false);
+        override_chooser.addOption("Override On", true);
+        SmartDashboard.putData("Override", override_chooser);
+        SmartDashboard.putData("Auto choices", auto_chooser);
+        leftServo.setAngle(0);
+        rightServo.setAngle(0);
         SmartDashboard.putString("Version", "1.0.1");
 
   }
@@ -135,7 +142,7 @@ public class Robot extends TimedRobot {
    */
   @Override
     public void autonomousInit() {
-        m_autoSelected = m_chooser.getSelected();
+        m_autoSelected = auto_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
     }
@@ -162,8 +169,9 @@ public class Robot extends TimedRobot {
   @Override
     public void teleopPeriodic() {
         ledStrip.pulse(0);
-        right.updateValues();
+        right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
+        isOverrideOn = override_chooser.getSelected();
     /*-----------------------------------------------------
         Drive Logic
     ------------------------------------------------------*/
@@ -172,147 +180,116 @@ public class Robot extends TimedRobot {
     /*----------------------------------------------------
         Intake Logic
     ----------------------------------------------------*/
-    if(right.BottomFace){
+    if(!isOverrideOn){ //Auto Intake Logic
+        if(right.BottomFace){
     
-    }
-    else{
+        }
+        else{
     
+        }
     }
-
+    else{ //Manual Intake Logic
+        if(left.R2){
+            lowerFeed.set(-1);
+        }
+        else if(left.R5){
+            lowerFeed.set(1);
+        }
+    
+        if(left.R2){
+            lowerFeed.set(-0.8);
+        }
+        else if(left.R5){
+            lowerFeed.set(0.8);
+        }
+        else{
+            lowerFeed.set(0);
+        }
+    
+        if(left.R1){
+            upperFeed.set(-0.30);
+        }
+        else if(left.R4){
+            upperFeed.set(0.30);
+        }
+        else{
+            upperFeed.set(0);
+        }
+    }
 
 
     //////servo logic
+    servoToggle.currentState = right.R3;
+    if(right.toggleButton(servoToggle)){
 
-  
+        leftServo.setAngle(0);  //Low Gear 
+
+    }
+    else{
+        leftServo.setAngle(0);   //high gear
+    }
 
     /*----------------------------------------------------
         Limelight Logic
     ------------------------------------------------------*/
-        //Limelight Update
+    //Limelight Update
       
-        robotLimeLight.displayData();
-  
-        if(robotLimeLight.getX() < -4){
-            robotLimeLight.limelightState = "fastLeft";
-        } else if(robotLimeLight.getX() > 4){
-            robotLimeLight.limelightState = "fastRight";
-        } else if(robotLimeLight.getX() < - 2){
-            robotLimeLight.limelightState = "slowLeft";
-        } else if(robotLimeLight.getX() > 2){
-            robotLimeLight.limelightState = "slowRight";
-        } else{
-            robotLimeLight.limelightState = "stop";
-        }
-
-    //color wheel start
-    if(right.BottomFace)
-        robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
-
-    //lime light on 
+    robotLimeLight.displayData();
+    robotLimeLight.getState();
     if(right.Trigger){
         robotLimeLight.setMode("ledMode", 0);
-        robotLimeLight.setMode("camMode", 0);
-        
+        robotLimeLight.setMode("camMode", 0);            
     }
     else{
         robotLimeLight.setMode("ledMode", 1);
         robotLimeLight.setMode("camMode", 1);
     }
 
-    robotShooter.manFire(left.Trigger, .1, shooters);
+    //color wheel start
+    if(!isOverrideOn){ //Auto Color Wheel Logic
+        if(right.BottomFace){
+            robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
+        }
+    }
+    else{   //Manual Color Wheel Logic
 
+    }
 
     ////climb logic
   
 
-    //robot fires the ball manually
-    robotShooter.manFire(left.Trigger, 1, shooters);
-
-    //robot will spin the shooter manually
-    robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5, shooterRotate);
-    if(right.Trigger){
-        switch(LimeLight.limelightState){
-            case "fastRight":
-                shooterRotate.set(-.2);
-                break;
-            case "fastLeft":
-                shooterRotate.set(.2);
-                break;
-            case "slowLeft":
-                shooterRotate.set(.1);
-                break;
-            case "slowRight":
-                shooterRotate.set(-.1);
-                break;
-            default:
-                shooterRotate.set(0);
+    if(!isOverrideOn){
+        if(right.Trigger){
+            switch(LimeLight.limelightState){
+                case "fastRight":
+                    shooterRotate.set(-.2);
+                    break;
+                case "fastLeft":
+                    shooterRotate.set(.2);
+                    break;
+                case "slowLeft":
+                    shooterRotate.set(.1);
+                    break;
+                case "slowRight":
+                    shooterRotate.set(-.1);
+                    break;
+                default:
+                    shooterRotate.set(0);
+            }
         }
     }
-
-    //robot pulls in the balls
-    robotIntake.intakeBall(left.BottomFace, -0.9, intakeWheels);
-
-    if(left.R2){
-        lowerFeed.set(-1);
-    }
-    else if(left.R5){
-        lowerFeed.set(1);
-    }
-    if(left.pov == 270)
-        leftS = true;
-    else
-        leftS = false;
-
-    if(left.pov == 90)
-        rightS = true;
-    else
-        rightS = false;
-
-    if(left.R2){
-        lowerFeed.set(-0.8);
-    }
-    else if(left.R5){
-        lowerFeed.set(0.8);
-    }
     else{
-        lowerFeed.set(0);
-    }
-
-    if(left.R1){
-        upperFeed.set(-0.30);
-    }
-    else if(left.R4){
-        upperFeed.set(0.30);
-    }
-    else{
-        upperFeed.set(0);
+        robotShooter.manFire(left.Trigger, .1, shooters);
+        robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5, shooterRotate);
     }
    
+    //Update Smartdashboard Values
     SmartDashboard.putBoolean("Left_R2", left.R2);
     SmartDashboard.putBoolean("Left_R3", left.R3);
     SmartDashboard.putBoolean("Left_R5", left.R5);
     SmartDashboard.putBoolean("Left_R6", left.R6);
-    SmartDashboard.putString("TestData", "Version 1");
     SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
-  
-    robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
-
-    //robot pulls in the balls
-    robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
-
-    //robotClimb.climber(1.0, right.L1, right.L4, motor);
-
     SmartDashboard.putBoolean("Trigger", right.Trigger);
-
-    servoToggle.currentState = right.R3;
-    if(right.toggleButton(servoToggle)){
-
-        servoBoi.setAngle(90);
-
-    }
-    if(right.toggleButton(servoToggle)){
-        servoBoi.setAngle(180);
-    }
 
 } 
 
