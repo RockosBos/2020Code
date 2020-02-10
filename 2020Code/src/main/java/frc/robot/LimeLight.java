@@ -12,6 +12,7 @@ public class LimeLight{
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
     public static String limelightState = "";
+    public boolean crosshairIsFound = false;
     
 
     public double getX(){
@@ -57,17 +58,23 @@ public class LimeLight{
     }
 
     public String getState(){
-        if(getX() < -4){
-            limelightState = "fastLeft";
-     } else if(getX() > 4){
-            limelightState = "fastRight";
-     } else if(getX() < - 2){
-            limelightState = "slowLeft";
-     } else if(getX() > 2){
-            limelightState = "slowRight";
-     } else{
-            limelightState = "stop";
-     }
+        if(getX() == 0.0 && getY() == 0.0){
+            limelightState = "Not Found";
+        }
+        else{
+
+            if(getX() < -4){
+                limelightState = "fastLeft";
+            } else if(getX() > 4){
+                limelightState = "fastRight";
+            } else if(getX() < - 2){
+                limelightState = "slowLeft";
+            } else if(getX() > 2){
+                limelightState = "slowRight";
+            } else{
+                limelightState = "stop";
+            }
+        }
         return limelightState;
     }
     public void displayData(){
