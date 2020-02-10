@@ -309,7 +309,7 @@ public class Robot extends TimedRobot {
     }
     else{
         robotShooter.manFire(left.Trigger, .1, shooters);
-        robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5, shooterRotate);
+        robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
     }
    
     //Update Smartdashboard Values
