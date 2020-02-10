@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
     TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
     WheelControl robotControlWheel = new WheelControl();
-    LED ledStrip = new LED(5, 5);
+    LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
     
