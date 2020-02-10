@@ -33,6 +33,14 @@ public class Controller {
     public boolean R6;
 
     public int pov;
+    public boolean povUp;
+    public boolean povUpRight;
+    public boolean povRight;
+    public boolean povDownRight;
+    public boolean povDown;
+    public boolean povDownLeft;
+    public boolean povLeft;
+    public boolean povUpLeft;
     
     //Class Functions--------------------------------------
     Controller(int joystickPort){
@@ -73,9 +81,7 @@ public class Controller {
         R6 = js.getRawButton(16);
         // POV
         pov = js.getPOV(0);
-        
-
-
+        updatePOV();
     }
 
     public boolean toggleButton(ToggleLogic toggle){
@@ -90,6 +96,56 @@ public class Controller {
         }
         toggle.prevState = toggle.currentState;
         return toggle.value;
+    }
+    public void updatePOV(){
+        if(pov == 0){
+            povUp = true;
+        }
+        else{
+            povUp = false;
+        }
+        if(pov == 45){
+            povUpRight = true;
+        }
+        else{
+            povUpRight = false;
+        }
+        if(pov == 90){
+            povRight = true;
+        }
+        else{
+            povRight = false;
+        }
+        if(pov == 135){
+            povDownRight = true;
+        }
+        else{
+            povDownRight = false;
+        }
+        if(pov == 180){
+            povDown = true;
+        }
+        else{
+            povDown = false;
+        }
+        if(pov == 225){
+            povDownLeft = true;
+        }
+        else{
+            povDownLeft = false;
+        }
+        if(pov == 270){
+            povLeft = true;
+        }
+        else{
+            povLeft = false;
+        }
+        if(pov == 315){
+            povUpLeft = true;
+        }
+        else{
+            povUpLeft = false;
+        }
     }
 }
 

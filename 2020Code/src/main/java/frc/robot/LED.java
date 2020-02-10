@@ -2,11 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 
 class LED{
     private AddressableLED led;
-    private Timer ledTimer;
+    //private Timer ledTimer;
     private AddressableLEDBuffer ledBuffer;
     private int rainbowFirstPixelHue;
     private int prevValue = 0;
