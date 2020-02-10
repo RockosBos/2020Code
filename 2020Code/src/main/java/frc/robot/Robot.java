@@ -102,9 +102,9 @@ public class Robot extends TimedRobot {
         override_chooser.addOption("Override On", true);
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
-        leftServo.setAngle(0);
+        leftServo.setAngle(50);
         rightServo.setAngle(0);
-        SmartDashboard.putString("Version", "1.0.1");
+        SmartDashboard.putString("Version", "1.0.2");
 
   }
 
@@ -180,7 +180,7 @@ public class Robot extends TimedRobot {
         Intake Logic
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
-        if(right.BottomFace){
+        if(left.BottomFace){
             if(lineSensor.get()){
                 upperFeed.set(.30);
             }
