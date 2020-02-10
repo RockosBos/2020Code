@@ -182,10 +182,13 @@ public class Robot extends TimedRobot {
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
         if(right.BottomFace){
-          
+            intakeLift.set(.5);
+
+            intakeWheels.set(.5);
         }
         else{
-    
+            intakeLift.set(0);
+            intakeWheels.set(0);
         }
     }
     else{ //Manual Intake Logic
@@ -259,7 +262,7 @@ public class Robot extends TimedRobot {
 
     ////climb logic
   
-    //Shooter Logic
+    //trigger logic
     if(!isOverrideOn){
         if(right.Trigger){
             switch(LimeLight.limelightState){
@@ -277,7 +280,15 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
+                    shooters.set(1);
             }
+            else{
+                    shooterRotate.set(0);
+                    shooters.set(0);
+            }
+            upperFeed.set(1);
+            lowerFeed.set(.30);
+            
         }
     }
     else{
