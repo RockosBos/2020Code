@@ -11,8 +11,7 @@ public class LimeLight{
     private NetworkTableEntry tx = table.getEntry("tx"); 
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
-    public static String limelightState = "";
-    
+    public String limelightState;
 
     public double getX(){
         return tx.getDouble(0.0);
@@ -22,13 +21,6 @@ public class LimeLight{
     }
     public double getArea(){
         return ta.getDouble(0.0);
-    }
-    public boolean isTargetFound(){
-        if(getX() == 0 && getY() == 0){
-            return false;
-        }
-        return true;
-
     }
     public void setMode(String tableEntry, int value){
         /****************************************
