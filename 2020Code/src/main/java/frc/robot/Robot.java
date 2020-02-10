@@ -195,10 +195,10 @@ public class Robot extends TimedRobot {
             upperFeed.set(0);
             intakeWheels.set(0);
         }
-        if(left.L4){
+        if(left.R3){
             intakeLift.set(-.2);
         }
-        else if(left.L1){
+        else if(left.R6){
             intakeLift.set(.2);
         }
         else{
@@ -272,7 +272,7 @@ public class Robot extends TimedRobot {
   
     //trigger logic
     if(!isOverrideOn){
-        if(right.Trigger){
+        if(left.Trigger){
             shooters.set(1);
             switch(LimeLight.limelightState){
                 case "fastRight":
