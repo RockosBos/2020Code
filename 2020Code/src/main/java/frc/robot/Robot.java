@@ -38,10 +38,11 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
     WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(10);
-    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(11);
-    WPI_TalonSRX liftRotate = new WPI_TalonSRX(12);
-    WPI_TalonSRX lifter = new WPI_TalonSRX(13);
+    WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
+    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
+    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
+    WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
+    WPI_TalonSRX lifter = new WPI_TalonSRX(14);
     
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
@@ -90,11 +91,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-    servoBoi.setAngle(0);
-
+        m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+        m_chooser.addOption("My Auto", kCustomAuto);
+        SmartDashboard.putData("Auto choices", m_chooser);
+        servoBoi.setAngle(0);
   }
 
   /**
@@ -128,11 +128,11 @@ public class Robot extends TimedRobot {
    * SendableChooser make sure to add them to the chooser code above as well.
    */
   @Override
-  public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
-  }
+    public void autonomousInit() {
+        m_autoSelected = m_chooser.getSelected();
+        // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+        System.out.println("Auto selected: " + m_autoSelected);
+    }
 
   /**
    * This function is called periodically during autonomous.
@@ -154,130 +154,157 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
-    ledStrip.pulse(0);
-    right.updateValues();
-  /*-----------------------------------------------------
-      Drive Logic
-  ------------------------------------------------------*/
-  diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+    public void teleopPeriodic() {
+        ledStrip.pulse(0);
+        right.updateValues();
+    /*-----------------------------------------------------
+        Drive Logic
+    ------------------------------------------------------*/
+    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
   
-  /*----------------------------------------------------
-      Intake Logic
-  ----------------------------------------------------*/
-  if(right.BottomFace){
+    /*----------------------------------------------------
+        Intake Logic
+    ----------------------------------------------------*/
+    if(right.BottomFace){
     
+    }
+    else{
     
-
-  }
-  else{
-    
-  }
+    }
 
 
 
-  //////servo logic
+    //////servo logic
 
   
 
-  /*----------------------------------------------------
-    Limelight Logic
-  ------------------------------------------------------*/
-      //Limelight Update
+    /*----------------------------------------------------
+        Limelight Logic
+    ------------------------------------------------------*/
+        //Limelight Update
       
-      robotLimeLight.displayData();
+        robotLimeLight.displayData();
   
-  if(robotLimeLight.getX() < -2){
-      robotLimeLight.limelightState = "TooFarLeft";
-  } else if(robotLimeLight.getY() > 2){
-      robotLimeLight.limelightState = "TooFarRight";
-  } else{
-      robotLimeLight.limelightState = "readyToShoot";
-  } 
+    if(robotLimeLight.getX() < -2){
+        robotLimeLight.limelightState = "TooFarLeft";
+    } else if(robotLimeLight.getY() > 2){
+         robotLimeLight.limelightState = "TooFarRight";
+    } else{
+        robotLimeLight.limelightState = "readyToShoot";
+    } 
 
-  //color wheel start
-  if(right.BottomFace)
-    robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
+    //color wheel start
+    if(right.BottomFace)
+        robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
 
-  //lime light on 
-  if(right.Trigger){
-      robotLimeLight.setMode("ledMode", 0);
-      robotLimeLight.setMode("camMode", 0);
-  }
-   else{
-      robotLimeLight.setMode("ledMode", 1);
-      robotLimeLight.setMode("camMode", 1);
-   }
+    //lime light on 
+    if(left.Trigger){
+        robotLimeLight.setMode("ledMode", 0);
+        robotLimeLight.setMode("camMode", 0);
+        robotShooter.manFire(left.Trigger, 0.8, shooters);
+    }
+    else{
+        robotLimeLight.setMode("ledMode", 1);
+        robotLimeLight.setMode("camMode", 1);
+    }
 
 
 
   ////climb logic
   
 
-  //robot fires the ball manually
-  //robotShooter.manFire(left.Trigger, 0.8, shooters);
+    //robot fires the ball manually
+    robotShooter.manFire(right.L1, 0.0, shooters);
 
-  //robot will spin the shooter manually
-  if(left.pov == 270)
-    leftS = true;
-  else
-    leftS = false;
+    //robot will spin the shooter manually
+    robotShooter.manRotate(right.LeftFace, right.RightFace, -0.5, shooterRotate);
+    if(right.Trigger){
+        switch(LimeLight.limelightState){
+            case "fastRight":
+                shooterRotate.set(-.2);
+                break;
+            case "fastLeft":
+                shooterRotate.set(.2);
+                break;
+            case "slowLeft":
+                shooterRotate.set(.1);
+                break;
+            case "slowRight":
+                shooterRotate.set(-.1);
+                break;
+            default:
+                shooterRotate.set(0);
+        }
+    }
 
-  if(left.pov == 90)
-    rightS = true;
-  else
-    rightS = false;
+    //robot pulls in the balls
+    robotIntake.intakeBall(left.BottomFace, -0.9, intakeWheels);
 
-  if(left.R2){
-      lowerFeed.set(-0.8);
-  }
-  else if(left.R5){
-      lowerFeed.set(0.8);
-  }
-  else{
-      lowerFeed.set(0);
-  }
+    if(left.R2){
+        lowerFeed.set(-1);
+    }
+    else if(left.R5){
+        lowerFeed.set(1);
+    }
+    if(left.pov == 270)
+        leftS = true;
+    else
+        leftS = false;
 
-  if(left.R1){
-      upperFeed.set(-0.30);
-  }
-  else if(left.R4){
-      upperFeed.set(0.30);
-  }
-  else{
-      upperFeed.set(0);
-  }
+    if(left.pov == 90)
+        rightS = true;
+    else
+        rightS = false;
+
+    if(left.R2){
+        lowerFeed.set(-0.8);
+    }
+    else if(left.R5){
+        lowerFeed.set(0.8);
+    }
+    else{
+        lowerFeed.set(0);
+    }
+
+    if(left.R1){
+        upperFeed.set(-0.30);
+    }
+    else if(left.R4){
+        upperFeed.set(0.30);
+    }
+    else{
+        upperFeed.set(0);
+    }
    
+    SmartDashboard.putBoolean("Left_R2", left.R2);
+    SmartDashboard.putBoolean("Left_R3", left.R3);
+    SmartDashboard.putBoolean("Left_R5", left.R5);
+    SmartDashboard.putBoolean("Left_R6", left.R6);
+    SmartDashboard.putString("TestData", "Version 1");
   
+    robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
 
-  
+    //robot pulls in the balls
+    robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
 
-  robotShooter.manRotate(leftS, rightS, 0.5, liftRotate);
+    //robotClimb.climber(1.0, right.L1, right.L4, motor);
 
-  //robot pulls in the balls
-  robotIntake.intakeBall(left.BottomFace, 1, intakeWheels);
+    SmartDashboard.putBoolean("Trigger", right.Trigger);
 
-  //robotClimb.climber(1.0, right.L1, right.L4, motor);
+    servoToggle.currentState = right.R3;
+    if(right.toggleButton(servoToggle)){
 
-  SmartDashboard.putBoolean("Trigger", right.Trigger);
+        servoBoi.setAngle(90);
 
-   
+    }
+    if(right.toggleButton(servoToggle)){
+        servoBoi.setAngle(180);
+    }
 
-  servoToggle.currentState = right.R3;
-  if(right.toggleButton(servoToggle)){
-
-  servoBoi.setAngle(90);
-
-   }
-   if(right.toggleButton(servoToggle)){
-    servoBoi.setAngle(180);
-
-    
-   }
-
-  } 
+} 
 
   @Override
-  public void testPeriodic() {
-  }
+    public void testPeriodic() {
+        
+    }
 }
