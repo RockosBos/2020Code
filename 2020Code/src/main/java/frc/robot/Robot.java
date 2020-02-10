@@ -182,7 +182,7 @@ public class Robot extends TimedRobot {
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
         if(right.BottomFace){
-    
+          
         }
         else{
     
@@ -259,7 +259,7 @@ public class Robot extends TimedRobot {
 
     ////climb logic
   
-
+    //Shooter Logic
     if(!isOverrideOn){
         if(right.Trigger){
             switch(LimeLight.limelightState){
