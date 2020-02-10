@@ -11,7 +11,8 @@ public class LimeLight{
     private NetworkTableEntry tx = table.getEntry("tx"); 
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
-    public String limelightState;
+    public static String limelightState = "";
+    
 
     public double getX(){
         return tx.getDouble(0.0);
@@ -22,6 +23,13 @@ public class LimeLight{
     public double getArea(){
         return ta.getDouble(0.0);
     }
+    public boolean isTargetFound(){
+        if(getX() == 0 && getY() == 0){
+            return false;
+        }
+        return true;
+
+    }
     public void setMode(String tableEntry, int value){
         /****************************************
          Table Entry Types
@@ -31,17 +39,14 @@ public class LimeLight{
             1 - Force off
             2 - Force Blink
             3 - Force on
-
         "camMode" - Changes Camera mode
         Values:
             0 - Vision Processing
             1 - Driver camera (Increases exposure, operates like normal camera)
-
         "pipeline" - Sets current pipeline
         Values:
             0 - Default pipeline
             (1-9) - Custom set pipelines
-
         "snapshot" - takes snapshot while in operation
         Values:
             0 - stop snapshots
@@ -49,6 +54,21 @@ public class LimeLight{
          
          ***************************************/
         table.getEntry(tableEntry).setNumber(value);
+    }
+
+    public String getState(){
+        if(getX() < -4){
+            limelightState = "fastLeft";
+     } else if(getX() > 4){
+            limelightState = "fastRight";
+     } else if(getX() < - 2){
+            limelightState = "slowLeft";
+     } else if(getX() > 2){
+            limelightState = "slowRight";
+     } else{
+            limelightState = "stop";
+     }
+        return limelightState;
     }
     public void displayData(){
         SmartDashboard.putNumber("LimelightX", getX()); 
