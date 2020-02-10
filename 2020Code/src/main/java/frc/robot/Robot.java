@@ -222,11 +222,13 @@ public class Robot extends TimedRobot {
     servoToggle.currentState = right.R3;
     if(right.toggleButton(servoToggle)){
 
-        leftServo.setAngle(0);  //Low Gear 
+        leftServo.setAngle(120);  //Low Gear 
+        rightServo.setAngle(85);  //Low Gear
 
     }
     else{
-        leftServo.setAngle(0);   //high gear
+        leftServo.setAngle(50);   //high gear
+        rightServo.setAngle(155);  //high gear
     }
 
     /*----------------------------------------------------
