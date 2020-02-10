@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     WPI_TalonSRX lifter = new WPI_TalonSRX(14);
-
     DigitalInput lineSensor = new DigitalInput(0);
     
     Shooter robotShooter = new Shooter();
@@ -182,22 +181,31 @@ public class Robot extends TimedRobot {
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
         if(right.BottomFace){
-            intakeLift.set(.5);
-
-            intakeWheels.set(.5);
+            if(lineSensor.get()){
+                upperFeed.set(.30);
+            }
+            else{  
+                upperFeed.set(0);
+            }
+            lowerFeed.set(1);
+            intakeWheels.set(1);
+        }
+        else{
+            lowerFeed.set(0);
+            upperFeed.set(0);
+            intakeWheels.set(0);
+        }
+        if(left.L4){
+            intakeLift.set(-.2);
+        }
+        else if(left.L1){
+            intakeLift.set(.2);
         }
         else{
             intakeLift.set(0);
-            intakeWheels.set(0);
         }
     }
     else{ //Manual Intake Logic
-        if(left.R2){
-            lowerFeed.set(-1);
-        }
-        else if(left.R5){
-            lowerFeed.set(1);
-        }
     
         if(left.R2){
             lowerFeed.set(-0.8);
@@ -282,7 +290,7 @@ public class Robot extends TimedRobot {
                 default:
                     shooterRotate.set(0);
             }
-            if(LimeLight.limelightState == "Stop"){
+            if(LimeLight.limelightState == "stop"){
                 upperFeed.set(1);
                 lowerFeed.set(.30);
             }
@@ -292,6 +300,11 @@ public class Robot extends TimedRobot {
             }
             
             
+        }
+        else{
+            shooters.set(0);
+            upperFeed.set(0);
+            lowerFeed.set(0);
         }
     }
     else{
