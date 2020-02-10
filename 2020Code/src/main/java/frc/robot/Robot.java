@@ -174,15 +174,16 @@ public class Robot extends TimedRobot {
     /*-----------------------------------------------------
         Drive Logic
     ------------------------------------------------------*/
-    diffDrive.arcadeDrive(right.js.getRawAxis(1), right.js.getRawAxis(0));
+    diffDrive.arcadeDrive(-right.js.getRawAxis(1), -right.js.getRawAxis(0));
   
     /*----------------------------------------------------
         Intake Logic
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
         if(left.BottomFace){
+            System.out.println("bottom face pressed");
             if(lineSensor.get()){
-                upperFeed.set(.30);
+                upperFeed.set(.70);
             }
             else{  
                 upperFeed.set(0);
@@ -196,17 +197,56 @@ public class Robot extends TimedRobot {
             intakeWheels.set(0);
         }
         if(left.R3){
-            intakeLift.set(-.2);
+            intakeLift.set(.5);
         }
         else if(left.R6){
-            intakeLift.set(.2);
+            intakeLift.set(-.5);
         }
         else{
             intakeLift.set(0);
         }
+
+        
     }
     else{ //Manual Intake Logic
-    
+        
+        if(left.Trigger){
+            System.out.println("trigger");
+            shooters.set(1);
+            switch(LimeLight.limelightState){
+                case "fastRight":
+                    shooterRotate.set(-.2);
+                    break;
+                case "fastLeft":
+                    shooterRotate.set(.2);
+                    break;
+                case "slowLeft":
+                    shooterRotate.set(.1);
+                    break;
+                case "slowRight":
+                    shooterRotate.set(-.1);
+                    break;
+                default:
+                    shooterRotate.set(0);
+            }
+        }
+        if(left.BottomFace){
+            intakeWheels.set(.8);
+        } 
+        else{
+            intakeWheels.set(0);
+        }
+
+        if(left.R3){
+            intakeLift.set(.5);
+        }
+        else if(left.R6){
+            intakeLift.set(-.5);
+        }
+        else{
+            intakeLift.set(0);
+        }
+
         if(left.R2){
             lowerFeed.set(-0.8);
         }
@@ -249,7 +289,7 @@ public class Robot extends TimedRobot {
       
     robotLimeLight.displayData();
     robotLimeLight.getState();
-    if(right.Trigger){
+    if(left.Trigger){
         robotLimeLight.setMode("ledMode", 0);
         robotLimeLight.setMode("camMode", 0);            
     }
@@ -273,6 +313,7 @@ public class Robot extends TimedRobot {
     //trigger logic
     if(!isOverrideOn){
         if(left.Trigger){
+            System.out.println("trigger");
             shooters.set(1);
             switch(LimeLight.limelightState){
                 case "fastRight":
@@ -292,11 +333,11 @@ public class Robot extends TimedRobot {
             }
             if(LimeLight.limelightState == "stop"){
                 upperFeed.set(1);
-                lowerFeed.set(.30);
+                //lowerFeed.set(.30);
             }
             else{
                 upperFeed.set(0);
-                lowerFeed.set(0);
+                //lowerFeed.set(0);
             }
             
             
@@ -308,7 +349,7 @@ public class Robot extends TimedRobot {
         }
     }
     else{
-        robotShooter.manFire(left.Trigger, .1, shooters);
+        robotShooter.manFire(left.Trigger, .8, shooters);
         robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
     }
    
