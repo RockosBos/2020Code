@@ -265,6 +265,7 @@ public class Robot extends TimedRobot {
     //trigger logic
     if(!isOverrideOn){
         if(right.Trigger){
+            shooters.set(1);
             switch(LimeLight.limelightState){
                 case "fastRight":
                     shooterRotate.set(-.2);
@@ -280,14 +281,16 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
-                    shooters.set(1);
+            }
+            if(LimeLight.limelightState == "Stop"){
+                upperFeed.set(1);
+                lowerFeed.set(.30);
             }
             else{
-                    shooterRotate.set(0);
-                    shooters.set(0);
+                upperFeed.set(0);
+                lowerFeed.set(0);
             }
-            upperFeed.set(1);
-            lowerFeed.set(.30);
+            
             
         }
     }
