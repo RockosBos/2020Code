@@ -389,6 +389,28 @@ public class Robot extends TimedRobot {
             robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
         }
     }
+
+    //Climb Logic//
+
+    if(right.L6){
+        lifter.set(.1);
+    }
+    else{
+        lifter.set(0);
+    }
+
+    //Climber side to side motor code//
+
+    if(right.L5){
+        liftRotate.set(.2);
+    }
+    else if(right.L4){
+        liftRotate.set(-.2);
+    }
+    else{
+        liftRotate.set(0);
+    }
+
    
     //Update Smartdashboard Values
     SmartDashboard.putBoolean("Left_R2", left.R2);
