@@ -47,6 +47,9 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     WPI_TalonSRX lifter = new WPI_TalonSRX(14);
     DigitalInput lineSensor = new DigitalInput(0);
+
+    PIDController rotatePID = new PIDController(.1, 0, 0);
+
     //Joysticks
 
     Controller left = new Controller(0);
@@ -220,7 +223,7 @@ public class Robot extends TimedRobot {
     else{ //Manual Intake Logic
         
         
-            System.out.println(rotatePID.calculate(robotLimeLight.getX()));
+          //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
          
 
         
