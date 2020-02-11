@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -45,10 +46,6 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     WPI_TalonSRX lifter = new WPI_TalonSRX(14);
     DigitalInput lineSensor = new DigitalInput(0);
-    
-    Shooter robotShooter = new Shooter();
-    Intake robotIntake = new Intake();
-    ToggleLogic servoToggle = new ToggleLogic();  
     //Joysticks
 
     Controller left = new Controller(0);
@@ -61,6 +58,10 @@ public class Robot extends TimedRobot {
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
+    Shooter robotShooter = new Shooter();
+    Intake robotIntake = new Intake();
+
+    RobotGyroscope gyro = new RobotGyroscope();
     
     boolean leftS;
     boolean rightS;
@@ -79,6 +80,8 @@ public class Robot extends TimedRobot {
         boolean prevState = false;
         boolean value = false;
      }
+
+     ToggleLogic servoToggle = new ToggleLogic();
     
 
   private static final String initiationLineMove = "initiationLineMove";
@@ -88,6 +91,10 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
 
   boolean stateBoi;
+
+  //Test only
+  double desiredGyroAngle = 0;
+  
   
 
   /**
@@ -105,6 +112,7 @@ public class Robot extends TimedRobot {
         leftServo.setAngle(50);
         rightServo.setAngle(0);
         SmartDashboard.putString("Version", "1.0.3");
+        SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
 
   }
 
@@ -369,6 +377,23 @@ public class Robot extends TimedRobot {
 
   @Override
     public void testPeriodic() {
+        double error = desiredGyroAngle - gyro.gyro.getAngle();
+        double p = 100;
+        double speed = error / p;
+        desiredGyroAngle = SmartDashboard.getNumber("Set To Gyro Angle", -1);
+        SmartDashboard.putNumber("Error:", error);
 
+        if(error > 100){
+            leftDrive.set(-1);
+            rightDrive.set(1);
+        }
+        else if(error < -100){
+            leftDrive.set(1);
+            rightDrive.set(-1);
+        }
+        else{
+            leftDrive.set(speed);
+            rightDrive.set(-speed);
+        }
     }
 }
