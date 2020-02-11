@@ -311,46 +311,49 @@ public class Robot extends TimedRobot {
     ////climb logic
   
     //trigger logic
-    if(!isOverrideOn){
-        if(left.Trigger){
-            System.out.println("trigger");
-            shooters.set(1);
-            switch(LimeLight.limelightState){
-                case "fastRight":
-                    shooterRotate.set(-.2);
-                    break;
-                case "fastLeft":
-                    shooterRotate.set(.2);
-                    break;
-                case "slowLeft":
-                    shooterRotate.set(.1);
-                    break;
-                case "slowRight":
-                    shooterRotate.set(-.1);
-                    break;
-                default:
-                    shooterRotate.set(0);
-            }
-            if(LimeLight.limelightState == "stop"){
-                upperFeed.set(1);
-                //lowerFeed.set(.30);
+    if(!left.BottomFace){
+        if(!isOverrideOn){
+            if(left.Trigger){
+                System.out.println("trigger");
+                shooters.set(1);
+                switch(LimeLight.limelightState){
+                    case "fastRight":
+                        shooterRotate.set(-.2);
+                        break;
+                    case "fastLeft":
+                        shooterRotate.set(.2);
+                        break;
+                    case "slowLeft":
+                        shooterRotate.set(.1);
+                        break;
+                    case "slowRight":
+                        shooterRotate.set(-.1);
+                        break;
+                    default:
+                        shooterRotate.set(0);
+                }
+                if(LimeLight.limelightState == "stop"){
+                    upperFeed.set(1);
+                    lowerFeed.set(.30);
+                }
+                else{
+                    upperFeed.set(0);
+                    lowerFeed.set(0);
+                }
+            
+            
             }
             else{
+                shooters.set(0);
                 upperFeed.set(0);
-                //lowerFeed.set(0);
+                lowerFeed.set(0);
+                shooterRotate.set(0);
             }
-            
-            
-        }
+        }   
         else{
-            shooters.set(0);
-            upperFeed.set(0);
-            lowerFeed.set(0);
+            robotShooter.manFire(left.Trigger, .8, shooters);
+            robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
         }
-    }
-    else{
-        robotShooter.manFire(left.Trigger, .8, shooters);
-        robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
     }
    
     //Update Smartdashboard Values
@@ -360,6 +363,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Left_R6", left.R6);
     SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
     SmartDashboard.putBoolean("Trigger", right.Trigger);
+    SmartDashboard.putString("Limelight State", robotLimeLight.limelightState);
 
 } 
 
