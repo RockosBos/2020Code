@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.controller.PIDController;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -110,10 +111,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
         leftServo.setAngle(50);
-        rightServo.setAngle(0);
+        rightServo.setAngle(155);
         SmartDashboard.putString("Version", "1.0.3");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
-
+        rotatePID.setSetpoint(0);
   }
 
   /**
@@ -218,15 +219,20 @@ public class Robot extends TimedRobot {
     }
     else{ //Manual Intake Logic
         
-        if(left.Trigger){
-            System.out.println("trigger");
+        
+            System.out.println(rotatePID.calculate(robotLimeLight.getX()));
+         
+
+        
+       if(left.Trigger){
+           // System.out.println("trigger");
             shooters.set(1);
             switch(LimeLight.limelightState){
                 case "fastRight":
                     shooterRotate.set(-.2);
                     break;
                 case "fastLeft":
-                    shooterRotate.set(.2);
+                    shooterRotate.set(  .2);
                     break;
                 case "slowLeft":
                     shooterRotate.set(.1);
@@ -236,8 +242,7 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
-            }
-        }
+            }}
         if(left.BottomFace){
             intakeWheels.set(.8);
         } 
@@ -322,7 +327,7 @@ public class Robot extends TimedRobot {
     if(!left.BottomFace){
         if(!isOverrideOn){
             if(left.Trigger){
-                System.out.println("trigger");
+               // System.out.println("trigger");
                 shooters.set(1);
                 switch(LimeLight.limelightState){
                     case "fastRight":
