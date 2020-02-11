@@ -89,6 +89,10 @@ public class Robot extends TimedRobot {
 
   private static final String initiationLineMove = "initiationLineMove";
   private static final String auto1 = "Auton 1";
+  private static final String auto2 = "Auton 2";
+  private static final String auto3 = "Auton 3";
+  private static final String auto4 = "Auton 4";
+  private static final String auto5 = "Auton 5";
   private String m_autoSelected;
   private final SendableChooser<String> auto_chooser = new SendableChooser<>();
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
@@ -98,7 +102,7 @@ public class Robot extends TimedRobot {
   //Test only
   double desiredGyroAngle = 0;
   
-  
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -108,6 +112,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
         auto_chooser.setDefaultOption("Move from Initiation line", initiationLineMove);
         auto_chooser.addOption("Auto 1", auto1);
+        auto_chooser.addOption("Auto 2", auto2);
+        auto_chooser.addOption("Auto 3", auto3);
+        auto_chooser.addOption("Auto 4", auto4);
+        auto_chooser.addOption("Auto 5", auto5);
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
         SmartDashboard.putData("Override", override_chooser);
@@ -162,12 +170,25 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-        
+        //list of diffrent scenerios//
         case auto1:
+                //Auto 1 Logic
+            break;
+        case auto2:
+                //Auto 2 Logic
+            break;
+        case auto3:
+                //Auto 3 Logic
+            break;
+        case auto4:
+                //Auto 4 Logic
+            break;
+        case auto5:
+                //Auto 5 Logic
             break;
         case initiationLineMove:
             default:
-            // Put default auto code here
+            // Put default auto code here //
             break;
         }
     }
@@ -289,7 +310,7 @@ public class Robot extends TimedRobot {
     }
     else{
         leftServo.setAngle(50);   //high gear
-        rightServo.setAngle(155);  //high gear
+        rightServo.setAngle(155); //high gear
     }
 
     /*----------------------------------------------------
