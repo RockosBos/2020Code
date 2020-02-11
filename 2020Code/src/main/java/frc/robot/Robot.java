@@ -81,8 +81,8 @@ public class Robot extends TimedRobot {
      }
     
 
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String initiationLineMove = "initiationLineMove";
+  private static final String auto1 = "Auton 1";
   private String m_autoSelected;
   private final SendableChooser<String> auto_chooser = new SendableChooser<>();
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
@@ -96,15 +96,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-        auto_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-        auto_chooser.addOption("My Auto", kCustomAuto);
+        auto_chooser.setDefaultOption("Move from Initiation line", initiationLineMove);
+        auto_chooser.addOption("Auto 1", auto1);
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
         leftServo.setAngle(50);
         rightServo.setAngle(0);
-        SmartDashboard.putString("Version", "1.0.2");
+        SmartDashboard.putString("Version", "1.0.3");
 
   }
 
@@ -152,10 +152,10 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         switch (m_autoSelected) {
-        case kCustomAuto:
-            // Put custom auto code here
+        
+        case auto1:
             break;
-        case kDefaultAuto:
+        case initiationLineMove:
             default:
             // Put default auto code here
             break;
