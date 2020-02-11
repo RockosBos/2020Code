@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -67,6 +68,8 @@ public class Robot extends TimedRobot {
     boolean rightS;
     boolean isOverrideOn = false;
 
+    Timer timer = new Timer();
+
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
      SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
@@ -113,7 +116,6 @@ public class Robot extends TimedRobot {
         rightServo.setAngle(0);
         SmartDashboard.putString("Version", "1.0.3");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
-
   }
 
   /**
@@ -322,6 +324,7 @@ public class Robot extends TimedRobot {
     if(!left.BottomFace){
         if(!isOverrideOn){
             if(left.Trigger){
+                timer.start();
                 System.out.println("trigger");
                 shooters.set(1);
                 switch(LimeLight.limelightState){
@@ -340,7 +343,7 @@ public class Robot extends TimedRobot {
                     default:
                         shooterRotate.set(0);
                 }
-                if(LimeLight.limelightState == "stop"){
+                if(LimeLight.limelightState == "stop" && timer.get() > 1){
                     upperFeed.set(1);
                     lowerFeed.set(.30);
                 }
@@ -356,6 +359,8 @@ public class Robot extends TimedRobot {
                 upperFeed.set(0);
                 lowerFeed.set(0);
                 shooterRotate.set(0);
+                timer.stop();
+                timer.reset();
             }
         }   
         else{
