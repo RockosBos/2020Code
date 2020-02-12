@@ -31,6 +31,10 @@ public class LimeLight{
         return true;
 
     }
+
+    public String getLLState(){
+        return limelightState;
+    }
     public void setMode(String tableEntry, int value){
         /****************************************
          Table Entry Types

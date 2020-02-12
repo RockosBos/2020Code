@@ -81,6 +81,7 @@ public class Robot extends TimedRobot {
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
      
+     Auto autonomous = new Auto(leftDrive, rightDrive);
 
      class ToggleLogic{
         boolean currentState = false;
@@ -90,13 +91,19 @@ public class Robot extends TimedRobot {
 
      ToggleLogic servoToggle = new ToggleLogic();
     
+     //Autonomous Variables
+    private static final String initiationLineMove = "initiationLineMove";
+    private static final String auto1 = "Auton 1";
+    private static final String auto2 = "Auton 2";
+    private static final String auto3 = "Auton 3";
+    private static final String auto4 = "Auton 4";
+    private static final String auto5 = "Auton 5";
+    private Timer autonTimer = new Timer();
+    private Timer autonDelayTimer = new Timer();
+    private int autonomousStep;
+    private double delay;
 
-  private static final String initiationLineMove = "initiationLineMove";
-  private static final String auto1 = "Auton 1";
-  private static final String auto2 = "Auton 2";
-  private static final String auto3 = "Auton 3";
-  private static final String auto4 = "Auton 4";
-  private static final String auto5 = "Auton 5";
+
   private String m_autoSelected;
   private final SendableChooser<String> auto_chooser = new SendableChooser<>();
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
@@ -128,6 +135,7 @@ public class Robot extends TimedRobot {
         rightServo.setAngle(155);
         SmartDashboard.putString("Version", "1.0.3");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
+        SmartDashboard.putNumber("Autonomous Delay", 0);
         rotatePID.setSetpoint(0);
   }
 
@@ -167,6 +175,10 @@ public class Robot extends TimedRobot {
         m_autoSelected = auto_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
+
+        delay = SmartDashboard.getNumber("Autonomous Delay", 0);
+        autonDelayTimer.start();
+        autonomousStep = 0;
     }
 
   /**
@@ -174,27 +186,47 @@ public class Robot extends TimedRobot {
    */
     @Override
     public void autonomousPeriodic() {
-        switch (m_autoSelected) {
-        //list of diffrent scenerios//
-        case auto1:
-                //Auto 1 Logic
-            break;
-        case auto2:
-                //Auto 2 Logic
-            break;
-        case auto3:
-                //Auto 3 Logic
-            break;
-        case auto4:
-                //Auto 4 Logic
-            break;
-        case auto5:
-                //Auto 5 Logic
-            break;
-        case initiationLineMove:
-            default:
-            // Put default auto code here //
-            break;
+
+        if(autonDelayTimer.get() > delay){
+            autonDelayTimer.stop();
+            switch (m_autoSelected) {
+            //list of diffrent scenerios//
+            case auto1:
+                    //Auto 1 Logic
+                break;
+            case auto2:
+                    //Auto 2 Logic
+                break;
+            case auto3:
+                    //Auto 3 Logic
+                break;
+            case auto4:
+                    //Auto 4 Logic
+                break;
+            case auto5:
+                    //Auto 5 Logic
+                break;
+            case initiationLineMove:
+                default:
+                if(autonomousStep == 0){
+                    autonTimer.start();
+                    autonomous.setDrive(.25, .25);
+                    if(autonTimer.get() > 5){
+                        autonomousStep = 1;
+                    }
+                }
+                else if(autonomousStep == 1){
+                    autonomous.setDrive(0, 0);
+                    autonTimer.stop();
+                }
+                else{
+                    autonomous.setDrive(0, 0);
+                    autonTimer.stop();
+                }
+
+                // Put default auto code here //
+                break;
+            }
         }
     }
 
@@ -246,20 +278,17 @@ public class Robot extends TimedRobot {
     }
     else{ //Manual Intake Logic
         
-        
-          //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
-         
 
-        
-       if(left.Trigger){
-           // System.out.println("trigger");
+        //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
+        if(left.Trigger){
+            //System.out.println("trigger");
             shooters.set(1);
             switch(LimeLight.limelightState){
                 case "fastRight":
                     shooterRotate.set(-.2);
                     break;
                 case "fastLeft":
-                    shooterRotate.set(  .2);
+                    shooterRotate.set(.2);
                     break;
                 case "slowLeft":
                     shooterRotate.set(.1);
@@ -269,7 +298,8 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
-            }}
+            }
+        }
         if(left.BottomFace){
             intakeWheels.set(.8);
         } 
@@ -345,7 +375,7 @@ public class Robot extends TimedRobot {
         }
     }
     else{   //Manual Color Wheel Logic
-
+        
     }
 
     ////climb logic
@@ -398,7 +428,7 @@ public class Robot extends TimedRobot {
             robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
         }
     }
-
+   
     //Climb Logic//
 
     if(right.L6){
@@ -419,8 +449,6 @@ public class Robot extends TimedRobot {
     else{
         liftRotate.set(0);
     }
-
-   
     //Update Smartdashboard Values
     SmartDashboard.putBoolean("Left_R2", left.R2);
     SmartDashboard.putBoolean("Left_R3", left.R3);
@@ -428,7 +456,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Left_R6", left.R6);
     SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
     SmartDashboard.putBoolean("Trigger", right.Trigger);
-    SmartDashboard.putString("Limelight State", robotLimeLight.limelightState);
+    SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
 
 } 
 
