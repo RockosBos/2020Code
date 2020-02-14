@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
      
-     Auto autonomous = new Auto(leftDrive, rightDrive);
+     Autonomous autonomous = new Autonomous(leftDrive, rightDrive);
 
      class ToggleLogic{
         boolean currentState = false;
