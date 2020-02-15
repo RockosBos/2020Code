@@ -14,10 +14,11 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.controller.PIDController;
+//import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -46,10 +47,10 @@ public class Robot extends TimedRobot {
     WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
     WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
     WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
-    WPI_TalonSRX lifter = new WPI_TalonSRX(14);
+    WPI_VictorSPX lifter = new WPI_VictorSPX(14);
     DigitalInput lineSensor = new DigitalInput(0);
 
-    PIDController rotatePID = new PIDController(.1, 0, 0);
+    //PIDController rotatePID = new PIDController(.1, 0, 0);
 
     //Joysticks
 
@@ -66,13 +67,16 @@ public class Robot extends TimedRobot {
     Shooter robotShooter = new Shooter();
     Intake robotIntake = new Intake();
 
-    RobotGyroscope gyro = new RobotGyroscope();
+    //RobotGyroscope gyro = new RobotGyroscope();
     
     boolean leftS;
     boolean rightS;
     boolean isOverrideOn = false;
 
     Timer timer = new Timer();
+    Timer testTimer = new Timer();
+
+    double last = 0;
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
@@ -136,7 +140,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Version", "1.0.3");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
         SmartDashboard.putNumber("Autonomous Delay", 0);
-        rotatePID.setSetpoint(0);
+        //rotatePID.setSetpoint(0);
+        testTimer.start();
+        
+        
   }
 
   /**
@@ -150,6 +157,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
       //empty
+      
   }
 
   @Override
@@ -176,7 +184,7 @@ public class Robot extends TimedRobot {
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
 
-        delay = SmartDashboard.getNumber("Autonomous Delay", 0);
+        //delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
     }
@@ -186,7 +194,7 @@ public class Robot extends TimedRobot {
    */
     @Override
     public void autonomousPeriodic() {
-
+        
         if(autonDelayTimer.get() > delay){
             autonDelayTimer.stop();
             switch (m_autoSelected) {
@@ -234,8 +242,9 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-    public void teleopPeriodic() {
-        ledStrip.pulse(0);
+    public void teleopPeriodic() { 
+        
+        //ledStrip.pulse(0);
         right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
         isOverrideOn = override_chooser.getSelected();
@@ -249,7 +258,7 @@ public class Robot extends TimedRobot {
     ----------------------------------------------------*/
     if(!isOverrideOn){ //Auto Intake Logic
         if(left.BottomFace){
-            System.out.println("bottom face pressed");
+            //System.out.println("bottom face pressed");
             if(lineSensor.get()){
                 upperFeed.set(.70);
             }
@@ -282,19 +291,19 @@ public class Robot extends TimedRobot {
         //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
         if(left.Trigger){
             //System.out.println("trigger");
-            shooters.set(1);
+            shooters.set(-1);
             switch(LimeLight.limelightState){
                 case "fastRight":
-                    shooterRotate.set(-.2);
+                    shooterRotate.set(-.3);
                     break;
                 case "fastLeft":
-                    shooterRotate.set(.2);
+                    shooterRotate.set(.3);
                     break;
                 case "slowLeft":
-                    shooterRotate.set(.1);
+                    shooterRotate.set(.2);
                     break;
                 case "slowRight":
-                    shooterRotate.set(-.1);
+                    shooterRotate.set(-.2);
                     break;
                 default:
                     shooterRotate.set(0);
@@ -371,7 +380,7 @@ public class Robot extends TimedRobot {
     //color wheel start
     if(!isOverrideOn){ //Auto Color Wheel Logic
         if(right.BottomFace){
-            robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
+            //robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
         }
     }
     else{   //Manual Color Wheel Logic
@@ -385,8 +394,8 @@ public class Robot extends TimedRobot {
         if(!isOverrideOn){
             if(left.Trigger){
                 timer.start();
-                System.out.println("trigger");
-                shooters.set(1);
+                ///System.out.println("trigger");
+                shooters.set(-1);
                 switch(LimeLight.limelightState){
                     case "fastRight":
                         shooterRotate.set(-.2);
@@ -403,7 +412,7 @@ public class Robot extends TimedRobot {
                     default:
                         shooterRotate.set(0);
                 }
-                if(LimeLight.limelightState == "stop" && timer.get() > 1){
+                if(LimeLight.limelightState == "stop"){
                     upperFeed.set(1);
                     lowerFeed.set(.30);
                 }
@@ -449,6 +458,17 @@ public class Robot extends TimedRobot {
     else{
         liftRotate.set(0);
     }
+    
+    
+    
+    
+    
+    
+    SmartDashboard.putNumber("Dif", testTimer.get() - last);
+    SmartDashboard.putNumber("Current State", testTimer.get());
+    SmartDashboard.putNumber("Previous State", last);
+    last = testTimer.get();
+
     //Update Smartdashboard Values
     SmartDashboard.putBoolean("Left_R2", left.R2);
     SmartDashboard.putBoolean("Left_R3", left.R3);
@@ -457,12 +477,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
     SmartDashboard.putBoolean("Trigger", right.Trigger);
     SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
-
+    SmartDashboard.putNumber("Timer", timer.get());
 } 
 
   @Override
     public void testPeriodic() {
-        double error = desiredGyroAngle - gyro.gyro.getAngle();
+        /*double error = desiredGyroAngle - gyro.gyro.getAngle();
         double p = 100;
         double speed = error / p;
         desiredGyroAngle = SmartDashboard.getNumber("Set To Gyro Angle", -1);
@@ -479,6 +499,6 @@ public class Robot extends TimedRobot {
         else{
             leftDrive.set(speed);
             rightDrive.set(-speed);
-        }
+        }*/
     }
 }
