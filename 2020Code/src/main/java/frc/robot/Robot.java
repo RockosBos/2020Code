@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
     boolean leftS;
     boolean rightS;
     boolean isOverrideOn = false;
+    boolean triggerPrev = false;
 
     Timer timer = new Timer();
     Timer testTimer = new Timer();
@@ -393,7 +394,9 @@ public class Robot extends TimedRobot {
     if(!left.BottomFace){
         if(!isOverrideOn){
             if(left.Trigger){
-                timer.start();
+                if(!triggerPrev){
+                    timer.start();
+                }
                 ///System.out.println("trigger");
                 shooters.set(-1);
                 switch(LimeLight.limelightState){
@@ -412,7 +415,7 @@ public class Robot extends TimedRobot {
                     default:
                         shooterRotate.set(0);
                 }
-                if(LimeLight.limelightState == "stop"){
+                if(LimeLight.limelightState == "stop" && timer.get() > 5){
                     upperFeed.set(1);
                     lowerFeed.set(.30);
                 }
@@ -421,7 +424,7 @@ public class Robot extends TimedRobot {
                     lowerFeed.set(0);
                 }
             
-            
+                triggerPrev = true;
             }
             else{
                 shooters.set(0);
@@ -430,6 +433,7 @@ public class Robot extends TimedRobot {
                 shooterRotate.set(0);
                 timer.stop();
                 timer.reset();
+                triggerPrev = false;
             }
         }   
         else{
