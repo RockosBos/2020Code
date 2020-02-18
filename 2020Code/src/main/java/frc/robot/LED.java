@@ -12,6 +12,7 @@ class LED{
     private int prevValue = 0;
     private int currentValue = 0;
     private char state = 'I';
+    private String ledState = "";
 
     LED(int port, int length){
         led = new AddressableLED(port);
@@ -83,7 +84,32 @@ class LED{
       rainbowFirstPixelHue %= 180;
       led.setData(ledBuffer);
     }
-
+    void changeLEDState(String state){
+        ledState = state;
+    }
+    void setLED(){
+        //Set LED
+    switch(ledState){
+        case "SolidRed":
+            solid(0);
+            break;
+        case "SolidYellow":
+            solid(40);
+            break;   
+        case "SolidBlue":
+            solid(120);
+            break;
+        case "SolidGreen":
+            solid(40);
+            break;
+        case "SolidPurple":
+            solid(200);
+            break;
+        default:
+            setWhite();
+            break;
+    }
+    }
    
 
 }

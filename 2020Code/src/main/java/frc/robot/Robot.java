@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
     Timer testTimer = new Timer();
 
     double last = 0;
-    String ledState;
+    
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
@@ -95,6 +95,24 @@ public class Robot extends TimedRobot {
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
+     }
+     class Constants{
+         double INTAKE_LIFT_SPEED = 1.0;
+         double INTAKE_WHEELS_SPEED = 1.0;
+         double UPPER_FEED_INTAKE_SPEED = 0.7;
+         double UPPER_FEED_SHOOTER_SPEED = 0.8;
+         double LOWER_FEED_SPEED = 1.0;
+         double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
+         double SHOOTER_ROTATE_FAST_SPEED = 0.2;
+         double SHOOTER_SPEED = 0.1;
+         double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
+         double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
+         double LIFT_ROTATE_SPEED = 0.1;
+         double LIFTER_SPEED = 0.1;
+         int LEFT_SERVO_HIGH_GEAR = 50;
+         int RIGHT_SERVO_HIGH_GEAR = 155;
+         int LEFT_SERVO_LOW_GEAR = 120;
+         int RIGHT_SERVO_LOW_GEAR = 85;
      }
 
      ToggleLogic servoToggle = new ToggleLogic();
@@ -248,7 +266,7 @@ public class Robot extends TimedRobot {
    */
   @Override
     public void teleopPeriodic() { 
-        ledState = "SolidWhite";
+        ledStrip.changeLEDState("SolidWhite");
         
         right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
@@ -297,7 +315,7 @@ public class Robot extends TimedRobot {
         if(left.Trigger){
             //System.out.println("trigger");
             shooters.set(-1);
-            ledState = "SolidYellow";
+            ledStrip.changeLEDState("SolidYellow");
             switch(LimeLight.limelightState){
                 case "fastRight":
                     shooterRotate.set(-.3);
@@ -313,7 +331,7 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
-                    ledState = "SolidGreen";
+                    ledStrip.changeLEDState("SolidGreen");
             }
         }
         if(left.BottomFace){
@@ -361,7 +379,7 @@ public class Robot extends TimedRobot {
 
         leftServo.setAngle(120);  //Low Gear 
         rightServo.setAngle(85);  //Low Gear
-        ledState = "SolidBlue";
+        ledStrip.changeLEDState("SolidBlue");
 
     }
     else{
@@ -409,7 +427,7 @@ public class Robot extends TimedRobot {
                 }
                 ///System.out.println("trigger");
                 shooters.set(-1);
-                ledState = "SolidYellow";
+                ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
                     case "fastRight":
                         shooterRotate.set(-.2);
@@ -425,7 +443,7 @@ public class Robot extends TimedRobot {
                         break;
                     default:
                         shooterRotate.set(0);
-                        ledState = "SolidGreen";
+                        ledStrip.changeLEDState("SolidGreen");
                         
                 }
                 if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
@@ -475,31 +493,6 @@ public class Robot extends TimedRobot {
     else{
         liftRotate.set(0);
     }
-    //Set LED
-    switch(ledState){
-        case "SolidRed":
-            ledStrip.solid(0);
-            break;
-        case "SolidYellow":
-            ledStrip.solid(40);
-            break;   
-        case "SolidBlue":
-            ledStrip.solid(120);
-            break;
-        case "SolidGreen":
-            ledStrip.solid(40);
-            break;
-        case "SolidPurple":
-            ledStrip.solid(200);
-            break;
-        default:
-            ledStrip.setWhite();
-            break;
-    }
-    
-    
-    
-    
     
     SmartDashboard.putNumber("Dif", testTimer.get() - last);
     SmartDashboard.putNumber("Current State", testTimer.get());
@@ -515,28 +508,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Trigger", right.Trigger);
     SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
     SmartDashboard.putNumber("Timer", timer.get());
-    SmartDashboard.putString("LEDState" , ledState);
 } 
 
   @Override
     public void testPeriodic() {
-        /*double error = desiredGyroAngle - gyro.gyro.getAngle();
-        double p = 100;
-        double speed = error / p;
-        desiredGyroAngle = SmartDashboard.getNumber("Set To Gyro Angle", -1);
-        SmartDashboard.putNumber("Error:", error);
-
-        if(error > 100){
-            leftDrive.set(-1);
-            rightDrive.set(1);
-        }
-        else if(error < -100){
-            leftDrive.set(1);
-            rightDrive.set(-1);
-        }
-        else{
-            leftDrive.set(speed);
-            rightDrive.set(-speed);
-        }*/
+       
     }
 }
