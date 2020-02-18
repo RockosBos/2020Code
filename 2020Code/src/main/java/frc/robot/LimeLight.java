@@ -71,9 +71,9 @@ public class LimeLight{
                 limelightState = "fastLeft";
             } else if(getX() > 4){
                 limelightState = "fastRight";
-            } else if(getX() < - 2){
+            } else if(getX() < - 0.75){
                 limelightState = "slowLeft";
-            } else if(getX() > 2){
+            } else if(getX() > 0.75){
                 limelightState = "slowRight";
             } else{
                 limelightState = "stop";

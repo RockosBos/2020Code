@@ -26,7 +26,7 @@ class LED{
             ledBuffer.setHSV(i, color, 255, 128);
         }
         led.setData(ledBuffer);
-        led.start();
+        
     }
 
     public void pulse(int color){
@@ -59,6 +59,14 @@ class LED{
           led.setData(ledBuffer);
           prevValue = currentValue;
 
+    }
+
+    public void setWhite(){
+        for(int i = 0; i < ledBuffer.getLength(); i++){
+            ledBuffer.setHSV(i, 0, 0, 100);
+        }
+        led.setData(ledBuffer);
+        
     }
 
     public void rainbow(){

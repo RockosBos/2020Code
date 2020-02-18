@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.cameraserver.CameraServer;
+
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
     Timer testTimer = new Timer();
 
     double last = 0;
+    String ledState;
 
     //Drive Initialization
      SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
@@ -143,6 +146,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Autonomous Delay", 0);
         //rotatePID.setSetpoint(0);
         testTimer.start();
+        CameraServer.getInstance().startAutomaticCapture();
         
         
   }
@@ -244,8 +248,8 @@ public class Robot extends TimedRobot {
    */
   @Override
     public void teleopPeriodic() { 
+        ledState = "SolidWhite";
         
-        //ledStrip.pulse(0);
         right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
         isOverrideOn = override_chooser.getSelected();
@@ -275,10 +279,10 @@ public class Robot extends TimedRobot {
             intakeWheels.set(0);
         }
         if(left.R3){
-            intakeLift.set(.5);
+            intakeLift.set(1);
         }
         else if(left.R6){
-            intakeLift.set(-.5);
+            intakeLift.set(-1);
         }
         else{
             intakeLift.set(0);
@@ -293,6 +297,7 @@ public class Robot extends TimedRobot {
         if(left.Trigger){
             //System.out.println("trigger");
             shooters.set(-1);
+            ledState = "SolidYellow";
             switch(LimeLight.limelightState){
                 case "fastRight":
                     shooterRotate.set(-.3);
@@ -308,20 +313,21 @@ public class Robot extends TimedRobot {
                     break;
                 default:
                     shooterRotate.set(0);
+                    ledState = "SolidGreen";
             }
         }
         if(left.BottomFace){
-            intakeWheels.set(.8);
+            intakeWheels.set(1);
         } 
         else{
             intakeWheels.set(0);
         }
 
         if(left.R3){
-            intakeLift.set(.5);
+            intakeLift.set(1);
         }
         else if(left.R6){
-            intakeLift.set(-.5);
+            intakeLift.set(-1);
         }
         else{
             intakeLift.set(0);
@@ -355,6 +361,7 @@ public class Robot extends TimedRobot {
 
         leftServo.setAngle(120);  //Low Gear 
         rightServo.setAngle(85);  //Low Gear
+        ledState = "SolidBlue";
 
     }
     else{
@@ -388,6 +395,9 @@ public class Robot extends TimedRobot {
         
     }
 
+    if(robotLimeLight.getState() == "Not Found"){
+        robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
+    } 
     ////climb logic
   
     //trigger logic
@@ -399,6 +409,7 @@ public class Robot extends TimedRobot {
                 }
                 ///System.out.println("trigger");
                 shooters.set(-1);
+                ledState = "SolidYellow";
                 switch(LimeLight.limelightState){
                     case "fastRight":
                         shooterRotate.set(-.2);
@@ -414,10 +425,12 @@ public class Robot extends TimedRobot {
                         break;
                     default:
                         shooterRotate.set(0);
+                        ledState = "SolidGreen";
+                        
                 }
-                if(LimeLight.limelightState == "stop" && timer.get() > 5){
+                if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
                     upperFeed.set(1);
-                    lowerFeed.set(.30);
+                    lowerFeed.set(.80);
                 }
                 else{
                     upperFeed.set(0);
@@ -438,7 +451,7 @@ public class Robot extends TimedRobot {
         }   
         else{
             robotShooter.manFire(left.Trigger, .8, shooters);
-            robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
+            robotShooter.manRotate(left.LeftFace, left.RightFace, 1, shooterRotate);
         }
     }
    
@@ -462,7 +475,27 @@ public class Robot extends TimedRobot {
     else{
         liftRotate.set(0);
     }
-    
+    //Set LED
+    switch(ledState){
+        case "SolidRed":
+            ledStrip.solid(0);
+            break;
+        case "SolidYellow":
+            ledStrip.solid(40);
+            break;   
+        case "SolidBlue":
+            ledStrip.solid(120);
+            break;
+        case "SolidGreen":
+            ledStrip.solid(40);
+            break;
+        case "SolidPurple":
+            ledStrip.solid(200);
+            break;
+        default:
+            ledStrip.setWhite();
+            break;
+    }
     
     
     
@@ -482,6 +515,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Trigger", right.Trigger);
     SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
     SmartDashboard.putNumber("Timer", timer.get());
+    SmartDashboard.putString("LEDState" , ledState);
 } 
 
   @Override
