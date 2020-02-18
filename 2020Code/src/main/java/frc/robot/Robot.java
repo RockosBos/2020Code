@@ -222,7 +222,7 @@ public class Robot extends TimedRobot {
    */
     @Override
     public void autonomousPeriodic() {
-        
+        double slowDrive = .25;
         if(autonDelayTimer.get() > delay){
             autonDelayTimer.stop();
             switch (m_autoSelected) {
@@ -241,14 +241,24 @@ public class Robot extends TimedRobot {
                     else if(shotNum < 3){
                         robotShooter.autoAim();
                         robotShooter.autoShoot();
+                        robotLimeLight.setMode("ledMode", 0);
+                        robotLimeLight.setMode("camMode", 0);
                     }
                     else{
                         robotShooter.autoShootStop();
+                        robotLimeLight.setMode("ledMode", 1);
+                        robotLimeLight.setMode("camMode", 1);
                         autonomousStep = 2;
                     }
                 case 2:
+                    if(autonTimer.get() < 5){
+                        autonomous.setDrive(slowDrive, slowDrive);
+                    } else{
+                        autonomous.setDrive(0,0);
+                        ledStrip.changeLEDState("SolidWhite");
+                        ledStrip.changeLEDState("SolidRed");
+                    }
                     
-                
                 }
                 break;
             case auto2:
