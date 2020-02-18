@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
-    Shooter robotShooter = new Shooter();
+    Shooter robotShooter = new Shooter(left, right, shooters, shooterRotate);
     Intake robotIntake = new Intake();
 
     //RobotGyroscope gyro = new RobotGyroscope();
@@ -75,6 +75,10 @@ public class Robot extends TimedRobot {
     boolean rightS;
     boolean isOverrideOn = false;
     boolean triggerPrev = false;
+
+    int shotNum = 0;
+
+    boolean firing;
 
     Timer timer = new Timer();
     Timer testTimer = new Timer();
@@ -212,6 +216,53 @@ public class Robot extends TimedRobot {
         autonomousStep = 0;
     }
 
+    public void autoShoot(){
+        if(!triggerPrev){
+            timer.start();
+        }
+        shooters.set(-1);
+        ledStrip.changeLEDState("SolidYellow");
+        switch(LimeLight.limelightState){
+            case "fastRight":
+                shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                break;
+            case "fastLeft":
+                shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                break;
+            case "slowLeft":
+                shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                break;
+            case "slowRight":
+                shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                break;
+            default:
+                shooterRotate.set(0);
+                ledStrip.changeLEDState("SolidGreen");
+                
+        }
+        if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
+            upperFeed.set(1);
+            lowerFeed.set(.80);
+        }
+        else{
+            upperFeed.set(0);
+            lowerFeed.set(0);
+        }
+    
+        triggerPrev = true;        
+    }
+
+    public void autoShootStop(){
+        shooters.set(0);
+            upperFeed.set(0);
+            lowerFeed.set(0);
+            shooterRotate.set(0);
+            timer.stop();
+            timer.reset();
+            triggerPrev = false;
+    }
+
+
   /**
    * This function is called periodically during autonomous.
    */
@@ -226,7 +277,9 @@ public class Robot extends TimedRobot {
                     //Auto 1 Logic
                 if(autonomousStep == 0){
                     autonTimer.start();
-                    
+                    if(shotNum < 3){
+                        autoShoot();
+                    }
                 }
 
                 break;
@@ -419,7 +472,7 @@ public class Robot extends TimedRobot {
     }
 
     
-    robotShooter.manRotate(left.LeftFace, left.RightFace, Constants.SHOOTER_ROTATE_FAST_SPEED, shooterRotate);
+    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
     
     ////climb logic
   
@@ -473,8 +526,8 @@ public class Robot extends TimedRobot {
             }
         }   
         else{
-            robotShooter.manFire(left.Trigger, Constants.SHOOTER_SPEED, shooters);
-            robotShooter.manRotate(left.LeftFace, left.RightFace, Constants.SHOOTER_ROTATE_FAST_SPEED, shooterRotate);
+            robotShooter.manFire(Constants.SHOOTER_SPEED);
+            robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
         }
     }
    
