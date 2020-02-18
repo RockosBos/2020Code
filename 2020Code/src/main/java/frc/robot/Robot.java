@@ -101,10 +101,10 @@ public class Robot extends TimedRobot {
          static final double INTAKE_WHEELS_SPEED = 1.0;
          static final double UPPER_FEED_INTAKE_SPEED = 0.7;
          static final double UPPER_FEED_SHOOTER_SPEED = 0.8;
-         static final double LOWER_FEED_SPEED = 1.0;
+         static final double LOWER_FEED_SPEED = -1.0;
          static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
          static final double SHOOTER_ROTATE_FAST_SPEED = 0.2;
-         static final double SHOOTER_SPEED = 0.1;
+         static final double SHOOTER_SPEED = 1;
          static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
          static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
          static final double LIFT_ROTATE_SPEED = 0.1;
@@ -224,6 +224,11 @@ public class Robot extends TimedRobot {
             //list of diffrent scenerios//
             case auto1:
                     //Auto 1 Logic
+                if(autonomousStep == 0){
+                    autonTimer.start();
+                    
+                }
+
                 break;
             case auto2:
                     //Auto 2 Logic
@@ -413,9 +418,9 @@ public class Robot extends TimedRobot {
         
     }
 
-    if(robotLimeLight.getState() == "Not Found"){
-        robotShooter.manRotate(left.LeftFace, left.RightFace, -0.5, shooterRotate);
-    } 
+    
+    robotShooter.manRotate(left.LeftFace, left.RightFace, Constants.SHOOTER_ROTATE_FAST_SPEED, shooterRotate);
+    
     ////climb logic
   
     //trigger logic
@@ -468,8 +473,8 @@ public class Robot extends TimedRobot {
             }
         }   
         else{
-            robotShooter.manFire(left.Trigger, .8, shooters);
-            robotShooter.manRotate(left.LeftFace, left.RightFace, 1, shooterRotate);
+            robotShooter.manFire(left.Trigger, Constants.SHOOTER_SPEED, shooters);
+            robotShooter.manRotate(left.LeftFace, left.RightFace, Constants.SHOOTER_ROTATE_FAST_SPEED, shooterRotate);
         }
     }
    
@@ -493,6 +498,7 @@ public class Robot extends TimedRobot {
     else{
         liftRotate.set(0);
     }
+    ledStrip.setLED();
     
     SmartDashboard.putNumber("Dif", testTimer.get() - last);
     SmartDashboard.putNumber("Current State", testTimer.get());
