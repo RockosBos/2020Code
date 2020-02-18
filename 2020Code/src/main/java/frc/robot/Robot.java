@@ -283,13 +283,13 @@ public class Robot extends TimedRobot {
         if(left.BottomFace){
             //System.out.println("bottom face pressed");
             if(lineSensor.get()){
-                upperFeed.set(.70);
+                upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
             }
             else{  
                 upperFeed.set(0);
             }
-            lowerFeed.set(1);
-            intakeWheels.set(1);
+            lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         }
         else{
             lowerFeed.set(0);
@@ -297,10 +297,10 @@ public class Robot extends TimedRobot {
             intakeWheels.set(0);
         }
         if(left.R3){
-            intakeLift.set(1);
+            intakeLift.set(Constants.INTAKE_LIFT_SPEED);
         }
         else if(left.R6){
-            intakeLift.set(-1);
+            intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
         }
         else{
             intakeLift.set(0);
@@ -335,37 +335,37 @@ public class Robot extends TimedRobot {
             }
         }
         if(left.BottomFace){
-            intakeWheels.set(1);
+            intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         } 
         else{
             intakeWheels.set(0);
         }
 
         if(left.R3){
-            intakeLift.set(1);
+            intakeLift.set(Constants.INTAKE_LIFT_SPEED);
         }
         else if(left.R6){
-            intakeLift.set(-1);
+            intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
         }
         else{
             intakeLift.set(0);
         }
 
         if(left.R2){
-            lowerFeed.set(-0.8);
+            lowerFeed.set(-.8);
         }
         else if(left.R5){
-            lowerFeed.set(0.8);
+            lowerFeed.set(.8);
         }
         else{
             lowerFeed.set(0);
         }
     
         if(left.R1){
-            upperFeed.set(-0.30);
+            upperFeed.set(-.3);
         }
         else if(left.R4){
-            upperFeed.set(0.30);
+            upperFeed.set(.3);
         }
         else{
             upperFeed.set(0);
@@ -377,14 +377,14 @@ public class Robot extends TimedRobot {
     servoToggle.currentState = right.R3;
     if(right.toggleButton(servoToggle)){
 
-        leftServo.setAngle(120);  //Low Gear 
-        rightServo.setAngle(85);  //Low Gear
+        leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+        rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
         ledStrip.changeLEDState("SolidBlue");
 
     }
     else{
-        leftServo.setAngle(50);   //high gear
-        rightServo.setAngle(155); //high gear
+        leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
+        rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
     }
 
     /*----------------------------------------------------
@@ -430,16 +430,16 @@ public class Robot extends TimedRobot {
                 ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
                     case "fastRight":
-                        shooterRotate.set(-.2);
+                        shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
                         break;
                     case "fastLeft":
-                        shooterRotate.set(.2);
+                        shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
                         break;
                     case "slowLeft":
-                        shooterRotate.set(.1);
+                        shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
                         break;
                     case "slowRight":
-                        shooterRotate.set(-.1);
+                        shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
                         break;
                     default:
                         shooterRotate.set(0);
@@ -476,7 +476,7 @@ public class Robot extends TimedRobot {
     //Climb Logic//
 
     if(right.L6){
-        lifter.set(.1);
+        lifter.set(Constants.LIFTER_SPEED);
     }
     else{
         lifter.set(0);
