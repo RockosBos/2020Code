@@ -97,22 +97,22 @@ public class Robot extends TimedRobot {
         boolean value = false;
      }
      class Constants{
-         double INTAKE_LIFT_SPEED = 1.0;
-         double INTAKE_WHEELS_SPEED = 1.0;
-         double UPPER_FEED_INTAKE_SPEED = 0.7;
-         double UPPER_FEED_SHOOTER_SPEED = 0.8;
-         double LOWER_FEED_SPEED = 1.0;
-         double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
-         double SHOOTER_ROTATE_FAST_SPEED = 0.2;
-         double SHOOTER_SPEED = 0.1;
-         double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
-         double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
-         double LIFT_ROTATE_SPEED = 0.1;
-         double LIFTER_SPEED = 0.1;
-         int LEFT_SERVO_HIGH_GEAR = 50;
-         int RIGHT_SERVO_HIGH_GEAR = 155;
-         int LEFT_SERVO_LOW_GEAR = 120;
-         int RIGHT_SERVO_LOW_GEAR = 85;
+         static final double INTAKE_LIFT_SPEED = 1.0;
+         static final double INTAKE_WHEELS_SPEED = 1.0;
+         static final double UPPER_FEED_INTAKE_SPEED = 0.7;
+         static final double UPPER_FEED_SHOOTER_SPEED = 0.8;
+         static final double LOWER_FEED_SPEED = 1.0;
+         static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
+         static final double SHOOTER_ROTATE_FAST_SPEED = 0.2;
+         static final double SHOOTER_SPEED = 0.1;
+         static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
+         static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
+         static final double LIFT_ROTATE_SPEED = 0.1;
+         static final double LIFTER_SPEED = 0.1;
+         static final int LEFT_SERVO_HIGH_GEAR = 50;
+         static final int RIGHT_SERVO_HIGH_GEAR = 155;
+         static final int LEFT_SERVO_LOW_GEAR = 120;
+         static final int RIGHT_SERVO_LOW_GEAR = 85;
      }
 
      ToggleLogic servoToggle = new ToggleLogic();
@@ -157,8 +157,8 @@ public class Robot extends TimedRobot {
         override_chooser.addOption("Override On", true);
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
-        leftServo.setAngle(50);
-        rightServo.setAngle(155);
+        leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);
+        rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR);
         SmartDashboard.putString("Version", "1.0.3");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
         SmartDashboard.putNumber("Autonomous Delay", 0);
