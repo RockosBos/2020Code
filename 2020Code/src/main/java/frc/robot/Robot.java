@@ -216,52 +216,6 @@ public class Robot extends TimedRobot {
         autonomousStep = 0;
     }
 
-    public void autoShoot(){
-        if(!triggerPrev){
-            timer.start();
-        }
-        shooters.set(-1);
-        ledStrip.changeLEDState("SolidYellow");
-        switch(LimeLight.limelightState){
-            case "fastRight":
-                shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
-                break;
-            case "fastLeft":
-                shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
-                break;
-            case "slowLeft":
-                shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                break;
-            case "slowRight":
-                shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                break;
-            default:
-                shooterRotate.set(0);
-                ledStrip.changeLEDState("SolidGreen");
-                
-        }
-        if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-            upperFeed.set(1);
-            lowerFeed.set(.80);
-        }
-        else{
-            upperFeed.set(0);
-            lowerFeed.set(0);
-        }
-    
-        triggerPrev = true;        
-    }
-
-    public void autoShootStop(){
-        shooters.set(0);
-            upperFeed.set(0);
-            lowerFeed.set(0);
-            shooterRotate.set(0);
-            timer.stop();
-            timer.reset();
-            triggerPrev = false;
-    }
-
 
   /**
    * This function is called periodically during autonomous.
@@ -275,13 +229,26 @@ public class Robot extends TimedRobot {
             //list of diffrent scenerios//
             case auto1:
                     //Auto 1 Logic
-                if(autonomousStep == 0){
+                switch(autonomousStep){
+                case 0:
                     autonTimer.start();
-                    if(shotNum < 3){
-                        autoShoot();
+                    autonomousStep = 1;
+                    break;
+                case 1:
+                    if(autonTimer.get() < 2.5){
+                        shooters.set(Constants.SHOOTER_SPEED);
                     }
+                    else if(shotNum < 3){
+                        robotShooter.autoShoot();
+                    }
+                    else{
+                        robotShooter.autoShootStop();
+                        autonomousStep = 2;
+                    }
+                case 2:
+                    
+                
                 }
-
                 break;
             case auto2:
                     //Auto 2 Logic

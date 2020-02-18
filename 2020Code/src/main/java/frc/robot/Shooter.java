@@ -55,11 +55,8 @@ public class Shooter{
     //////////////////////Auto-Shooter//////////////////////////////////
 
     public void autoShoot(){
-        if(!triggerPrev){
-            timer.start();
-        }
+        
         shooter.set(-1);
-        ledStrip.changeLEDState("SolidYellow");
         switch(LimeLight.limelightState){
             case "fastRight":
                 shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
