@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
-    Shooter robotShooter = new Shooter(left, right, shooters, shooterRotate);
+    Shooter robotShooter = new Shooter(left, right, shooters, shooterRotate, lowerFeed, upperFeed);
     Intake robotIntake = new Intake();
 
     //RobotGyroscope gyro = new RobotGyroscope();
@@ -239,6 +239,7 @@ public class Robot extends TimedRobot {
                         shooters.set(Constants.SHOOTER_SPEED);
                     }
                     else if(shotNum < 3){
+                        robotShooter.autoAim();
                         robotShooter.autoShoot();
                     }
                     else{

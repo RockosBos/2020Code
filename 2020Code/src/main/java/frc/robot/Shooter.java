@@ -11,6 +11,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import frc.robot.Robot.Constants;
+
 
 
 //Everything assosiated with the shooter goes here (Shooter, Feeder, Turret)
@@ -20,13 +22,19 @@ public class Shooter{
     Controller right;
     WPI_TalonSRX shooter;
     WPI_TalonSRX shooterRotate;
+    WPI_TalonSRX upperFeed;
+    WPI_TalonSRX lowerFeed;
+
     
 
-    Shooter(Controller left, Controller right, WPI_TalonSRX shooter, WPI_TalonSRX shooterRotate){
-     this.right = right;
-     this.left = left;
-     this.shooter = shooter;
-     this.shooterRotate = shooterRotate;
+    Shooter(Controller left, Controller right, WPI_TalonSRX shooter, WPI_TalonSRX shooterRotate, WPI_TalonSRX upperFeed, WPI_TalonSRX lowerFeed){
+        this.right = right;
+        this.left = left;
+        this.shooter = shooter;
+        this.shooterRotate = shooterRotate;
+        this.upperFeed = upperFeed;
+        this.lowerFeed = lowerFeed;
+     
     }
 
 
@@ -57,6 +65,19 @@ public class Shooter{
     public void autoShoot(){
         
         shooter.set(-1);
+        
+        if(LimeLight.limelightState == "stop"){
+            upperFeed.set(1);
+            lowerFeed.set(.80);
+        }
+        else{
+            upperFeed.set(0);
+            lowerFeed.set(0);
+        }
+          
+    }
+
+    public void autoAim(){
         switch(LimeLight.limelightState){
             case "fastRight":
                 shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
@@ -65,36 +86,22 @@ public class Shooter{
                 shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
                 break;
             case "slowLeft":
-                shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                shooterRotate.set(Constants.CONTROL_WHEEL_ROTATE_SPEED);
                 break;
             case "slowRight":
                 shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
                 break;
             default:
                 shooterRotate.set(0);
-                ledStrip.changeLEDState("SolidGreen");
                 
         }
-        if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-            upperFeed.set(1);
-            lowerFeed.set(.80);
-        }
-        else{
-            upperFeed.set(0);
-            lowerFeed.set(0);
-        }
-    
-        triggerPrev = true;        
     }
 
     public void autoShootStop(){
-        shooters.set(0);
+            shooter.set(0);
             upperFeed.set(0);
             lowerFeed.set(0);
             shooterRotate.set(0);
-            timer.stop();
-            timer.reset();
-            triggerPrev = false;
     }
 }
 
