@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
                         }
                        
                     }
-                    break;
+                    
                 case 2:
                     if(autonTimer.get() < 5){
                         autonomous.setDrive(slowDrive, slowDrive);
@@ -357,28 +357,28 @@ public class Robot extends TimedRobot {
         
 
         //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
-        // if(left.Trigger){
-        //     //System.out.println("trigger");
-        //     shooters.set(-1);
-        //     ledStrip.changeLEDState("SolidYellow");
-        //     switch(LimeLight.limelightState){
-        //         case "fastRight":
-        //             shooterRotate.set(-.3);
-        //             break;
-        //         case "fastLeft":
-        //             shooterRotate.set(.3);
-        //             break;
-        //         case "slowLeft":
-        //             shooterRotate.set(.2);
-        //             break;
-        //         case "slowRight":
-        //             shooterRotate.set(-.2);
-        //             break;
-        //         default:
-        //             shooterRotate.set(0);
-        //             ledStrip.changeLEDState("SolidGreen");
-        //     }
-        // }
+        if(left.Trigger){
+            //System.out.println("trigger");
+            shooters.set(-1);
+            ledStrip.changeLEDState("SolidYellow");
+            switch(LimeLight.limelightState){
+                case "fastRight":
+                    shooterRotate.set(-.3);
+                    break;
+                case "fastLeft":
+                    shooterRotate.set(.3);
+                    break;
+                case "slowLeft":
+                    shooterRotate.set(.2);
+                    break;
+                case "slowRight":
+                    shooterRotate.set(-.2);
+                    break;
+                default:
+                    shooterRotate.set(0);
+                    ledStrip.changeLEDState("SolidGreen");
+            }
+        }
         if(left.BottomFace){
             intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         } 
@@ -464,64 +464,59 @@ public class Robot extends TimedRobot {
     ////climb logic
   
     //trigger logic
-    // if(!left.BottomFace){
-    //     if(!isOverrideOn){
-    //         if(left.Trigger){
-    //             if(!triggerPrev){
-    //                 timer.start();
-    //             }
-    //             ///System.out.println("trigger");
-    //             shooters.set(-1);
-    //             ledStrip.changeLEDState("SolidYellow");
-    //             switch(LimeLight.limelightState){
-    //                 case "fastRight":
-    //                     shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
-    //                     break;
-    //                 case "fastLeft":
-    //                     shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
-    //                     break;
-    //                 case "slowLeft":
-    //                     shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
-    //                     break;
-    //                 case "slowRight":
-    //                     shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
-    //                     break;
-    //                 default:
-    //                     shooterRotate.set(0);
-    //                     ledStrip.changeLEDState("SolidGreen");
+    if(!left.BottomFace){
+        if(!isOverrideOn){
+            if(left.Trigger){
+                if(!triggerPrev){
+                    timer.start();
+                }
+                ///System.out.println("trigger");
+                shooters.set(-1);
+                ledStrip.changeLEDState("SolidYellow");
+                switch(LimeLight.limelightState){
+                    case "fastRight":
+                        shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                    case "fastLeft":
+                        shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                    case "slowLeft":
+                        shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                    case "slowRight":
+                        shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                    default:
+                        shooterRotate.set(0);
+                        ledStrip.changeLEDState("SolidGreen");
                         
-    //             }
-    //             if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-    //                 upperFeed.set(1);
-    //                 lowerFeed.set(.80);
-    //             }
-    //             else{
-    //                 upperFeed.set(0);
-    //                 lowerFeed.set(0);
-    //             }
+                }
+                if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
+                    upperFeed.set(1);
+                    lowerFeed.set(.80);
+                }
+                else{
+                    upperFeed.set(0);
+                    lowerFeed.set(0);
+                }
             
-    //             triggerPrev = true;
-    //         }
-    //         else{
-    //             shooters.set(0);
-    //             upperFeed.set(0);
-    //             lowerFeed.set(0);
-    //             shooterRotate.set(0);
-    //             timer.stop();
-    //             timer.reset();
-    //             triggerPrev = false;
-    //         }
-    //     }   
-    //     else{
-    //         robotShooter.manFire(Constants.SHOOTER_SPEED);
-    //         robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
-    //     }
-    // }
-    
-    robotShooter.manFire(Constants.SHOOTER_SPEED);
-    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
-
-    
+                triggerPrev = true;
+            }
+            else{
+                shooters.set(0);
+                upperFeed.set(0);
+                lowerFeed.set(0);
+                shooterRotate.set(0);
+                timer.stop();
+                timer.reset();
+                triggerPrev = false;
+            }
+        }   
+        else{
+            robotShooter.manFire(Constants.SHOOTER_SPEED);
+            robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+        }
+    }
    
     //Climb Logic//
 
