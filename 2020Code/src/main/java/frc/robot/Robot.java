@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Nick has Turbo Gay   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
@@ -36,20 +36,23 @@ public class Robot extends TimedRobot {
 
 
   //Motor Controllers
-    WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(1);
-    WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(2);
-    WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(3);
-    WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
-    WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
-    WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
-    WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
-    WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
-    WPI_TalonSRX shooters = new WPI_TalonSRX(9);
-    WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
-    WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
-    WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
-    WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
-    WPI_VictorSPX lifter = new WPI_VictorSPX(14);
+  static final class MC{
+    static final WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(1);
+    static final WPI_VictorSPX rightDrive1 = new WPI_VictorSPX(2);
+    static final WPI_VictorSPX leftDrive2 = new WPI_VictorSPX(3);
+    static final WPI_TalonSRX rightDrive2 = new WPI_TalonSRX(4);
+    static final WPI_TalonSRX intakeLift = new WPI_TalonSRX(5);
+    static final WPI_TalonSRX intakeWheels = new WPI_TalonSRX(6);
+    static final WPI_TalonSRX upperFeed = new WPI_TalonSRX(7);
+    static final WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
+    static final WPI_TalonSRX shooters = new WPI_TalonSRX(9);
+    static final WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
+    static final WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
+    static final WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
+    static final WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
+    static final WPI_VictorSPX lifter = new WPI_VictorSPX(14);
+    static final DigitalInput lineSensor = new DigitalInput(0);
+}
     DigitalInput lineSensor = new DigitalInput(0);
 
     //PIDController rotatePID = new PIDController(.1, 0, 0);
@@ -66,7 +69,7 @@ public class Robot extends TimedRobot {
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
-    Shooter robotShooter = new Shooter(left, right, shooters, shooterRotate, lowerFeed, upperFeed);
+    Shooter robotShooter = new Shooter(left, right);
     Intake robotIntake = new Intake();
 
     //RobotGyroscope gyro = new RobotGyroscope();
@@ -87,8 +90,8 @@ public class Robot extends TimedRobot {
     
 
     //Drive Initialization
-     SpeedControllerGroup rightDrive = new SpeedControllerGroup(rightDrive1, rightDrive2);
-     SpeedControllerGroup leftDrive = new SpeedControllerGroup(leftDrive1, leftDrive2);
+     SpeedControllerGroup rightDrive = new SpeedControllerGroup(MC.rightDrive1, MC.rightDrive2);
+     SpeedControllerGroup leftDrive = new SpeedControllerGroup(MC.leftDrive1, MC.leftDrive2);
      DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
@@ -236,7 +239,7 @@ public class Robot extends TimedRobot {
                     break;
                 case 1:
                     if(autonTimer.get() < 2.5){
-                        shooters.set(Constants.SHOOTER_SPEED);
+                        MC.shooters.set(Constants.SHOOTER_SPEED);
                     }
                     else {
                         boolean lineSensorPrevState = lineSensor.get();
@@ -328,27 +331,27 @@ public class Robot extends TimedRobot {
         if(left.BottomFace){
             //System.out.println("bottom face pressed");
             if(lineSensor.get()){
-                upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+                MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
             }
             else{  
-                upperFeed.set(0);
+                MC.upperFeed.set(0);
             }
-            lowerFeed.set(Constants.LOWER_FEED_SPEED);
-            intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+            MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         }
         else{
-            lowerFeed.set(0);
-            upperFeed.set(0);
-            intakeWheels.set(0);
+            MC.lowerFeed.set(0);
+            MC.upperFeed.set(0);
+            MC.intakeWheels.set(0);
         }
         if(left.R3){
-            intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
         }
         else if(left.R6){
-            intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
         }
         else{
-            intakeLift.set(0);
+            MC.intakeLift.set(0);
         }
 
         
@@ -359,40 +362,40 @@ public class Robot extends TimedRobot {
         //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
         
         if(left.BottomFace){
-            intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+            MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         } 
         else{
-            intakeWheels.set(0);
+            MC.intakeWheels.set(0);
         }
 
         if(left.R3){
-            intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
         }
         else if(left.R6){
-            intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
         }
         else{
-            intakeLift.set(0);
+            MC.intakeLift.set(0);
         }
 
         if(left.R2){
-            lowerFeed.set(-.8);
+            MC.lowerFeed.set(-.8);
         }
         else if(left.R5){
-            lowerFeed.set(.8);
+            MC.lowerFeed.set(.8);
         }
         else{
-            lowerFeed.set(0);
+            MC.lowerFeed.set(0);
         }
     
         if(left.R1){
-            upperFeed.set(-.3);
+            MC.upperFeed.set(-.3);
         }
         else if(left.R4){
-            upperFeed.set(.3);
+            MC.upperFeed.set(.3);
         }
         else{
-            upperFeed.set(0);
+            MC.upperFeed.set(0);
         }
     }
 
@@ -450,42 +453,42 @@ public class Robot extends TimedRobot {
                     timer.start();
                 }
                 ///System.out.println("trigger");
-                shooters.set(-1);
+                MC.shooters.set(-1);
                 ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
                     case "fastRight":
-                        shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
                         break;
                     case "fastLeft":
-                        shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
                         break;
                     case "slowLeft":
-                        shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
                         break;
                     case "slowRight":
-                        shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
                         break;
                     default:
-                        shooterRotate.set(0);
+                        MC.shooterRotate.set(0);
                         ledStrip.changeLEDState("SolidGreen");
                         
                 }
                 if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-                    upperFeed.set(1);
-                    lowerFeed.set(.80);
+                    MC.upperFeed.set(1);
+                    MC.lowerFeed.set(.80);
                 }
                 else{
-                    upperFeed.set(0);
-                    lowerFeed.set(0);
+                    MC.upperFeed.set(0);
+                    MC.lowerFeed.set(0);
                 }
             
                 triggerPrev = true;
             }
             else{
-                shooters.set(0);
-                upperFeed.set(0);
-                lowerFeed.set(0);
-                shooterRotate.set(0);
+                MC.shooters.set(0);
+                MC.upperFeed.set(0);
+                MC.lowerFeed.set(0);
+                MC.shooterRotate.set(0);
                 timer.stop();
                 timer.reset();
                 triggerPrev = false;
@@ -500,22 +503,22 @@ public class Robot extends TimedRobot {
     //Climb Logic//
 
     if(right.L6){
-        lifter.set(Constants.LIFTER_SPEED);
+        MC.lifter.set(Constants.LIFTER_SPEED);
     }
     else{
-        lifter.set(0);
+        MC.lifter.set(0);
     }
 
     //Climber side to side motor code//
 
     if(right.L5){
-        liftRotate.set(.2);
+        MC.liftRotate.set(.2);
     }
     else if(right.L4){
-        liftRotate.set(-.2);
+        MC.liftRotate.set(-.2);
     }
     else{
-        liftRotate.set(0);
+        MC.liftRotate.set(0);
     }
     ledStrip.setLED();
     
