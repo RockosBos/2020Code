@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
     boolean leftS;
     boolean rightS;
     boolean isOverrideOn = false;
+    boolean outputDashboard = false;
     boolean triggerPrev = false;
 
     int shotNum = 0;
@@ -139,6 +140,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> auto_chooser = new SendableChooser<>();
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
+  private final SendableChooser<Boolean> dashboard_chooser = new SendableChooser<>();
 
   boolean stateBoi;
 
@@ -159,13 +161,21 @@ public class Robot extends TimedRobot {
         auto_chooser.addOption("Auto 3", auto3);
         auto_chooser.addOption("Auto 4", auto4);
         auto_chooser.addOption("Auto 5", auto5);
+
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
+
+        dashboard_chooser.setDefaultOption("Dashboard Items Off", false);
+        dashboard_chooser.addOption("Dashboard Items On", true);
+
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
+        SmartDashboard.putData("Dashboard Info", dashboard_chooser);
+
         leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);
         rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR);
-        SmartDashboard.putString("Version", "1.0.3");
+
+        SmartDashboard.putString("Version", "1.0.4");
         SmartDashboard.putNumber("Set to Gyro Angle", desiredGyroAngle);
         SmartDashboard.putNumber("Autonomous Delay", 0);
         //rotatePID.setSetpoint(0);
@@ -210,10 +220,9 @@ public class Robot extends TimedRobot {
   @Override
     public void autonomousInit() {
         m_autoSelected = auto_chooser.getSelected();
-        // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
 
-        //delay = SmartDashboard.getNumber("Autonomous Delay", 0);
+        delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
     }
@@ -250,15 +259,17 @@ public class Robot extends TimedRobot {
                         robotShooter.autoShootStop();
                         robotLimeLight.setMode("ledMode", 1);
                         robotLimeLight.setMode("camMode", 1);
+                        autonTimer.reset();
+                        shotNum = 0;
                         autonomousStep = 2;
                     }
+                    break;
                 case 2:
                     if(autonTimer.get() < 5){
                         autonomous.setDrive(slowDrive, slowDrive);
                     } else{
                         autonomous.setDrive(0,0);
                         ledStrip.changeLEDState("SolidWhite");
-                        ledStrip.changeLEDState("SolidRed");
                     }
                     
                 }
@@ -309,6 +320,7 @@ public class Robot extends TimedRobot {
         right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
         isOverrideOn = override_chooser.getSelected();
+        outputDashboard = dashboard_chooser.getSelected();
     /*-----------------------------------------------------
         Drive Logic
     ------------------------------------------------------*/
@@ -354,23 +366,7 @@ public class Robot extends TimedRobot {
             //System.out.println("trigger");
             MC.shooters.set(-1);
             ledStrip.changeLEDState("SolidYellow");
-            switch(LimeLight.limelightState){
-                case "fastRight":
-                    MC.shooterRotate.set(-.3);
-                    break;
-                case "fastLeft":
-                    MC.shooterRotate.set(.3);
-                    break;
-                case "slowLeft":
-                    MC.shooterRotate.set(.2);
-                    break;
-                case "slowRight":
-                    MC.shooterRotate.set(-.2);
-                    break;
-                default:
-                    MC.shooterRotate.set(0);
-                    ledStrip.changeLEDState("SolidGreen");
-            }
+            robotShooter.autoAim();
         }
         if(left.BottomFace){
             MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
@@ -466,24 +462,8 @@ public class Robot extends TimedRobot {
                 ///System.out.println("trigger");
                 MC.shooters.set(-1);
                 ledStrip.changeLEDState("SolidYellow");
-                switch(LimeLight.limelightState){
-                    case "fastRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "fastLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "slowLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    case "slowRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    default:
-                        MC.shooterRotate.set(0);
-                        ledStrip.changeLEDState("SolidGreen");
-                        
-                }
+                robotShooter.autoAim();
+
                 if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
                     MC.upperFeed.set(1);
                     MC.lowerFeed.set(.80);
@@ -532,21 +512,24 @@ public class Robot extends TimedRobot {
         MC.liftRotate.set(0);
     }
     ledStrip.setLED();
-    
-    SmartDashboard.putNumber("Dif", testTimer.get() - last);
-    SmartDashboard.putNumber("Current State", testTimer.get());
-    SmartDashboard.putNumber("Previous State", last);
+
     last = testTimer.get();
 
-    //Update Smartdashboard Values
-    SmartDashboard.putBoolean("Left_R2", left.R2);
-    SmartDashboard.putBoolean("Left_R3", left.R3);
-    SmartDashboard.putBoolean("Left_R5", left.R5);
-    SmartDashboard.putBoolean("Left_R6", left.R6);
-    SmartDashboard.putBoolean("Line Sensor", MC.lineSensor.get());
-    SmartDashboard.putBoolean("Trigger", right.Trigger);
-    SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
-    SmartDashboard.putNumber("Timer", timer.get());
+    if(outputDashboard){
+        SmartDashboard.putNumber("Dif", testTimer.get() - last);
+        SmartDashboard.putNumber("Current State", testTimer.get());
+        SmartDashboard.putNumber("Previous State", last);
+
+        //Update Smartdashboard Values
+        SmartDashboard.putBoolean("Left_R2", left.R2);
+        SmartDashboard.putBoolean("Left_R3", left.R3);
+        SmartDashboard.putBoolean("Left_R5", left.R5);
+        SmartDashboard.putBoolean("Left_R6", left.R6);
+        SmartDashboard.putBoolean("Line Sensor", MC.lineSensor.get());
+        SmartDashboard.putBoolean("Trigger", right.Trigger);
+        SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
+        SmartDashboard.putNumber("Timer", timer.get());
+    }
 } 
 
   @Override
