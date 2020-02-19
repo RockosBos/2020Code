@@ -453,7 +453,7 @@ public class Robot extends TimedRobot {
                     timer.start();
                 }
                 ///System.out.println("trigger");
-                MC.shooters.set(-1);
+                MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
                     case "fastRight":
