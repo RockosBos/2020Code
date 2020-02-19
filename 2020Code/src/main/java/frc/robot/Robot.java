@@ -357,7 +357,28 @@ public class Robot extends TimedRobot {
         
 
         //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
-        
+        if(left.Trigger){
+            //System.out.println("trigger");
+            shooters.set(-1);
+            ledStrip.changeLEDState("SolidYellow");
+            switch(LimeLight.limelightState){
+                case "fastRight":
+                    shooterRotate.set(-.3);
+                    break;
+                case "fastLeft":
+                    shooterRotate.set(.3);
+                    break;
+                case "slowLeft":
+                    shooterRotate.set(.2);
+                    break;
+                case "slowRight":
+                    shooterRotate.set(-.2);
+                    break;
+                default:
+                    shooterRotate.set(0);
+                    ledStrip.changeLEDState("SolidGreen");
+            }
+        }
         if(left.BottomFace){
             intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
         } 
