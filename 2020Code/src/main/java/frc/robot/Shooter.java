@@ -9,11 +9,9 @@ package frc.robot;
 */
 
 
-//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import frc.robot.Robot.Constants;
-import frc.robot.Robot.MC;
-
-
 
 
 
@@ -22,35 +20,43 @@ public class Shooter{
 
     Controller left;
     Controller right;
+    WPI_TalonSRX shooter;
+    WPI_TalonSRX shooterRotate;
+    WPI_TalonSRX upperFeed;
+    WPI_TalonSRX lowerFeed;
 
-    Shooter(Controller left, Controller right){
-        this.left = left;
+    
+
+    Shooter(Controller left, Controller right, WPI_TalonSRX shooter, WPI_TalonSRX shooterRotate, WPI_TalonSRX upperFeed, WPI_TalonSRX lowerFeed){
         this.right = right;
+        this.left = left;
+        this.shooter = shooter;
+        this.shooterRotate = shooterRotate;
+        this.upperFeed = upperFeed;
+        this.lowerFeed = lowerFeed;
      
     }
 
 
     public void manFire(double speed){
         if(left.Trigger)
-            MC.shooters.set(speed);
-        else MC.shooters.set(0);
+            shooter.set(speed);
+        else shooter.set(0);
     }
-    
-    
     
 
     public void manFire(double speed, double offset){
         if(left.Trigger)
-            MC.shooters.set(speed);
-        else MC.shooters.set(offset);
+            shooter.set(speed);
+        else shooter.set(offset);
     }
     
     public void manRotate(double speed){
         if(left.LeftFace)
-            MC.shooterRotate.set(-speed);
+            shooterRotate.set(-speed);
         else if(left.RightFace)
-            MC.shooterRotate.set(speed);
-        else MC.shooterRotate.set(0.0);
+            shooterRotate.set(speed);
+        else shooterRotate.set(0.0);
     }
 
 
@@ -58,15 +64,15 @@ public class Shooter{
 
     public void autoShoot(){
         
-        MC.shooters.set(-1);
+        shooter.set(-1);
         
         if(LimeLight.limelightState == "stop"){
-            MC.upperFeed.set(1);
-            MC.lowerFeed.set(.80);
+            upperFeed.set(1);
+            lowerFeed.set(.80);
         }
         else{
-            MC.upperFeed.set(0);
-            MC.lowerFeed.set(0);
+            upperFeed.set(0);
+            lowerFeed.set(0);
         }
           
     }
@@ -74,28 +80,28 @@ public class Shooter{
     public void autoAim(){
         switch(LimeLight.limelightState){
             case "fastRight":
-                MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
                 break;
             case "fastLeft":
-                MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
                 break;
             case "slowLeft":
-                MC.shooterRotate.set(Constants.CONTROL_WHEEL_ROTATE_SPEED);
+                shooterRotate.set(Constants.CONTROL_WHEEL_ROTATE_SPEED);
                 break;
             case "slowRight":
-                MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
                 break;
             default:
-                MC.shooterRotate.set(0);
+                shooterRotate.set(0);
                 
         }
     }
 
     public void autoShootStop(){
-            MC.shooters.set(0);
-            MC.upperFeed.set(0);
-            MC.lowerFeed.set(0);
-            MC.shooterRotate.set(0);
+            shooter.set(0);
+            upperFeed.set(0);
+            lowerFeed.set(0);
+            shooterRotate.set(0);
     }
 }
 
