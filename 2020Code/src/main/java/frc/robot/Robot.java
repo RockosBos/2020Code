@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     static final WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
     static final WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     static final WPI_VictorSPX lifter = new WPI_VictorSPX(14);
-    static final DigitalInput lineSensor = new DigitalInput(0);
+    //static final DigitalInput lineSensor = new DigitalInput(0);
 }
     DigitalInput lineSensor = new DigitalInput(0);
 
@@ -110,8 +110,8 @@ public class Robot extends TimedRobot {
          static final double UPPER_FEED_SHOOTER_SPEED = 0.8;
          static final double LOWER_FEED_SPEED = -1.0;
          static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
-         static final double SHOOTER_ROTATE_FAST_SPEED = 0.2;
-         static final double SHOOTER_SPEED = 1;
+         static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
+         static final double SHOOTER_SPEED = -0.8;
          static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
          static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
          static final double LIFT_ROTATE_SPEED = 0.1;

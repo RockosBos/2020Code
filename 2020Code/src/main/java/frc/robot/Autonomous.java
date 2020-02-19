@@ -29,7 +29,7 @@ class Autonomous{
        // if()
         
         leftDrive.set(leftSpeed);
-        rightDrive.set(rightSpeed);
+        rightDrive.set(-rightSpeed);
     }
 
     public void turnDegrees(double degrees){
