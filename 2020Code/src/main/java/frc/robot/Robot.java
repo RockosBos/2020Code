@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
     static final WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
     static final WPI_VictorSPX lifter = new WPI_VictorSPX(14);
     //static final DigitalInput lineSensor = new DigitalInput(0);
+    static final SpeedControllerGroup rightDrive = new SpeedControllerGroup(MC.rightDrive1, MC.rightDrive2);
+    static final SpeedControllerGroup leftDrive = new SpeedControllerGroup(MC.leftDrive1, MC.leftDrive2);
 }
 
     static final class Sensors{
@@ -94,13 +96,12 @@ public class Robot extends TimedRobot {
     
 
     //Drive Initialization
-     SpeedControllerGroup rightDrive = new SpeedControllerGroup(MC.rightDrive1, MC.rightDrive2);
-     SpeedControllerGroup leftDrive = new SpeedControllerGroup(MC.leftDrive1, MC.leftDrive2);
-     DifferentialDrive diffDrive = new DifferentialDrive(rightDrive, leftDrive);
+     
+     DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
      Servo leftServo = new Servo(8);
      Servo rightServo = new Servo(9);
      
-     Autonomous autonomous = new Autonomous(leftDrive, rightDrive);
+     Autonomous autonomous = new Autonomous(MC.leftDrive, MC.rightDrive);
 
      class ToggleLogic{
         boolean currentState = false;
