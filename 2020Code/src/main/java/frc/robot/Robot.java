@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
     Climb robotClimb = new Climb();
     Shooter robotShooter = new Shooter(left, right);
     Intake robotIntake = new Intake(left, right);
+    Gyros gyro = new Gyros(MC.rightDrive, MC.leftDrive);
 
     //RobotGyroscope gyro = new RobotGyroscope();
     
@@ -235,7 +236,7 @@ public class Robot extends TimedRobot {
         delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
-        timer.restart();
+        
     }
 
 
@@ -292,10 +293,11 @@ public class Robot extends TimedRobot {
                     
                 }
                 break;
-            case auto2:
+                case auto2:
                     //Auto 2 Logic
-                timer.start();
-                if(timer.get() <= 2){
+                autonTimer.start();
+                if(autonTimer.get() <= 2){
+                  MC.shooters.set(Constants.SHOOTER_SPEED);
                   ledStrip.changeLEDState("SolidYellow");
                   switch(LimeLight.limelightState){
                       case "fastRight":
@@ -313,21 +315,69 @@ public class Robot extends TimedRobot {
                       default:
                         MC.shooterRotate.set(0);
                         ledStrip.changeLEDState("SolidGreen");
-                  }
+                    }
                 }
-                if(timer.get() <= 4){
-                  MC.shooters.set(Constants.SHOOTER_SPEED);
-                  MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
-                  MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
-                }
-                if(timer.get() == 5){
-                  MC.shooters.set(Constants.SHOOTER_SPEED);
-                  MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
-                  MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
-                }
-                if(timer.get() <= 7){
+                    if(autonTimer.get() <= 4.25){
+                    MC.shooters.set(Constants.SHOOTER_SPEED);
+                    MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+                    MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                    }
+                    else if(autonTimer.get() <= 5.5){
+                    MC.shooters.set(0);
+                    MC.upperFeed.set(0);
+                    MC.lowerFeed.set(0);
+                    }
+                else if(autonTimer.get() <= 6){
+                    gyro.GyroRotate(135);
+                    }
+                    else if(autonTimer.get() <= 7.25){
+                    autonomous.setDrive(.25, .25);
+                    }
+                    else if(autonTimer.get() <= 8.75){
+                    MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+                    
+                    }
+                    else if(autonTimer.get() <= 10.25){
+                    gyro.GyroRotate(-135);
+                    }
+                    else if(autonTimer.get() <= 11.5){
+                    autonomous.setDrive(-.25, -.25);
+                    }
+                    else if(autonTimer.get() <= 13){
+                        MC.shooters.set(Constants.SHOOTER_SPEED);
+                        ledStrip.changeLEDState("SolidYellow");
+                        switch(LimeLight.limelightState){
+                        case "fastRight":
+                            MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                        case "fastLeft":
+                            MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                        case "slowLeft":
+                            MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                        case "slowRight":
+                            MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                        default:
+                            MC.shooterRotate.set(0);
+                            ledStrip.changeLEDState("SolidGreen");
+                        }
                   
-                }
+                    else if(autonTimer.get() <= 14.25){
+                        MC.shooters.set(Constants.SHOOTER_SPEED);
+                        MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+                        MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                    }
+                    else{
+                        robotIntake.stopAllIntake();
+                        MC.shooters.set(0);
+                        MC.shooterRotate.set(0);
+                  }
+                  
+                
+                
+
 
                 break;
             case auto3:
