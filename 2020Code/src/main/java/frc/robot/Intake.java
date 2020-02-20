@@ -35,10 +35,14 @@ public class Intake{
         MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
     }
     public void stopAllIntake(){
-
+        MC.upperFeed.set(0);
+        MC.lowerFeed.set(0);
+        MC.intakeWheels.set(0);
     }
     public void outtakeAll(){
-
+        MC.upperFeed.set(-Constants.UPPER_FEED_INTAKE_SPEED);
+        MC.lowerFeed.set(-Constants.LOWER_FEED_SPEED);
+        MC.intakeWheels.set(-Constants.INTAKE_WHEELS_SPEED);
     }
     public void operateManually(){
         if(left.BottomFace){

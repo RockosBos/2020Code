@@ -234,6 +234,7 @@ public class Robot extends TimedRobot {
         delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
+        timer.restart();
     }
 
 
@@ -292,6 +293,41 @@ public class Robot extends TimedRobot {
                 break;
             case auto2:
                     //Auto 2 Logic
+                timer.start();
+                if(timer.get() <= 2){
+                  ledStrip.changeLEDState("SolidYellow");
+                  switch(LimeLight.limelightState){
+                      case "fastRight":
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                      case "fastLeft":
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                      case "slowLeft":
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                      case "slowRight":
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                      default:
+                        MC.shooterRotate.set(0);
+                        ledStrip.changeLEDState("SolidGreen");
+                  }
+                }
+                if(timer.get() <= 4){
+                  MC.shooters.set(Constants.SHOOTER_SPEED);
+                  MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+                  MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                }
+                if(timer.get() == 5){
+                  MC.shooters.set(Constants.SHOOTER_SPEED);
+                  MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+                  MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                }
+                if(timer.get() <= 7){
+                  
+                }
+
                 break;
             case auto3:
                     //Auto 3 Logic
