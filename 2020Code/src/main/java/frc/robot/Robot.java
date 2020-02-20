@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
     Shooter robotShooter = new Shooter(left, right);
-    Intake robotIntake = new Intake();
+    Intake robotIntake = new Intake(left, right);
 
     //RobotGyroscope gyro = new RobotGyroscope();
     
@@ -378,46 +378,9 @@ public class Robot extends TimedRobot {
         
     }
     else{ //Manual Intake Logic
-        
-
+        robotIntake.operateManually();
         //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
         
-        if(left.BottomFace){
-            MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-        } 
-        else{
-            MC.intakeWheels.set(0);
-        }
-
-        if(left.R3){
-            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
-        }
-        else if(left.R6){
-            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
-        }
-        else{
-            MC.intakeLift.set(0);
-        }
-
-        if(left.R2){
-            MC.lowerFeed.set(-.8);
-        }
-        else if(left.R5){
-            MC.lowerFeed.set(.8);
-        }
-        else{
-            MC.lowerFeed.set(0);
-        }
-    
-        if(left.R1){
-            MC.upperFeed.set(-.3);
-        }
-        else if(left.R4){
-            MC.upperFeed.set(.3);
-        }
-        else{
-            MC.upperFeed.set(0);
-        }
     }
 
 

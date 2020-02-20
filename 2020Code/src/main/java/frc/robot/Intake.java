@@ -13,14 +13,19 @@ import frc.robot.Robot.Sensors;
   | | | . ` | | ||  _  ||    \ |  __| 
  _| |_| |\  | | || | | || |\  \| |___ 
  \___/\_| \_/ \_/\_| |_/\_| \_/\____/ 
-                                      
-                                      
-
+                                    
 */
 
 
-
 public class Intake{
+
+    Controller left;
+    Controller right;
+
+    Intake(Controller left, Controller right){
+        this.left = left;
+        this.right = right;
+    }
 
     public void intakeAll(){
         if(Sensors.lineSensor.get() == false){
@@ -35,7 +40,44 @@ public class Intake{
     public void outtakeAll(){
 
     }
+    public void operateManually(){
+        if(left.BottomFace){
+            MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+        } 
+        else{
+            MC.intakeWheels.set(0);
+        }
+
+        if(left.R3){
+            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+        }
+        else if(left.R6){
+            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+        }
+        else{
+            MC.intakeLift.set(0);
+        }
+
+        if(left.R2){
+            MC.lowerFeed.set(-Constants.LOWER_FEED_SPEED);
+        }
+        else if(left.R5){
+            MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+        }
+        else{
+            MC.lowerFeed.set(0);
+        }
     
+        if(left.R1){
+            MC.upperFeed.set(-Constants.UPPER_FEED_INTAKE_SPEED);
+        }
+        else if(left.R4){
+            MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
+        }
+        else{
+            MC.upperFeed.set(0);
+        }
+    }
 
 
 
