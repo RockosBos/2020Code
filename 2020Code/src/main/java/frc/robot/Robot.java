@@ -363,6 +363,7 @@ public class Robot extends TimedRobot {
                             MC.shooterRotate.set(0);
                             ledStrip.changeLEDState("SolidGreen");
                         }
+                    }
                   
                     else if(autonTimer.get() <= 14.25){
                         MC.shooters.set(Constants.SHOOTER_SPEED);
@@ -374,11 +375,7 @@ public class Robot extends TimedRobot {
                         MC.shooters.set(0);
                         MC.shooterRotate.set(0);
                   }
-                  
                 
-                
-
-
                 break;
             case auto3:
                     //Auto 3 Logic

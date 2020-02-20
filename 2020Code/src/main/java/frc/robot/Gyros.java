@@ -11,24 +11,19 @@ public class Gyros{
 
     public double speed = 0.5;
     public boolean isFound = true;
-    SpeedControllerGroup left;
-    SpeedControllerGroup right;
     double lowerVariance;
     double upperVariance;
     double VARIANCE = 6;
     private static final SPI.Port kGyroPort = SPI.Port.kOnboardCS0;
     public ADXRS450_Gyro gyro = new ADXRS450_Gyro(kGyroPort);
     public String state = "";
-    SpeedControllerGroup leftMotors = new SpeedControllerGroup(, );
-    TalonSRX left1motor;
-    TalonSRX right2motor;
-    VictorSPX left2motor;
-    VictorSPX right1motor;
+    SpeedControllerGroup left;
+    SpeedControllerGroup right;
+    
 
-    public Gyros(TalonSRX left1, VictorSPX left2, VictorSPX right1, TalonSRX right2){
-        left1motor = left1;
-        right2motor = right2;
-        left2motor
+    public Gyros(SpeedControllerGroup leftm, SpeedControllerGroup rightm){
+        left = leftm;
+        right = rightm;
         gyro.calibrate();
     }
 
