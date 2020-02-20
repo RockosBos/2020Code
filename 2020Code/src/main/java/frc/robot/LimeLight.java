@@ -31,10 +31,6 @@ public class LimeLight{
         return true;
 
     }
-
-    public String getLLState(){
-        return limelightState;
-    }
     public void setMode(String tableEntry, int value){
         /****************************************
          Table Entry Types
@@ -71,9 +67,9 @@ public class LimeLight{
                 limelightState = "fastLeft";
             } else if(getX() > 4){
                 limelightState = "fastRight";
-            } else if(getX() < - 0.75){
+            } else if(getX() < - 2){
                 limelightState = "slowLeft";
-            } else if(getX() > 0.75){
+            } else if(getX() > 2){
                 limelightState = "slowRight";
             } else{
                 limelightState = "stop";

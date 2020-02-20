@@ -1,29 +1,24 @@
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Nick has Turbo Gay   */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-//Test to Push
+
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Servo;
-//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DigitalInput;
-//import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.cameraserver.CameraServer;
 
-
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,8 +28,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
  * project.
  */
 public class Robot extends TimedRobot {
+  private static final String kDefaultAuto = "Default";
+  private static final String kCustomAuto = "My Auto";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 
+<<<<<<< Updated upstream
   //Motor Controllers
   static final class MC{
     static final WPI_TalonSRX leftDrive1 = new WPI_TalonSRX(1);
@@ -121,22 +121,22 @@ public class Robot extends TimedRobot {
          static final int LEFT_SERVO_LOW_GEAR = 120;
          static final int RIGHT_SERVO_LOW_GEAR = 85;
      }
+=======
+  Spark leftDrive = new Spark(0);
+  Spark rightDrive = new Spark(1);
+>>>>>>> Stashed changes
 
-     ToggleLogic servoToggle = new ToggleLogic();
-    
-     //Autonomous Variables
-    private static final String initiationLineMove = "initiationLineMove";
-    private static final String auto1 = "Auton 1";
-    private static final String auto2 = "Auton 2";
-    private static final String auto3 = "Auton 3";
-    private static final String auto4 = "Auton 4";
-    private static final String auto5 = "Auton 5";
-    private Timer autonTimer = new Timer();
-    private Timer autonDelayTimer = new Timer();
-    private int autonomousStep;
-    private double delay;
+  DifferentialDrive diffDrive = new DifferentialDrive(leftDrive, rightDrive);
 
+  Joystick right = new Joystick(0);
+  Joystick left = new Joystick(1);
+  XboxController xbox = new XboxController(0);
+  Gyros Gyroscope = new Gyros(leftDrive, rightDrive);
+  DigitalInput lineDetect = new DigitalInput(2);
+  double desiredGyroAngle = 0.0;
+  LimeLight robotLimeLight = new LimeLight();
 
+<<<<<<< Updated upstream
   private String m_autoSelected;
   private final SendableChooser<String> auto_chooser = new SendableChooser<>();
   private final SendableChooser<Boolean> override_chooser = new SendableChooser<>();
@@ -145,15 +145,17 @@ public class Robot extends TimedRobot {
 
   //Test only
   double desiredGyroAngle = 0;
+=======
+>>>>>>> Stashed changes
   
-
-
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+<<<<<<< Updated upstream
         auto_chooser.setDefaultOption("Move from Initiation line", initiationLineMove);
         auto_chooser.addOption("Auto 1", auto1);
         auto_chooser.addOption("Auto 2", auto2);
@@ -174,6 +176,25 @@ public class Robot extends TimedRobot {
         CameraServer.getInstance().startAutomaticCapture();
         
         
+=======
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
+    leftDrive.set(0);
+    rightDrive.set(0);
+    xbox.setRumble(RumbleType.kLeftRumble, 0);
+    xbox.setRumble(RumbleType.kRightRumble, 0);
+    SmartDashboard.putNumber("Set To Gyro Angle", 0); 
+    CameraServer.getInstance().startAutomaticCapture();
+    
+    
+  }
+  @Override
+  public void disabledInit() {
+    xbox.setRumble(RumbleType.kLeftRumble, 0);
+    xbox.setRumble(RumbleType.kRightRumble, 0);
+    
+>>>>>>> Stashed changes
   }
 
   /**
@@ -186,6 +207,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+<<<<<<< Updated upstream
       //empty
       
   }
@@ -193,9 +215,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic(){
     ledStrip.rainbow();
+=======
+>>>>>>> Stashed changes
   }
-  
-
 
   /**
    * This autonomous (along with the chooser code above) shows how to select
@@ -209,20 +231,16 @@ public class Robot extends TimedRobot {
    * SendableChooser make sure to add them to the chooser code above as well.
    */
   @Override
-    public void autonomousInit() {
-        m_autoSelected = auto_chooser.getSelected();
-        // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-        System.out.println("Auto selected: " + m_autoSelected);
-
-        delay = SmartDashboard.getNumber("Autonomous Delay", 0);
-        autonDelayTimer.start();
-        autonomousStep = 0;
-    }
-
+  public void autonomousInit() {
+    m_autoSelected = m_chooser.getSelected();
+    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    System.out.println("Auto selected: " + m_autoSelected);
+  }
 
   /**
    * This function is called periodically during autonomous.
    */
+<<<<<<< Updated upstream
     @Override
     public void autonomousPeriodic() {
         double slowDrive = .25;
@@ -307,12 +325,26 @@ public class Robot extends TimedRobot {
                 break;
             }
         }
+=======
+  @Override
+  public void autonomousPeriodic() {
+    switch (m_autoSelected) {
+      case kCustomAuto:
+        // Put custom auto code here
+        break;
+      case kDefaultAuto:
+      default:
+        // Put default auto code here
+        break;
+>>>>>>> Stashed changes
     }
+  }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
+<<<<<<< Updated upstream
     public void teleopPeriodic() { 
         ledStrip.changeLEDState("SolidWhite");
         
@@ -407,117 +439,86 @@ public class Robot extends TimedRobot {
         leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
         rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
         ledStrip.changeLEDState("SolidBlue");
+=======
+  public void teleopPeriodic() {
+>>>>>>> Stashed changes
 
+   /* diffDrive.arcadeDrive(xbox.getRawAxis(1), xbox.getRawAxis(0));
+    if (xbox.getRawAxis(1) != 0 || xbox.getRawAxis(0) != 0){
+      xbox.setRumble(RumbleType.kLeftRumble, 1);
+      xbox.setRumble(RumbleType.kRightRumble, 1);
     }
-    else{
-        leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
-        rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
+    if (xbox.getRawAxis(1) == 0 || xbox.getRawAxis(0) == 0){
+      xbox.setRumble(RumbleType.kLeftRumble, 0);
+      xbox.setRumble(RumbleType.kRightRumble, 0);
     }
 
-    /*----------------------------------------------------
-        Limelight Logic
-    ------------------------------------------------------*/
-    //Limelight Update
-      
+    
+    if (xbox.getXButton()){
+        Gyroscope.GyroRotate(-90);
+    }
+    if (xbox.getAButton()){
+        Gyroscope.GyroRotate(180);
+    }
+    if (xbox.getBButton()){
+        Gyroscope.GyroRotate(360);
+    }
+    if(xbox.getYButton()){
+        Gyroscope.gyro.reset();
+    }*/
+    
+    SmartDashboard.putNumber("Gyro Value", Gyroscope.gyro.getAngle());
+    SmartDashboard.putString("Gyro State", Gyroscope.state);
+    SmartDashboard.putBoolean("Line Detector", lineDetect.get());
     robotLimeLight.displayData();
-    robotLimeLight.getState();
-    if(left.Trigger){
-        robotLimeLight.setMode("ledMode", 0);
-        robotLimeLight.setMode("camMode", 0);            
+   /*double error = desiredGyroAngle - Gyroscope.gyro.getAngle();
+    double p = 125;
+    double speed = error / 2 * p;
+    double errorThreshold = 2.5;
+    SmartDashboard.putNumber("Error:", error);
+    desiredGyroAngle = SmartDashboard.getNumber("Set To Gyro Angle", -1);
+    SmartDashboard.putNumber("Gyro Angle", Gyroscope.gyro.getAngle());
+    if(error > p){
+        leftDrive.set(0.5);
+        rightDrive.set(0.5);
+    }
+    else if(error < -p){
+        leftDrive.set(-0.5);
+        rightDrive.set(-0.5);
+    }
+    else if(error <  desiredGyroAngle + errorThreshold && error > desiredGyroAngle - errorThreshold){
+      leftDrive.set(0);
+      rightDrive.set(0);
     }
     else{
-        robotLimeLight.setMode("ledMode", 1);
-        robotLimeLight.setMode("camMode", 1);
+        leftDrive.set(speed);
+        rightDrive.set(speed);
     }
-
-    //color wheel start
-    if(!isOverrideOn){ //Auto Color Wheel Logic
-        if(right.BottomFace){
-            //robotControlWheel.wheelPosition(colorBoi.getColor(), fieldColor.charAt(0), 0.5, 0.7, controlWheelWheel);
-        }
-    }
-    else{   //Manual Color Wheel Logic
-        
-    }
-
-    
-    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
-    
-    ////climb logic
+    */
+  } 
   
-    //trigger logic
-    if(!left.BottomFace){
-        if(!isOverrideOn){
-            if(left.Trigger){
-                if(!triggerPrev){
-                    timer.start();
-                }
-                ///System.out.println("trigger");
-                MC.shooters.set(Constants.SHOOTER_SPEED);
-                ledStrip.changeLEDState("SolidYellow");
-                switch(LimeLight.limelightState){
-                    case "fastRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "fastLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "slowLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    case "slowRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    default:
-                        MC.shooterRotate.set(0);
-                        ledStrip.changeLEDState("SolidGreen");
-                        
-                }
-                if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-                    MC.upperFeed.set(1);
-                    MC.lowerFeed.set(.80);
-                }
-                else{
-                    MC.upperFeed.set(0);
-                    MC.lowerFeed.set(0);
-                }
-            
-                triggerPrev = true;
-            }
-            else{
-                MC.shooters.set(0);
-                MC.upperFeed.set(0);
-                MC.lowerFeed.set(0);
-                MC.shooterRotate.set(0);
-                timer.stop();
-                timer.reset();
-                triggerPrev = false;
-            }
-        }   
-        else{
-            robotShooter.manFire(Constants.SHOOTER_SPEED);
-            robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
-        }
-    }
-   
-    //Climb Logic//
 
-    if(right.L6){
-        MC.lifter.set(Constants.LIFTER_SPEED);
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic() {
+    double error = desiredGyroAngle - Gyroscope.gyro.getAngle();
+    double p = 100;
+    double speed = error / p;
+    SmartDashboard.putNumber("Error:", error);
+    desiredGyroAngle = SmartDashboard.getNumber("Set To Gyro Angle", -1);
+
+    if(error > 100){
+        leftDrive.set(1);
+        rightDrive.set(1);
+    }
+    else if(error < -100){
+        leftDrive.set(-1);
+        rightDrive.set(-1);
     }
     else{
-        MC.lifter.set(0);
-    }
-
-    //Climber side to side motor code//
-
-    if(right.L5){
-        MC.liftRotate.set(.2);
-    }
-    else if(right.L4){
-        MC.liftRotate.set(-.2);
-    }
-    else{
+<<<<<<< Updated upstream
         MC.liftRotate.set(0);
     }
     ledStrip.setLED();
@@ -537,9 +538,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
     SmartDashboard.putNumber("Timer", timer.get());
 } 
-
-  @Override
-    public void testPeriodic() {
-       
+=======
+        leftDrive.set(speed);
+        rightDrive.set(speed);
     }
+>>>>>>> Stashed changes
+
+  }
 }
