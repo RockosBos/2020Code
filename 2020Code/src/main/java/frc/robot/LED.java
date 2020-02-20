@@ -2,11 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-//import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 
 class LED{
     private AddressableLED led;
-    //private Timer ledTimer;
+    private Timer ledTimer;
     private AddressableLEDBuffer ledBuffer;
     private int rainbowFirstPixelHue;
     private int prevValue = 0;
@@ -28,6 +28,25 @@ class LED{
         }
         led.setData(ledBuffer);
         
+    }
+
+    public void blink(int color, double duration){
+        if(ledTimer.get() == 0){
+            ledTimer.start();
+        }
+        else if(ledTimer.get() < duration){
+            for(int i = 0; i < ledBuffer.getLength(); i++){
+                ledBuffer.setHSV(i, color, 255, 128);
+            }
+        }
+        else if(ledTimer.get() < duration * 2){
+            for(int i = 0; i < ledBuffer.getLength(); i++){
+                ledBuffer.setHSV(i, color, 255, 0);
+            }
+        }
+        else{
+            ledTimer.reset();
+        }
     }
 
     public void pulse(int color){

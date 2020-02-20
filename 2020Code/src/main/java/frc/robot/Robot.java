@@ -328,6 +328,7 @@ public class Robot extends TimedRobot {
         if(displayAutoDashboard){
             SmartDashboard.putString("AutonMode", m_autoSelected);
             SmartDashboard.putNumber("Auton Step", autonomousStep);
+            SmartDashboard.putNumber("Auton Timer", autonTimer.get());
         }
     }
 
