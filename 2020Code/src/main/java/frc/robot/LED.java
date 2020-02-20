@@ -124,6 +124,21 @@ class LED{
         case "SolidPurple":
             solid(200);
             break;
+        case "BlinkRed":
+            blink(0, 3);
+            break;
+        case "BlinkYellow":
+            blink(40, 3);
+            break;   
+        case "BlinkBlue":
+            blink(120, 3);
+            break;
+        case "BlinkGreen":
+            blink(40, 3);
+            break;
+        case "BlinkPurple":
+            blink(200, 3);
+            break;
         default:
             setWhite();
             break;
