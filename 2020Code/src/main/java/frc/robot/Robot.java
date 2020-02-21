@@ -295,6 +295,7 @@ public class Robot extends TimedRobot {
                 break;
                 case auto2:
                     //Auto 2 Logic
+                robotLimeLight.getState();
                 autonTimer.start();
                 if(autonTimer.get() <= 2){
                   MC.shooters.set(Constants.SHOOTER_SPEED);
@@ -318,14 +319,10 @@ public class Robot extends TimedRobot {
                     }
                 }
                     if(autonTimer.get() <= 4.25){
-                    MC.shooters.set(Constants.SHOOTER_SPEED);
-                    MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
-                    MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                    autonomous.shootAndFeed();
                     }
                     else if(autonTimer.get() <= 5.5){
-                    MC.shooters.set(0);
-                    MC.upperFeed.set(0);
-                    MC.lowerFeed.set(0);
+                    autonomous.turnOffShootAndFeed();
                     }
                 else if(autonTimer.get() <= 6){
                     gyro.GyroRotate(135);
@@ -335,7 +332,6 @@ public class Robot extends TimedRobot {
                     }
                     else if(autonTimer.get() <= 8.75){
                     MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                    
                     }
                     else if(autonTimer.get() <= 10.25){
                     gyro.GyroRotate(-135);
@@ -366,19 +362,18 @@ public class Robot extends TimedRobot {
                     }
                   
                     else if(autonTimer.get() <= 14.25){
-                        MC.shooters.set(Constants.SHOOTER_SPEED);
-                        MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
-                        MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+                        
                     }
                     else{
                         robotIntake.stopAllIntake();
-                        MC.shooters.set(0);
-                        MC.shooterRotate.set(0);
+                        autonomous.turnOffShootAndFeed();
+                        MC.controlWheelRotate.set(0);
                   }
                 
                 break;
             case auto3:
                     //Auto 3 Logic
+                
                 break;
             case auto4:
                     //Auto 4 Logic
