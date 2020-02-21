@@ -16,6 +16,11 @@ class Autonomous{
     Timer timer = new Timer();
     //double driveValue 
     Gyros gyros = new Gyros(MC.rightDrive, MC.leftDrive);
+    double gyroAngle;
+    double straightLowerVariance;
+    double straightUpperVarience;
+    
+    
     
 
     Autonomous(SpeedControllerGroup leftDrive, SpeedControllerGroup rightDrive){
@@ -34,6 +39,22 @@ class Autonomous{
         
         leftDrive.set(leftSpeed);
         rightDrive.set(-rightSpeed);
+    }
+    public void driveForward(double speed, double variance){
+        gyroAngle = gyros.gyro.getAngle();
+        straightUpperVarience = gyroAngle + variance;
+        straightLowerVariance = gyroAngle - variance;
+        
+        if(gyros.gyro.getAngle() < straightLowerVariance){
+            setDrive(speed + .5, speed);
+        }
+        else if(gyros.gyro.getAngle() > straightLowerVariance){
+            setDrive(speed, speed + .5);
+        }
+        else{
+            setDrive(speed, speed);
+        }
+
     }
 
     public void turnDegrees(double degrees){
