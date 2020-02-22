@@ -302,104 +302,166 @@ public class Robot extends TimedRobot {
                 break;
                 case auto2:
                     //Auto 2 Logic
-                    if(stage1){
-                        if(shotNum < 3){
-                            MC.shooters.set(Constants.SHOOTER_SPEED);
-                            robotShooter.autoAim();
-                            if(autonTimer.get() >= 2.5){
-                                autonomous.shootAndFeed();
-                                if(Sensors.lineSensor.get() == true){
-                                    shotNum = shotNum + 1;
-                                }                        
+                    switch (autonomousStep){
+                        case 0:
+                             if(shotNum < 3){
+                                 MC.shooters.set(Constants.SHOOTER_SPEED);
+                                 robotShooter.autoAim();
+                                     if(autonTimer.get() >= 2.5){
+                                         autonomous.shootAndFeed();
+                                             if(Sensors.lineSensor.get() == true){
+                                                 shotNum = shotNum + 1;
+                                             }                        
+                                     }
+                             }
+                             if(shotNum == 3){
+                                 autonomousStep = 1;
+                                 MC.shooters.set(0);
+                                 
+                             }
+ 
+                        break;
+ 
+                        case 1:
+                             gyro.GyroRotate(135);
+                             if(gyro.state == "Good"){
+                                 autonomousStep = 2;
+                                 autonTimer.reset();
+                                 }
+                        break;
+ 
+                        case 2:
+                             if(autonTimer.get() <= 1.5){
+                                 MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+                                 autonomous.driveForward(.25, 2);                                
+                                 if(autonTimer.get() > 1.5){
+                                     autonomous.setDrive(0, 0);
+                                     autonomousStep = 3;
+                                     autonTimer.reset();
+                                 }
+                             }
+                        break;
+                        case 3:
+                             gyro.GyroRotate(45);
+                             if(robotLimeLight.getState() == "Good") {
+                                 autonTimer.reset();
+                                 autonomousStep = 4;
+                             }
+                        break;     
+                        case 4:
+                             if(autonTimer.get() <= 1.5){
+                                 autonomous.driveForward(.25, 2);                               
+                                     if(autonTimer.get() > 1.5){
+                                         autonomous.setDrive(0, 0);
+                                         autonomousStep = 5;
+                                         autonTimer.reset();
+                                         MC.intakeWheels.set(0);
+                                     }
+                             }
+                        break;
+                        
+                        case 5:
+                            if(autonTimer.get() <= 3){
+                                autonomous.driveForward(-.25, 2);                               
+                                     if(autonTimer.get() > 3){
+                                         autonomous.setDrive(0, 0);
+                                         autonomousStep = 6;
+                                         shotNum = 0;
+                                         autonTimer.reset();
+                                     }
                             }
-                        }
-                            if(shotNum == 3){
-                                
-                                stage2 = true;
-                                stage1 = false;
-                            }
-                    }
-                    
-                    if(stage2){
-                        if(!spinDone){
-                            gyro.GyroRotate(135);
-                            if(gyro.state == "Good"){
-                                spinDone = true;
-                                autonTimer.reset();
-                            }
-                        }
-                        else if(autonTimer.get() <= 1.5){
-                            autonomous.driveForward(.25, 2);
-                                if(autonTimer.get() > 1.5){
-                                    autonomous.setDrive(0, 0);
-                                }
-                        }
+                        break;
+                        case 6:
+                             if(shotNum < 3){
+                                 MC.shooters.set(Constants.SHOOTER_SPEED);
+                                 robotShooter.autoAim();
+                                     if(autonTimer.get() >= 2.5){
+                                         autonomous.shootAndFeed();
+                                             if(Sensors.lineSensor.get() == true){
+                                                 shotNum = shotNum + 1;
+                                             }                                   
+                                     }
+                             }           
+                             if(shotNum == 3){
+                                 MC.shooters.set(0);
+                                 autonomous.turnOffShootAndFeed();
+                             }
+                        break;
                     }
                 break;
             case auto3:
                     //Auto 3 Logic
-                    MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                    if(stage1){
-                    if(shotNum < 3){
-                        MC.shooters.set(Constants.SHOOTER_SPEED);
-                        robotShooter.autoAim();
-                        if(autonTimer.get() >= 2.5){
-                            autonomous.shootAndFeed();
-                            if(Sensors.lineSensor.get() == true){
-                                shotNum = shotNum + 1;
-                            }                        
-                        }
-                    }
-                        if(shotNum == 3){
-                            
-                            stage2 = true;
-                            stage1 = false;
-                        }
-                    }    
-                    if(stage2){
-                            if(!spinDone){
-                                gyro.GyroRotate(180);
-                                if(gyro.state == "Good"){
-                                    spinDone = true;
-                                    autonTimer.reset();
-                                }
-                                    
-                                
-                            }
-                            else if(autonTimer.get() <= 3){
-                                autonomous.driveForward(.25, 2);
-                            }
-                            else if(autonTimer.get() > 3){
-                                autonomous.setDrive(0, 0);
-                                gyro.GyroRotate(-180);
-                                if(gyro.state == "Good"){
-                                    autonTimer.reset();
-                                    moveBack = true;
-                                }
-                            }
-                            if(moveBack && autonTimer.get() <= 3){
-                                autonomous.driveForward(.25, 2);
-                                if(autonTimer.get() > 3){
-                                    autonTimer.reset();
-                                    readyToShootAgain = true;
-                                }
-                            }
-  
-                        
-                        if(readyToShootAgain){
-                            if(shotNum <= 8){
+                   switch (autonomousStep){
+                       case 0:
+                            if(shotNum < 3){
                                 MC.shooters.set(Constants.SHOOTER_SPEED);
                                 robotShooter.autoAim();
-                                if(autonTimer.get() >= 2.5){
-                                    autonomous.shootAndFeed();
-                                    if(Sensors.lineSensor.get() == true){
-                                        shotNum = shotNum + 1;
-                                    }                        
+                                    if(autonTimer.get() >= 2.5){
+                                        autonomous.shootAndFeed();
+                                            if(Sensors.lineSensor.get() == true){
+                                                shotNum = shotNum + 1;
+                                            }                        
+                                    }
+                            }
+                            if(shotNum == 3){
+                                autonomousStep = 1;
+                                MC.shooters.set(0);
+                                
+                            }
+
+                       break;
+
+                       case 1:
+                            gyro.GyroRotate(180);
+                            if(gyro.state == "Good"){
+                                autonomousStep = 2;
+                                autonTimer.reset();
                                 }
-                            }   
-                                          
-                        }
-                    }   
+                       break;
+
+                       case 2:
+                            if(autonTimer.get() <= 3){
+                                MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+                                autonomous.driveForward(.25, 2);                                
+                                if(autonTimer.get() > 3){
+                                    autonomous.setDrive(0, 0);
+                                    autonomousStep = 3;
+                                    MC.intakeWheels.set(0);
+                                    autonTimer.reset();
+                                }
+                            }
+                       break;
+                            
+                       case 3:
+                            if(autonTimer.get() <= 3){
+                                autonomous.driveForward(-.25, 2); 
+                                MC.shooters.set(Constants.SHOOTER_SPEED);                               
+                                    if(autonTimer.get() > 3){
+                                        autonomous.setDrive(0, 0);
+                                        autonomousStep = 4;
+                                        MC.intakeWheels.set(0);
+                                        shotNum = 0;
+                                        
+                                    }
+                            }
+                       break;
+                            
+                       case 4:
+                            if(shotNum < 3){
+                                MC.shooters.set(Constants.SHOOTER_SPEED);
+                                robotShooter.autoAim();
+                                    if(autonTimer.get() >= 2.5){
+                                        autonomous.shootAndFeed();
+                                            if(Sensors.lineSensor.get() == true){
+                                                shotNum = shotNum + 1;
+                                            }                                   
+                                    }
+                            }           
+                            if(shotNum == 3){
+                                MC.shooters.set(0);
+                            }
+                       break;
+                   }
                 break;
             case auto4:
                     //Auto 4 Logic
