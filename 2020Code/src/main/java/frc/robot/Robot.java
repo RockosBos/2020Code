@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
         static final DigitalInput lineSensor = new DigitalInput(0);
     }
     
-    boolean stage1 = true;
 
     //PIDController rotatePID = new PIDController(.1, 0, 0);
 
@@ -72,7 +71,7 @@ public class Robot extends TimedRobot {
     //Custom class mechanisms
     TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
-    WheelControl robotControlWheel = new WheelControl();
+    WheelControl robotControlWheel = new WheelControl(colorBoi.getColor());
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
@@ -89,11 +88,6 @@ public class Robot extends TimedRobot {
     boolean firing;
 
     int shotNum = 0;
-    boolean stage2 = false;
-
-    boolean spinDone;
-    boolean readyToShootAgain;
-    boolean moveBack;
 
     //Timers
     Timer timer = new Timer();
@@ -156,7 +150,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Boolean> teleopDashboard_chooser = new SendableChooser<>();
 
   boolean stateBoi;
-
 
   //Test only
   double desiredGyroAngle = 0;
@@ -553,19 +546,25 @@ public class Robot extends TimedRobot {
 
 
     //////servo logic
-    servoToggle.currentState = right.R3;
-    if(right.toggleButton(servoToggle)){
-
-        leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
-        rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
-        ledStrip.changeLEDState("SolidBlue");
-
+    
+    if(right.Trigger){
+      leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+          rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
+          ledStrip.changeLEDState("SolidBlue");
     }
     else{
-        leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
-        rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
-    }
+      servoToggle.currentState = right.R3;
+      if(right.toggleButton(servoToggle)){
+          leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+          rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
+          ledStrip.changeLEDState("SolidBlue");
 
+      }
+      else{
+          leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
+          rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
+      }
+    }
     /*----------------------------------------------------
         Limelight Logic
     ------------------------------------------------------*/
@@ -582,6 +581,8 @@ public class Robot extends TimedRobot {
         robotLimeLight.setMode("camMode", 1);
     }
 
+  robotControlWheel.wheelRotation();
+
     //color wheel start
     if(!isOverrideOn){ //Auto Color Wheel Logic
         if(right.BottomFace){
@@ -589,11 +590,11 @@ public class Robot extends TimedRobot {
         }
     }
     else{   //Manual Color Wheel Logic
-        
+      robotControlWheel.wheelMan(1, right.povLeft, right.povRight, MC.controlWheelWheel);
     }
 
     
-    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+    robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
     
     ////climb logic
   
@@ -605,6 +606,14 @@ public class Robot extends TimedRobot {
                     timer.start();
                 }
                 ///System.out.println("trigger");
+            
+                // if(robotLimeLight.getY() != 0){
+                //   if(robotLimeLight.getY() > 0){
+
+                //   }
+                // }
+                
+
                 MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
