@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
         static final DigitalInput lineSensor = new DigitalInput(0);
     }
     
-    boolean stage1 = true;
 
     //PIDController rotatePID = new PIDController(.1, 0, 0);
 
@@ -89,11 +88,6 @@ public class Robot extends TimedRobot {
     boolean firing;
 
     int shotNum = 0;
-    boolean stage2 = false;
-
-    boolean spinDone;
-    boolean readyToShootAgain;
-    boolean moveBack;
 
     //Timers
     Timer timer = new Timer();
@@ -156,7 +150,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Boolean> teleopDashboard_chooser = new SendableChooser<>();
 
   boolean stateBoi;
-
 
   //Test only
   double desiredGyroAngle = 0;
@@ -302,104 +295,85 @@ public class Robot extends TimedRobot {
                 break;
                 case auto2:
                     //Auto 2 Logic
-                    if(stage1){
-                        if(shotNum < 3){
-                            MC.shooters.set(Constants.SHOOTER_SPEED);
-                            robotShooter.autoAim();
-                            if(autonTimer.get() >= 2.5){
-                                autonomous.shootAndFeed();
-                                if(Sensors.lineSensor.get() == true){
-                                    shotNum = shotNum + 1;
-                                }                        
-                            }
-                        }
-                            if(shotNum == 3){
-                                
-                                stage2 = true;
-                                stage1 = false;
-                            }
+                robotLimeLight.getState();
+                autonTimer.start();
+                if(autonTimer.get() <= 2){
+                  MC.shooters.set(Constants.SHOOTER_SPEED);
+                  ledStrip.changeLEDState("SolidYellow");
+                  switch(LimeLight.limelightState){
+                      case "fastRight":
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                      case "fastLeft":
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                      case "slowLeft":
+                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                      case "slowRight":
+                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                      default:
+                        MC.shooterRotate.set(0);
+                        ledStrip.changeLEDState("SolidGreen");
                     }
-                    
-                    if(stage2){
-                        if(!spinDone){
-                            gyro.GyroRotate(135);
-                            if(gyro.state == "Good"){
-                                spinDone = true;
-                                autonTimer.reset();
-                            }
-                        }
-                        else if(autonTimer.get() <= 1.5){
-                            autonomous.driveForward(.25, 2);
-                                if(autonTimer.get() > 1.5){
-                                    autonomous.setDrive(0, 0);
-                                }
+                }
+                    if(autonTimer.get() <= 4.25){
+                    autonomous.shootAndFeed();
+                    }
+                    else if(autonTimer.get() <= 5.5){
+                    autonomous.turnOffShootAndFeed();
+                    }
+                else if(autonTimer.get() <= 6){
+                    gyro.GyroRotate(135);
+                    }
+                    else if(autonTimer.get() <= 7.25){
+                    autonomous.setDrive(.25, .25);
+                    }
+                    else if(autonTimer.get() <= 8.75){
+                    MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+                    }
+                    else if(autonTimer.get() <= 10.25){
+                    gyro.GyroRotate(-135);
+                    }
+                    else if(autonTimer.get() <= 11.5){
+                    autonomous.setDrive(-.25, -.25);
+                    }
+                    else if(autonTimer.get() <= 13){
+                        MC.shooters.set(Constants.SHOOTER_SPEED);
+                        ledStrip.changeLEDState("SolidYellow");
+                        switch(LimeLight.limelightState){
+                        case "fastRight":
+                            MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                        case "fastLeft":
+                            MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                        break;
+                        case "slowLeft":
+                            MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                        case "slowRight":
+                            MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
+                        break;
+                        default:
+                            MC.shooterRotate.set(0);
+                            ledStrip.changeLEDState("SolidGreen");
                         }
                     }
+                  
+                    else if(autonTimer.get() <= 14.25){
+                        
+                    }
+                    else{
+                        robotIntake.stopAllIntake();
+                        autonomous.turnOffShootAndFeed();
+                        MC.controlWheelRotate.set(0);
+                  }
+                
                 break;
             case auto3:
                     //Auto 3 Logic
-                    MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                    if(stage1){
-                    if(shotNum < 3){
-                        MC.shooters.set(Constants.SHOOTER_SPEED);
-                        robotShooter.autoAim();
-                        if(autonTimer.get() >= 2.5){
-                            autonomous.shootAndFeed();
-                            if(Sensors.lineSensor.get() == true){
-                                shotNum = shotNum + 1;
-                            }                        
-                        }
-                    }
-                        if(shotNum == 3){
-                            
-                            stage2 = true;
-                            stage1 = false;
-                        }
-                    }    
-                    if(stage2){
-                            if(!spinDone){
-                                gyro.GyroRotate(180);
-                                if(gyro.state == "Good"){
-                                    spinDone = true;
-                                    autonTimer.reset();
-                                }
-                                    
-                                
-                            }
-                            else if(autonTimer.get() <= 3){
-                                autonomous.driveForward(.25, 2);
-                            }
-                            else if(autonTimer.get() > 3){
-                                autonomous.setDrive(0, 0);
-                                gyro.GyroRotate(-180);
-                                if(gyro.state == "Good"){
-                                    autonTimer.reset();
-                                    moveBack = true;
-                                }
-                            }
-                            if(moveBack && autonTimer.get() <= 3){
-                                autonomous.driveForward(.25, 2);
-                                if(autonTimer.get() > 3){
-                                    autonTimer.reset();
-                                    readyToShootAgain = true;
-                                }
-                            }
-  
-                        
-                        if(readyToShootAgain){
-                            if(shotNum <= 8){
-                                MC.shooters.set(Constants.SHOOTER_SPEED);
-                                robotShooter.autoAim();
-                                if(autonTimer.get() >= 2.5){
-                                    autonomous.shootAndFeed();
-                                    if(Sensors.lineSensor.get() == true){
-                                        shotNum = shotNum + 1;
-                                    }                        
-                                }
-                            }   
-                                          
-                        }
-                    }   
+                
                 break;
             case auto4:
                     //Auto 4 Logic
@@ -491,19 +465,25 @@ public class Robot extends TimedRobot {
 
 
     //////servo logic
-    servoToggle.currentState = right.R3;
-    if(right.toggleButton(servoToggle)){
-
-        leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
-        rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
-        ledStrip.changeLEDState("SolidBlue");
-
+    
+    if(right.Trigger){
+      leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+          rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
+          ledStrip.changeLEDState("SolidBlue");
     }
     else{
-        leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
-        rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
-    }
+      servoToggle.currentState = right.R3;
+      if(right.toggleButton(servoToggle)){
+          leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+          rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
+          ledStrip.changeLEDState("SolidBlue");
 
+      }
+      else{
+          leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
+          rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
+      }
+    }
     /*----------------------------------------------------
         Limelight Logic
     ------------------------------------------------------*/
@@ -543,6 +523,14 @@ public class Robot extends TimedRobot {
                     timer.start();
                 }
                 ///System.out.println("trigger");
+            
+                // if(robotLimeLight.getY() != 0){
+                //   if(robotLimeLight.getY() > 0){
+
+                //   }
+                // }
+                
+
                 MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
                 switch(LimeLight.limelightState){
