@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
     boolean firing;
 
     int shotNum = 0;
-    boolean readyToMove = false;
+    boolean stage2 = false;
 
     boolean spinDone;
     boolean readyToShootAgain;
@@ -315,10 +315,26 @@ public class Robot extends TimedRobot {
                         }
                             if(shotNum == 3){
                                 
-                                readyToMove = true;
+                                stage2 = true;
                                 stage1 = false;
                             }
-                    }    
+                    }
+                    
+                    if(stage2){
+                        if(!spinDone){
+                            gyro.GyroRotate(135);
+                            if(gyro.state == "Good"){
+                                spinDone = true;
+                                autonTimer.reset();
+                            }
+                        }
+                        else if(autonTimer.get() <= 1.5){
+                            autonomous.driveForward(.25, 2);
+                                if(autonTimer.get() > 1.5){
+                                    autonomous.setDrive(0, 0);
+                                }
+                        }
+                    }
                 break;
             case auto3:
                     //Auto 3 Logic
@@ -336,14 +352,13 @@ public class Robot extends TimedRobot {
                     }
                         if(shotNum == 3){
                             
-                            readyToMove = true;
+                            stage2 = true;
                             stage1 = false;
                         }
                     }    
-                    if(readyToMove){
+                    if(stage2){
                             if(!spinDone){
                                 gyro.GyroRotate(180);
-                                autonTimer.reset();
                                 if(gyro.state == "Good"){
                                     spinDone = true;
                                     autonTimer.reset();
