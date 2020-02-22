@@ -344,7 +344,28 @@ public class Robot extends TimedRobot {
                 }
                 break;
             case auto2:
+<<<<<<< Updated upstream
                     //Auto 2 Logic
+=======
+                //Auto 2 Logic
+                if(stage1){
+                    if(shotNum < 3){
+                        MC.shooters.set(Constants.SHOOTER_SPEED);
+                        robotShooter.autoAim();
+                        if(autonTimer.get() >= 2.5){
+                            autonomous.shootAndFeed();
+                            if(Sensors.lineSensor.get() == true){
+                                shotNum++;
+                            }                        
+                        }
+                    }
+                        if(shotNum == 3){
+                                
+                            readyToMove = true;
+                            stage1 = false;
+                        }
+                    }    
+>>>>>>> Stashed changes
                 break;
             case auto3:
                     //Auto 3 Logic
