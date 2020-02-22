@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     //Custom class mechanisms
     TheColorSensor colorBoi = new TheColorSensor();
     LimeLight robotLimeLight = new LimeLight();
-    WheelControl robotControlWheel = new WheelControl();
+    WheelControl robotControlWheel = new WheelControl(colorBoi.getColor());
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
     Climb robotClimb = new Climb();
@@ -500,6 +500,8 @@ public class Robot extends TimedRobot {
         robotLimeLight.setMode("camMode", 1);
     }
 
+  robotControlWheel.wheelRotation();
+
     //color wheel start
     if(!isOverrideOn){ //Auto Color Wheel Logic
         if(right.BottomFace){
@@ -507,11 +509,11 @@ public class Robot extends TimedRobot {
         }
     }
     else{   //Manual Color Wheel Logic
-        
+      robotControlWheel.wheelMan(1, right.povLeft, right.povRight, MC.controlWheelWheel);
     }
 
     
-    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+    robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
     
     ////climb logic
   

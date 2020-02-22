@@ -15,16 +15,24 @@
    //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
    import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
    import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import frc.robot.Robot.Constants;
+import frc.robot.Robot.MC;
    
    
    
    //Color Wheel Stuff
    
    public class WheelControl{//wheel position
-       
     int step = 0;
-
+    char color;
     char startingColor;
+    char prevColor;
+    boolean ready;
+
+    WheelControl(char color){
+        this.color = color;
+    }
 
     public void wheelMan(double speed, boolean left, boolean right, WPI_TalonSRX motor){
         if(left)
@@ -55,8 +63,7 @@
         
         if(color != desiredColor){// left negitave right positive 
             //System.out.println("Fuck");
-            if(desiredColor == 'G'){///////////////////////////////green///////////////////
-                
+            if(desiredColor == 'G'){///////////////////////////////green///////////////////  
                 if(color == 'R')// blue to green
                     motor.set(-ss);
                 else if(color == 'G')// yellow to green
@@ -132,45 +139,34 @@
         }
     }
 
-    public void wheelRotation(char color, double speed, WPI_TalonSRX motor ){
-        if(step == 0){
-            startingColor = color;
-            motor.set(1.0);
-            step = 1;
-        } else if(step == 1){
-            if(startingColor == color){
-                motor.set(1.0);
-                step = 2;
+    public void wheelRotation(){
+        if(!ready){
+            if(startingColor != color && startingColor != 'N'){
+                ready = true;
             }
-        } else if(step == 2){
-            if(startingColor == color){
-                motor.set(1.0);
-                step = 3;
-            }
-        } else if(step == 3){
-            if(startingColor == color){
-                motor.set(1.0);
-                step = 4;
-            }
-        } else if(step == 4){
-            if(startingColor == color){
-                motor.set(1.0);
-                step = 5;
-            }
-        } else if(step == 5){
-            if(startingColor == color){
-                motor.set(1.0);
-                step = 6;
+        }
+        if(step < 6){
+            MC.controlWheelWheel.set(Constants.CONTROL_WHEEL_WHEEL_SPEED);
+            if(step == 0){
+                startingColor = color;
+                step = 1;
+                ready = false;
+            } 
+            if(color == startingColor && ready){
+                step = step + 1;
+                ready = false;
             }
         } else if(step == 6){
-            if(startingColor == color){
-                motor.set(.25);
-                step = 7;
+            MC.controlWheelWheel.set(Constants.CONTROL_WHEEL_WHEEL_SPEED * .25);
+            if(color == startingColor && ready){
+                step = step + 1;
+                ready = false;
             }
         } else if(step == 7){
-            if(startingColor == color){
-                motor.set(0);
-                step = 8;
+            MC.controlWheelWheel.set(0);
+            if(color == startingColor && ready){
+                step = step + 1;
+                ready = false;
             }
         } 
     }
