@@ -1,5 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.hal.DigitalGlitchFilterJNI;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 /*
  ______     __  __     ______     ______     ______   ______     ______    
 /\  ___\   /\ \_\ \   /\  __ \   /\  __ \   /\__  _\ /\  ___\   /\  == \   
@@ -12,6 +15,9 @@ package frc.robot;
 //import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import frc.robot.Robot.Constants;
 import frc.robot.Robot.MC;
+import frc.robot.Robot.Sensors;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -23,9 +29,16 @@ public class Shooter{
     Controller left;
     Controller right;
 
+    Timer shootTimer = new Timer();
+    static final double SHOOT_DELAY = 0.5;
+    boolean photoPreviousState = true;
+    boolean waitForShot = false;
+    double prevTimer = 0;
+
     Shooter(Controller left, Controller right){
         this.left = left;
         this.right = right;
+        shootTimer.start();
      
     }
 
@@ -57,19 +70,32 @@ public class Shooter{
     //////////////////////Auto-Shooter//////////////////////////////////
 
     public void autoShoot(){
-        
+        SmartDashboard.putNumber("Shooter Timer", shootTimer.get());
+        SmartDashboard.putNumber("Current Delay", shootTimer.get() - prevTimer);
+        SmartDashboard.putNumber("Previous Time", prevTimer);
+
         MC.shooters.set(-1);
         
         if(LimeLight.limelightState == "stop"){
-            MC.upperFeed.set(1);
-            MC.lowerFeed.set(.80);
+            if(!Sensors.lineSensor.get() && Sensors.lineSensor.get() != photoPreviousState){
+                prevTimer = shootTimer.get();
+            }
+            if(shootTimer.get() - prevTimer < SHOOT_DELAY){
+                MC.upperFeed.set(0);
+                MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            }
+            else{
+                MC.upperFeed.set(Constants.UPPER_FEED_SHOOTER_SPEED);
+                MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            }
         }
         else{
             MC.upperFeed.set(0);
             MC.lowerFeed.set(0);
         }
-          
+        photoPreviousState = Sensors.lineSensor.get();
     }
+    
 
     public void autoAim(){
         switch(LimeLight.limelightState){

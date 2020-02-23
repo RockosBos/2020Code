@@ -53,7 +53,9 @@ public class Robot extends TimedRobot {
     static final WPI_VictorSPX lifter = new WPI_VictorSPX(14);
     //static final DigitalInput lineSensor = new DigitalInput(0);
 }
-    DigitalInput lineSensor = new DigitalInput(0);
+    static final class Sensors{
+        static final DigitalInput lineSensor = new DigitalInput(0);
+    }
 
     //PIDController rotatePID = new PIDController(.1, 0, 0);
 
@@ -105,13 +107,13 @@ public class Robot extends TimedRobot {
      }
      class Constants{
          static final double INTAKE_LIFT_SPEED = 1.0;
-         static final double INTAKE_WHEELS_SPEED = 1.0;
+         static final double INTAKE_WHEELS_SPEED = .9 ;
          static final double UPPER_FEED_INTAKE_SPEED = 0.7;
-         static final double UPPER_FEED_SHOOTER_SPEED = 0.8;
-         static final double LOWER_FEED_SPEED = -1.0;
+         static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
+         static final double LOWER_FEED_SPEED = 1.0;
          static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
          static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
-         static final double SHOOTER_SPEED = -0.8;
+         static final double SHOOTER_SPEED = -.92;
          static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
          static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
          static final double LIFT_ROTATE_SPEED = 0.1;
@@ -242,7 +244,7 @@ public class Robot extends TimedRobot {
                         MC.shooters.set(Constants.SHOOTER_SPEED);
                     }
                     else {
-                        boolean lineSensorPrevState = lineSensor.get();
+                        boolean lineSensorPrevState = Sensors.lineSensor.get();
                         if(shotNum < 3){
                             robotShooter.autoAim();
                             robotShooter.autoShoot();
@@ -255,7 +257,7 @@ public class Robot extends TimedRobot {
                             robotLimeLight.setMode("camMode", 1);
                             autonomousStep = 2;
                         }
-                        if(lineSensor.get() && lineSensor.get() != lineSensorPrevState){
+                        if(Sensors.lineSensor.get() && Sensors.lineSensor.get() != lineSensorPrevState){
                             shotNum++;
                         }
                        
@@ -330,7 +332,7 @@ public class Robot extends TimedRobot {
     if(!isOverrideOn){ //Auto Intake Logic
         if(left.BottomFace){
             //System.out.println("bottom face pressed");
-            if(lineSensor.get()){
+            if(Sensors.lineSensor.get()){
                 MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
             }
             else{  
@@ -441,7 +443,7 @@ public class Robot extends TimedRobot {
     }
 
     
-    robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+    
     
     ////climb logic
   
@@ -470,28 +472,24 @@ public class Robot extends TimedRobot {
                         break;
                     default:
                         MC.shooterRotate.set(0);
+
+                        robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
                         ledStrip.changeLEDState("SolidGreen");
                         
                 }
-                if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-                    MC.upperFeed.set(1);
-                    MC.lowerFeed.set(.80);
+                if(timer.get() > 2.5){
+                    robotShooter.autoShoot();
                 }
-                else{
-                    MC.upperFeed.set(0);
-                    MC.lowerFeed.set(0);
-                }
-            
                 triggerPrev = true;
             }
             else{
                 MC.shooters.set(0);
                 MC.upperFeed.set(0);
                 MC.lowerFeed.set(0);
-                MC.shooterRotate.set(0);
                 timer.stop();
                 timer.reset();
                 triggerPrev = false;
+                robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
             }
         }   
         else{
@@ -521,7 +519,7 @@ public class Robot extends TimedRobot {
         MC.liftRotate.set(0);
     }
     ledStrip.setLED();
-    
+       
     SmartDashboard.putNumber("Dif", testTimer.get() - last);
     SmartDashboard.putNumber("Current State", testTimer.get());
     SmartDashboard.putNumber("Previous State", last);
@@ -532,7 +530,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Left_R3", left.R3);
     SmartDashboard.putBoolean("Left_R5", left.R5);
     SmartDashboard.putBoolean("Left_R6", left.R6);
-    SmartDashboard.putBoolean("Line Sensor", lineSensor.get());
+    SmartDashboard.putBoolean("Line Sensor", Sensors.lineSensor.get());
     SmartDashboard.putBoolean("Trigger", right.Trigger);
     SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
     SmartDashboard.putNumber("Timer", timer.get());
