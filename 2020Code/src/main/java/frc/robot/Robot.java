@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
         boolean value = false;
      }
      class Constants{
-         static final double INTAKE_LIFT_SPEED = 1.0;
+         static final double INTAKE_LIFT_SPEED = .5;
          static final double INTAKE_WHEELS_SPEED = .9 ;
          static final double UPPER_FEED_INTAKE_SPEED = 0.7;
          static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
@@ -404,7 +404,7 @@ public class Robot extends TimedRobot {
 
     //////servo logic
     servoToggle.currentState = right.R3;
-    if(right.toggleButton(servoToggle)){
+    if(right.toggleButton(servoToggle) || right.Trigger){
 
         leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
         rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
