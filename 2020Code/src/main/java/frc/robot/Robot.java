@@ -132,9 +132,9 @@ public class Robot extends TimedRobot {
     
      //Autonomous Variables
     private static final String initiationLineMove = "initiationLineMove";
-    private static final String auto1 = "Auton 1";
-    private static final String auto2 = "Auton 2";
-    private static final String auto3 = "Auton 3";
+    private static final String moveBackwards = "moveBackwards";
+    private static final String centerMoveShoot = "centerMoveShoot";
+    private static final String trenchMoveShoot = "trenchMoveShoot";
     private static final String auto4 = "Auton 4";
     private static final String auto5 = "Auton 5";
     private Timer autonTimer = new Timer();
@@ -163,9 +163,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
         auto_chooser.setDefaultOption("Move from Initiation line", initiationLineMove);
-        auto_chooser.addOption("Auto 1", auto1);
-        auto_chooser.addOption("Auto 2", auto2);
-        auto_chooser.addOption("Auto 3", auto3);
+        auto_chooser.addOption("Move Backwards", moveBackwards);
+        auto_chooser.addOption("Center start, shoot, get balls, shoot", centerMoveShoot);
+        auto_chooser.addOption("Trench start, shoot, get balls, shoot", trenchMoveShoot);
         auto_chooser.addOption("Auto 4", auto4);
         auto_chooser.addOption("Auto 5", auto5);
 
@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
             autonDelayTimer.stop();
             switch (m_autoSelected) {
             //list of diffrent scenerios//
-            case auto1:
+            case moveBackwards:
                     //Auto 1 Logic
                 switch(autonomousStep){
                 case 0:
@@ -300,7 +300,7 @@ public class Robot extends TimedRobot {
                     
                 }
                 break;
-                case auto2:
+                case centerMoveShoot:
                     //Auto 2 Logic
                     switch (autonomousStep){
                         case 0:
@@ -389,7 +389,7 @@ public class Robot extends TimedRobot {
                         break;
                     }
                 break;
-            case auto3:
+            case trenchMoveShoot:
                     //Auto 3 Logic
                    switch (autonomousStep){
                        case 0:
