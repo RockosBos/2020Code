@@ -12,6 +12,8 @@ package frc.robot;
 //import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import frc.robot.Robot.Constants;
 import frc.robot.Robot.MC;
+import frc.robot.Robot.Sensors;
+import edu.wpi.first.wpilibj.Timer;
 
 
 
@@ -22,6 +24,11 @@ public class Shooter{
 
     Controller left;
     Controller right;
+    Timer shootTimer = new Timer();
+
+    double prevTimer;
+    static final double SHOOT_DELAY = 0.5;
+    boolean linePreviousState = true;
 
     Shooter(Controller left, Controller right){
         this.left = left;
@@ -61,13 +68,23 @@ public class Shooter{
         MC.shooters.set(-1);
         
         if(LimeLight.limelightState == "stop"){
-            MC.upperFeed.set(1);
-            MC.lowerFeed.set(.80);
+            if(!Sensors.lineSensor.get() && Sensors.lineSensor.get() != linePreviousState){
+                prevTimer = shootTimer.get();
+            }
+            if(shootTimer.get() - prevTimer < SHOOT_DELAY){
+                MC.upperFeed.set(0);
+                MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            }
+            else{
+                MC.upperFeed.set(Constants.UPPER_FEED_SHOOTER_SPEED);
+                MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
+            }
         }
         else{
             MC.upperFeed.set(0);
             MC.lowerFeed.set(0);
         }
+        linePreviousState = Sensors.lineSensor.get();
           
     }
 
