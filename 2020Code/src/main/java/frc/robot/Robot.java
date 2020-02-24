@@ -172,6 +172,12 @@ public class Robot extends TimedRobot {
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
 
+        autonDashboard_chooser.setDefaultOption("Auton Dashboard Off", false);
+        autonDashboard_chooser.addOption("Auton Dashboard On", true);
+
+        teleopDashboard_chooser.setDefaultOption("Teleop Dashboard Off", false);
+        teleopDashboard_chooser.addOption("Teleop Dashboard On", true);
+
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
 
@@ -203,10 +209,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    /*isOverrideOn = override_chooser.getSelected();
-    displayAutoDashboard = autonDashboard_chooser.getSelected();
-    displayTeleopDashboard = teleopDashboard_chooser.getSelected();
-    */
+    
+        isOverrideOn = override_chooser.getSelected();
+        displayAutoDashboard = autonDashboard_chooser.getSelected();
+        displayTeleopDashboard = teleopDashboard_chooser.getSelected();
+
   }
 
   @Override
@@ -489,6 +496,8 @@ public class Robot extends TimedRobot {
             SmartDashboard.putString("AutonMode", m_autoSelected);
             SmartDashboard.putNumber("Auton Step", autonomousStep);
             SmartDashboard.putNumber("Auton Timer", autonTimer.get());
+            SmartDashboard.putNumber("Number Shot", shotNum);
+            
         }
     }
 
@@ -616,9 +625,11 @@ public class Robot extends TimedRobot {
 
                 MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
+                
                 robotShooter.autoAim();
-                robotShooter.autoShoot();
-            
+                if(timer.get() < 2.5){
+                    robotShooter.autoShoot();
+                }
                 triggerPrev = true;
             }
             else{
