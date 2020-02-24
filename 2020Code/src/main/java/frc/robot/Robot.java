@@ -203,10 +203,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    isOverrideOn = override_chooser.getSelected();
+    /*isOverrideOn = override_chooser.getSelected();
     displayAutoDashboard = autonDashboard_chooser.getSelected();
     displayTeleopDashboard = teleopDashboard_chooser.getSelected();
-      
+    */
   }
 
   @Override
@@ -616,32 +616,8 @@ public class Robot extends TimedRobot {
 
                 MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
-                switch(LimeLight.limelightState){
-                    case "fastRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "fastLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_FAST_SPEED);
-                        break;
-                    case "slowLeft":
-                        MC.shooterRotate.set(Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    case "slowRight":
-                        MC.shooterRotate.set(-Constants.SHOOTER_ROTATE_SLOW_SPEED);
-                        break;
-                    default:
-                        MC.shooterRotate.set(0);
-                        ledStrip.changeLEDState("SolidGreen");
-                        
-                }
-                if(LimeLight.limelightState == "stop" && timer.get() > 2.5){
-                    MC.upperFeed.set(1);
-                    MC.lowerFeed.set(.80);
-                }
-                else{
-                    MC.upperFeed.set(0);
-                    MC.lowerFeed.set(0);
-                }
+                robotShooter.autoAim();
+                robotShooter.autoShoot();
             
                 triggerPrev = true;
             }
@@ -649,7 +625,7 @@ public class Robot extends TimedRobot {
                 MC.shooters.set(0);
                 MC.upperFeed.set(0);
                 MC.lowerFeed.set(0);
-                MC.shooterRotate.set(0);
+                robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
                 timer.stop();
                 timer.reset();
                 triggerPrev = false;
@@ -658,6 +634,7 @@ public class Robot extends TimedRobot {
         else{
             robotShooter.manFire(Constants.SHOOTER_SPEED);
             robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+            
         }
     }
    

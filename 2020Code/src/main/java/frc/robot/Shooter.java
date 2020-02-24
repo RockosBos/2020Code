@@ -33,6 +33,7 @@ public class Shooter{
     Shooter(Controller left, Controller right){
         this.left = left;
         this.right = right;
+        shootTimer.start();
      
     }
 
