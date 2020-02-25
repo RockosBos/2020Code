@@ -110,28 +110,32 @@ public class Robot extends TimedRobot {
         boolean prevState = false;
         boolean value = false;
      }
-     class Constants{
-         static final double INTAKE_LIFT_SPEED = .5;
-         static final double INTAKE_WHEELS_SPEED = .75;
-         static final double UPPER_FEED_INTAKE_SPEED = 0.7;
-         static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
-         static final double LOWER_FEED_SPEED = 1.0;
-         static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
-         static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
-         static final double SHOOTER_SPEED = -0.92;
-         static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
-         static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
-         static final double LIFT_ROTATE_SPEED = 0.1;
-         static final double LIFTER_SPEED = 0.1;
-         static final int LEFT_SERVO_HIGH_GEAR = 50;
-         static final int RIGHT_SERVO_HIGH_GEAR = 155;
-         static final int LEFT_SERVO_LOW_GEAR = 120;
-         static final int RIGHT_SERVO_LOW_GEAR = 85;
-         static final double LIMELIGHT_MIN = -1;
-         static final double LIMELIGHT_MAX = 1;     
-     }
+    class Constants{
+        static final double INTAKE_LIFT_SPEED = .5;
+        static final double INTAKE_WHEELS_SPEED = .75;
+        static final double UPPER_FEED_INTAKE_SPEED = 0.7;
+        static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
+        static final double LOWER_FEED_SPEED = 1.0;
+        static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
+        static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
+        static final double SHOOTER_SPEED = -0.92;
+        static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
+        static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
+        static final double LIFT_ROTATE_SPEED = 0.1;
+        static final double LIFTER_SPEED = 0.1;
+        static final int LEFT_SERVO_HIGH_GEAR = 50;
+        static final int RIGHT_SERVO_HIGH_GEAR = 155;
+        static final int LEFT_SERVO_LOW_GEAR = 120;
+        static final int RIGHT_SERVO_LOW_GEAR = 85;
+        static final double LIMELIGHT_MAX = 1; 
+        static final double LIMELIGHT_SPEED = 0.8;
+    }
 
-     ToggleLogic servoToggle = new ToggleLogic();
+    double yShooterSpeed = robotLimeLight.ySpeed;
+
+    
+
+    ToggleLogic servoToggle = new ToggleLogic();
     
      //Autonomous Variables
     private static final String initiationLineMove = "initiationLineMove";

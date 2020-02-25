@@ -15,7 +15,8 @@ public class LimeLight{
     public static String limelightState = "";
     public static String limelightDistance = "";
     public boolean crosshairIsFound = false;
-    public double limeY = 0.0;
+    public double ySpeed;
+    public static double yReal;
 
     public double getX(){
         return tx.getDouble(0.0);
@@ -63,7 +64,10 @@ public class LimeLight{
         table.getEntry(tableEntry).setNumber(value);
     }
 
-    
+    public static double ySpeed(double yReal){
+        ySpeed = (Constants.LIMELIGHT_SPEED + (1 - Constants.LIMELIGHT_SPEED) * ((Constants.LIMELIGHT_MAX - yReal) / 15)) ;
+        return ySpeed;
+    }
     public String getState(){
         if(getX() == 0.0 && getY() == 0.0){
             limelightState = "Not Found";
