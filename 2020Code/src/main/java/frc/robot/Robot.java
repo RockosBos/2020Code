@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.cameraserver.CameraServer;
+import java.lang.Math;
 
 
 
@@ -126,6 +127,8 @@ public class Robot extends TimedRobot {
          static final int RIGHT_SERVO_HIGH_GEAR = 155;
          static final int LEFT_SERVO_LOW_GEAR = 120;
          static final int RIGHT_SERVO_LOW_GEAR = 85;
+         static final double LIMELIGHT_MIN = -1;
+         static final double LIMELIGHT_MAX = 1;     
      }
 
      ToggleLogic servoToggle = new ToggleLogic();

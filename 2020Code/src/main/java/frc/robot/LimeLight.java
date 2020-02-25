@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry; 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot.Constants;
 
 public class LimeLight{
 
@@ -12,8 +13,9 @@ public class LimeLight{
     private NetworkTableEntry ty = table.getEntry("ty"); 
     private NetworkTableEntry ta = table.getEntry("ta");
     public static String limelightState = "";
+    public static String limelightDistance = "";
     public boolean crosshairIsFound = false;
-    
+    public double limeY = 0.0;
 
     public double getX(){
         return tx.getDouble(0.0);
@@ -61,6 +63,7 @@ public class LimeLight{
         table.getEntry(tableEntry).setNumber(value);
     }
 
+    
     public String getState(){
         if(getX() == 0.0 && getY() == 0.0){
             limelightState = "Not Found";
