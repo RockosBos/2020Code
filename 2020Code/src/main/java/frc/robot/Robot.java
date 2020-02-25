@@ -99,17 +99,17 @@ public class Robot extends TimedRobot {
 
     //Drive Initialization
      
-     DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
-     Servo leftServo = new Servo(8);
-     Servo rightServo = new Servo(9);
+    DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
+    Servo leftServo = new Servo(8);
+    Servo rightServo = new Servo(9);
      
-     Autonomous autonomous = new Autonomous(MC.leftDrive, MC.rightDrive);
+    Autonomous autonomous = new Autonomous(MC.leftDrive, MC.rightDrive);
 
-     class ToggleLogic{
+    class ToggleLogic{
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
-     }
+    }
     class Constants{
         static final double INTAKE_LIFT_SPEED = .5;
         static final double INTAKE_WHEELS_SPEED = .75;
@@ -225,7 +225,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic(){
-    ledStrip.rainbow();
+      ledStrip.rainbow();
   }
   
 
@@ -316,83 +316,83 @@ public class Robot extends TimedRobot {
                                  robotShooter.autoAim();
                                      if(autonTimer.get() >= 2.5){
                                          autonomous.shootAndFeed();
-                                             if(Sensors.lineSensor.get() == true){
-                                                 shotNum = shotNum + 1;
-                                             }                        
-                                     }
-                             }
-                             if(shotNum == 3){
-                                 autonomousStep = 1;
-                                 MC.shooters.set(0);
+                                            if(Sensors.lineSensor.get() == true){
+                                                shotNum = shotNum + 1;
+                                            }                        
+                                    }
+                            }
+                            if(shotNum == 3){
+                                autonomousStep = 1;
+                                MC.shooters.set(0);
                                  
-                             }
+                            }
  
                         break;
  
                         case 1:
-                             gyro.GyroRotate(135);
-                             if(gyro.state == "Good"){
-                                 autonomousStep = 2;
-                                 autonTimer.reset();
-                                 }
+                            gyro.GyroRotate(135);
+                            if(gyro.state == "Good"){
+                                autonomousStep = 2;
+                                autonTimer.reset();
+                                }
                         break;
  
                         case 2:
                              if(autonTimer.get() <= 1.5){
-                                 MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                                 autonomous.driveForward(.25, 2);                                
-                                 if(autonTimer.get() > 1.5){
-                                     autonomous.setDrive(0, 0);
-                                     autonomousStep = 3;
-                                     autonTimer.reset();
-                                 }
+                                MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+                                autonomous.driveForward(.25, 2);                                
+                                if(autonTimer.get() > 1.5){
+                                    autonomous.setDrive(0, 0);
+                                    autonomousStep = 3;
+                                    autonTimer.reset();
+                                }
                              }
                         break;
                         case 3:
-                             gyro.GyroRotate(45);
-                             if(robotLimeLight.getState() == "Good") {
-                                 autonTimer.reset();
-                                 autonomousStep = 4;
+                            gyro.GyroRotate(45);
+                            if(robotLimeLight.getState() == "Good") {
+                                autonTimer.reset();
+                                autonomousStep = 4;
                              }
                         break;     
                         case 4:
-                             if(autonTimer.get() <= 1.5){
-                                 autonomous.driveForward(.25, 2);                               
-                                     if(autonTimer.get() > 1.5){
-                                         autonomous.setDrive(0, 0);
-                                         autonomousStep = 5;
-                                         autonTimer.reset();
-                                         MC.intakeWheels.set(0);
-                                     }
-                             }
+                            if(autonTimer.get() <= 1.5){
+                                autonomous.driveForward(.25, 2);                               
+                                    if(autonTimer.get() > 1.5){
+                                        autonomous.setDrive(0, 0);
+                                        autonomousStep = 5;
+                                        autonTimer.reset();
+                                        MC.intakeWheels.set(0);
+                                    }
+                            }
                         break;
                         
                         case 5:
                             if(autonTimer.get() <= 3){
                                 autonomous.driveForward(-.25, 2);                               
-                                     if(autonTimer.get() > 3){
-                                         autonomous.setDrive(0, 0);
-                                         autonomousStep = 6;
-                                         shotNum = 0;
-                                         autonTimer.reset();
-                                     }
+                                    if(autonTimer.get() > 3){
+                                        autonomous.setDrive(0, 0);
+                                        autonomousStep = 6;
+                                        shotNum = 0;
+                                        autonTimer.reset();
+                                    }
                             }
                         break;
                         case 6:
                              if(shotNum < 3){
-                                 MC.shooters.set(Constants.SHOOTER_SPEED);
-                                 robotShooter.autoAim();
-                                     if(autonTimer.get() >= 2.5){
-                                         autonomous.shootAndFeed();
-                                             if(Sensors.lineSensor.get() == true){
-                                                 shotNum = shotNum + 1;
-                                             }                                   
-                                     }
-                             }           
-                             if(shotNum == 3){
-                                 MC.shooters.set(0);
-                                 autonomous.turnOffShootAndFeed();
-                             }
+                                MC.shooters.set(Constants.SHOOTER_SPEED);
+                                robotShooter.autoAim();
+                                    if(autonTimer.get() >= 2.5){
+                                        autonomous.shootAndFeed();
+                                            if(Sensors.lineSensor.get() == true){
+                                                shotNum = shotNum + 1;
+                                            }                                   
+                                    }
+                            }           
+                            if(shotNum == 3){
+                                MC.shooters.set(0);
+                                autonomous.turnOffShootAndFeed();
+                            }
                         break;
                     }
                 break;
@@ -504,7 +504,6 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber("Auton Step", autonomousStep);
             SmartDashboard.putNumber("Auton Timer", autonTimer.get());
             SmartDashboard.putNumber("Number Shot", shotNum);
-            
         }
     }
 
@@ -514,7 +513,6 @@ public class Robot extends TimedRobot {
   @Override
     public void teleopPeriodic() { 
         ledStrip.changeLEDState("SolidWhite");
-        
         right.updateValues(); //This updates Controller Values DO NOT REMOVE!!!
         left.updateValues();
     /*-----------------------------------------------------
@@ -555,16 +553,14 @@ public class Robot extends TimedRobot {
         
     }
     else{ //Manual Intake Logic
-        robotIntake.operateManually();
-        //  System.out.println(rotatePID.calculate(robotLimeLight.getX()));
-        
+        robotIntake.operateManually();   
     }
 
 
     //////servo logic
     
     if(right.Trigger){
-      leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
+        leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
           rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
           ledStrip.changeLEDState("SolidBlue");
     }
@@ -621,16 +617,8 @@ public class Robot extends TimedRobot {
                 if(!triggerPrev){
                     timer.start();
                 }
-                ///System.out.println("trigger");
-            
-                // if(robotLimeLight.getY() != 0){
-                //   if(robotLimeLight.getY() > 0){
-
-                //   }
-                // }
                 
-
-                MC.shooters.set(Constants.SHOOTER_SPEED);
+                MC.shooters.set(yShooterSpeed);
                 ledStrip.changeLEDState("SolidYellow");
                 
                 robotShooter.autoAim();
