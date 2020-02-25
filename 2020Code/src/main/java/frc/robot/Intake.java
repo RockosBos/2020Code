@@ -82,33 +82,5 @@ public class Intake{
             MC.upperFeed.set(0);
         }
     }
-
-
-
-
-
-    /*public void intakeBall(boolean button, double speed, WPI_TalonSRX motor){
-        if(button){
-            motor.set(-speed);
-        } else motor.set(0);
-    }
-    public void intakeBall(boolean button, double speed, WPI_VictorSPX motor){
-        if(button){
-            motor.set(-speed);
-        } else motor.set(0);
-    }
-
-    public void intakeBall(boolean button, double speed, double offset, WPI_TalonSRX motor){
-        if(button){
-            motor.set(-speed);
-            System.out.println("ahhhh");
-        } else motor.set(-offset); System.out.println("-ahhhh");
-    }
-
-    public void intakeBall(boolean button, double speed, double offset, WPI_VictorSPX motor){
-        if(button){
-            motor.set(-speed);
-        } else motor.set(-offset);
-    }*/
 }
 	

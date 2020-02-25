@@ -2,16 +2,15 @@ What needs to get done
 
 Testing:
 *Positon Wheel Spin
-*Shooter Manual Fire
-*Intake
+
+*Auto Fire: Rotate
+*Auto Fie: Distance
 
 
 Needs to be Writen:
-*Auto Fire: Rotate
-*Auto Fie: Distance
 *Rotate Wheel Spin
 *Manual Rotate Shooter
-*Nick's Secret Project
+
 
 
 

@@ -64,7 +64,7 @@ public class LimeLight{
         table.getEntry(tableEntry).setNumber(value);
     }
 
-    public static double ySpeed(double yReal){
+    public double ySpeed(double yReal){
         ySpeed = (Constants.LIMELIGHT_SPEED + (1 - Constants.LIMELIGHT_SPEED) * ((Constants.LIMELIGHT_MAX - yReal) / 15)) ;
         return ySpeed;
     }
