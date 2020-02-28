@@ -73,7 +73,6 @@ public class Robot extends TimedRobot {
     WheelControl robotControlWheel = new WheelControl(colorBoi.getColor());
     LED ledStrip = new LED(0, 48);
     String fieldColor = DriverStation.getInstance().getGameSpecificMessage();
-    Climb robotClimb = new Climb();
     Shooter robotShooter = new Shooter(left, right);
     Intake robotIntake = new Intake(left, right);
     Gyros gyro = new Gyros(MC.rightDrive, MC.leftDrive);
@@ -100,6 +99,8 @@ public class Robot extends TimedRobot {
     DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
     Servo leftServo = new Servo(8);
     Servo rightServo = new Servo(9);
+
+    Servo climbServo = new Servo(7);
      
     Autonomous autonomous = new Autonomous(MC.leftDrive, MC.rightDrive);
 
@@ -123,10 +124,13 @@ public class Robot extends TimedRobot {
         static final double LIFTER_SPEED = 0.1;
         static final int LEFT_SERVO_HIGH_GEAR = 50;
         static final int RIGHT_SERVO_HIGH_GEAR = 155;
+        static final int CLIMB_SERVO = 1;
+        static final int CLIMB_SERVO_DEFAULT = 0;
         static final int LEFT_SERVO_LOW_GEAR = 120;
         static final int RIGHT_SERVO_LOW_GEAR = 85;
         static final double LIMELIGHT_MAX = 1; 
         static final double LIMELIGHT_SPEED = 0.8;
+        
     }
 
     double yShooterSpeed = robotLimeLight.ySpeed(robotLimeLight.getY());
@@ -196,6 +200,8 @@ public class Robot extends TimedRobot {
 
         leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);
         rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR);
+
+        climbServo.set(Constants.CLIMB_SERVO_DEFAULT);
 
         //rotatePID.setSetpoint(0);
         testTimer.start();
@@ -564,7 +570,7 @@ public class Robot extends TimedRobot {
           ledStrip.changeLEDState("SolidBlue");
     }
     else{
-      servoToggle.currentState = right.R3;
+      servoToggle.currentState = right.BottomFace;
       if(right.toggleButton(servoToggle)){
           leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
           rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
@@ -644,25 +650,19 @@ public class Robot extends TimedRobot {
     }
    
     //Climb Logic//
+    if(right.L1){
+        climbServo.set(Constants.CLIMB_SERVO);
+    }
 
-    if(right.L6){
+    if(right.L3){
         MC.lifter.set(Constants.LIFTER_SPEED);
+    } else if(right.L6){
+        MC.lifter.set(-Constants.LIFTER_SPEED);
     }
     else{
         MC.lifter.set(0);
     }
 
-    //Climber side to side motor code//
-
-    if(right.L5){
-        MC.liftRotate.set(.2);
-    }
-    else if(right.L4){
-        MC.liftRotate.set(-.2);
-    }
-    else{
-        MC.liftRotate.set(0);
-    }
     ledStrip.setLED();
     
     last = testTimer.get();
