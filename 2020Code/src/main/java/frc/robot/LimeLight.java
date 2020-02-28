@@ -15,7 +15,7 @@ public class LimeLight{
     public static String limelightState = "";
     public static String limelightDistance = "";
     public boolean crosshairIsFound = false;
-    public double ySpeed;
+    public static double ySpeed;
     public static double yReal;
 
     public double getX(){
