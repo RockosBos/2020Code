@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     boolean displayAutoDashboard = false;
     boolean displayTeleopDashboard = false;
     boolean firing;
+    boolean climb = false;
 
     int shotNum = 0;
 
@@ -179,6 +180,8 @@ public class Robot extends TimedRobot {
         auto_chooser.addOption("Trench start, shoot, get balls, shoot", trenchMoveShoot);
         auto_chooser.addOption("Auto 4", auto4);
         auto_chooser.addOption("Auto 5", auto5);
+
+
 
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
@@ -653,11 +656,12 @@ public class Robot extends TimedRobot {
     //Climb Logic//
     if(right.L1){
         climbServo.set(Constants.CLIMB_SERVO);
+        climb = true;
     }
 
-    if(right.L3){
+    if(right.L3 && climb){
         MC.lifter.set(Constants.LIFTER_SPEED);
-    } else if(right.L6){
+    } else if(right.L6 && climb){
         MC.lifter.set(-Constants.LIFTER_SPEED);
     }
     else{
