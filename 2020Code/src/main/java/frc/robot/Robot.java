@@ -19,10 +19,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.cameraserver.CameraServer;
-import java.lang.Math;
 
-
-
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -131,7 +129,7 @@ public class Robot extends TimedRobot {
         static final double LIMELIGHT_SPEED = 0.8;
     }
 
-    double yShooterSpeed = robotLimeLight.ySpeed;
+    double yShooterSpeed = robotLimeLight.ySpeed(robotLimeLight.getY());
 
     
 
@@ -548,6 +546,7 @@ public class Robot extends TimedRobot {
         }
         else{
             MC.intakeLift.set(0);
+            MC.intakeLift.setNeutralMode(NeutralMode.Brake);
         }
 
         
