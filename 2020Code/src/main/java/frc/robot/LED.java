@@ -45,8 +45,10 @@ class LED{
             }
         }
         else{
+            ledTimer.stop();
             ledTimer.reset();
         }
+        
     }
 
     public void pulse(int color){
@@ -125,19 +127,19 @@ class LED{
             solid(200);
             break;
         case "BlinkRed":
-            blink(0, 3);
+            blink(0, 0.5);
             break;
         case "BlinkYellow":
-            blink(40, 3);
+            blink(40, 0.5);
             break;   
         case "BlinkBlue":
-            blink(120, 3);
+            blink(120, 0.5);
             break;
         case "BlinkGreen":
-            blink(40, 3);
+            blink(40, 0.5);
             break;
         case "BlinkPurple":
-            blink(200, 3);
+            blink(200, 0.5);
             break;
         default:
             setWhite();

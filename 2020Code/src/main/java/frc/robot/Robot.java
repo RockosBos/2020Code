@@ -23,6 +23,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerDotCaseStrategy;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,10 +47,9 @@ public class Robot extends TimedRobot {
     static final WPI_TalonSRX lowerFeed = new WPI_TalonSRX(8);
     static final WPI_TalonSRX shooters = new WPI_TalonSRX(9);
     static final WPI_TalonSRX shooterRotate = new WPI_TalonSRX(10);
-    static final WPI_TalonSRX controlWheelRotate = new WPI_TalonSRX(11);
-    static final WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(12);
-    static final WPI_TalonSRX liftRotate = new WPI_TalonSRX(13);
-    static final WPI_VictorSPX lifter = new WPI_VictorSPX(14);
+    static final WPI_TalonSRX controlWheelWheel = new WPI_TalonSRX(13);
+    static final WPI_TalonSRX lifter1 = new WPI_TalonSRX(11);
+    static final WPI_TalonSRX lifter2 = new WPI_TalonSRX(12);
     //static final DigitalInput lineSensor = new DigitalInput(0);
     static final SpeedControllerGroup rightDrive = new SpeedControllerGroup(MC.rightDrive1, MC.rightDrive2);
     static final SpeedControllerGroup leftDrive = new SpeedControllerGroup(MC.leftDrive1, MC.leftDrive2);
@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
     boolean displayAutoDashboard = false;
     boolean displayTeleopDashboard = false;
     boolean firing;
-    boolean climb = false;
+    boolean climb;
 
     int shotNum = 0;
 
@@ -121,8 +121,8 @@ public class Robot extends TimedRobot {
         static final double SHOOTER_SPEED = -0.92;
         static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
         static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
-        static final double LIFT_ROTATE_SPEED = 0.1;
-        static final double LIFTER_SPEED = 0.1;
+        static final double LIFTER_SPEED = -0.60;
+
         static final int LEFT_SERVO_HIGH_GEAR = 50;
         static final int RIGHT_SERVO_HIGH_GEAR = 155;
         static final int CLIMB_SERVO = 1;
@@ -179,7 +179,8 @@ public class Robot extends TimedRobot {
         auto_chooser.addOption("Auto 4", auto4);
         auto_chooser.addOption("Auto 5", auto5);
 
-
+        
+        climb = false;
 
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
@@ -192,6 +193,7 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putData("Override", override_chooser);
         SmartDashboard.putData("Auto choices", auto_chooser);
+
 
         SmartDashboard.putData("Autonomous Dashboard", autonDashboard_chooser);
         SmartDashboard.putData("Teleop Dashboard", teleopDashboard_chooser);
@@ -653,18 +655,24 @@ public class Robot extends TimedRobot {
     }
    
     //Climb Logic//
-    if(right.L1){
+    if(right.R3){
         climbServo.set(Constants.CLIMB_SERVO);
         climb = true;
     }
 
     if(right.L3 && climb){
-        MC.lifter.set(Constants.LIFTER_SPEED);
+        MC.lifter1.set(Constants.LIFTER_SPEED);
+        MC.lifter2.set(Constants.LIFTER_SPEED);
+        //ledStrip.changeLEDState("BlinkRed");
+        
     } else if(right.L6 && climb){
-        MC.lifter.set(-Constants.LIFTER_SPEED);
+        MC.lifter1.set(-Constants.LIFTER_SPEED);
+        MC.lifter2.set(-Constants.LIFTER_SPEED);
+        //ledStrip.changeLEDState("BlinkBlue");
     }
     else{
-        MC.lifter.set(0);
+        MC.lifter1.set(0);
+        MC.lifter2.set(0);
     }
 
     ledStrip.setLED();
@@ -684,6 +692,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Trigger", right.Trigger);
         SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
         SmartDashboard.putNumber("Timer", timer.get());
+        SmartDashboard.putBoolean("Servo", climb);
+        SmartDashboard.putBoolean("R3", right.R3);
+        SmartDashboard.putBoolean("L3", right.L3);
     }
 } 
 
