@@ -23,7 +23,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy.LowerDotCaseStrategy;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -98,10 +97,10 @@ public class Robot extends TimedRobot {
     //Drive Initialization
      
     DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
-    Servo leftServo = new Servo(8);
-    Servo rightServo = new Servo(9);
 
     Servo climbServo = new Servo(7);
+    Servo leftServo = new Servo(8);
+    Servo rightServo = new Servo(9);
      
     Autonomous autonomous = new Autonomous(MC.leftDrive, MC.rightDrive);
 
@@ -125,8 +124,8 @@ public class Robot extends TimedRobot {
 
         static final int LEFT_SERVO_HIGH_GEAR = 50;
         static final int RIGHT_SERVO_HIGH_GEAR = 155;
-        static final int CLIMB_SERVO = 1;
-        static final int CLIMB_SERVO_DEFAULT = 0;
+        static final int CLIMB_SERVO_HOLD = 180;
+        static final int CLIMB_SERVO_RELEASE = 90;
         static final int LEFT_SERVO_LOW_GEAR = 120;
         static final int RIGHT_SERVO_LOW_GEAR = 85;
         static final double LIMELIGHT_MAX = 1; 
@@ -134,8 +133,8 @@ public class Robot extends TimedRobot {
         
     }
 
-    double yShooterSpeed = robotLimeLight.ySpeed(robotLimeLight.getY());
-
+    //double yShooterSpeed = robotLimeLight.ySpeed(robotLimeLight.getY());
+    double yShooterSpeed = 1.0;
     
 
     ToggleLogic servoToggle = new ToggleLogic();
@@ -206,7 +205,7 @@ public class Robot extends TimedRobot {
         leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);
         rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR);
 
-        climbServo.set(Constants.CLIMB_SERVO_DEFAULT);
+        climbServo.setAngle(Constants.CLIMB_SERVO_HOLD);
 
         //rotatePID.setSetpoint(0);
         testTimer.start();
@@ -628,11 +627,11 @@ public class Robot extends TimedRobot {
                     timer.start();
                 }
                 
-                MC.shooters.set(yShooterSpeed);
+                MC.shooters.set(Constants.SHOOTER_SPEED);
                 ledStrip.changeLEDState("SolidYellow");
                 
                 robotShooter.autoAim();
-                if(timer.get() < 2.5){
+                if(timer.get() > 2.5){
                     robotShooter.autoShoot();
                 }
                 triggerPrev = true;
@@ -656,8 +655,11 @@ public class Robot extends TimedRobot {
    
     //Climb Logic//
     if(right.R3){
-        climbServo.set(Constants.CLIMB_SERVO);
+        climbServo.setAngle(Constants.CLIMB_SERVO_RELEASE);
         climb = true;
+    }
+    else{
+        climbServo.setAngle(Constants.CLIMB_SERVO_HOLD);
     }
 
     if(right.L3 && climb){
