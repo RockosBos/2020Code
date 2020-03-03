@@ -98,6 +98,7 @@ public class Robot extends TimedRobot {
      
     DifferentialDrive diffDrive = new DifferentialDrive(MC.rightDrive, MC.leftDrive);
 
+    Servo lowerFeedServo = new Servo(6);
     Servo climbServo = new Servo(7);
     Servo leftServo = new Servo(8);
     Servo rightServo = new Servo(9);
@@ -130,6 +131,8 @@ public class Robot extends TimedRobot {
         static final int RIGHT_SERVO_LOW_GEAR = 85;
         static final double LIMELIGHT_MAX = 1; 
         static final double LIMELIGHT_SPEED = 0.8;
+        static final int LOW_FEED_SERVO_HIGH = 45;
+        static final int LOW_FEED_SERVO_LOW = 110;
         
     }
 
@@ -204,7 +207,7 @@ public class Robot extends TimedRobot {
 
         leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);
         rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR);
-
+        lowerFeedServo.setAngle(Constants.LOW_FEED_SERVO_LOW);
         climbServo.setAngle(Constants.CLIMB_SERVO_HOLD);
 
         //rotatePID.setSetpoint(0);
@@ -585,6 +588,13 @@ public class Robot extends TimedRobot {
           leftServo.setAngle(Constants.LEFT_SERVO_HIGH_GEAR);   //high gear
           rightServo.setAngle(Constants.RIGHT_SERVO_HIGH_GEAR); //high gear
       }
+    }
+
+    if(right.R2){
+        lowerFeedServo.setAngle(Constants.LOW_FEED_SERVO_HIGH);
+    }
+    else{
+        lowerFeedServo.setAngle(Constants.LOW_FEED_SERVO_LOW);
     }
     /*----------------------------------------------------
         Limelight Logic
