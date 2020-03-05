@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
         static final double INTAKE_WHEELS_SPEED = .75;
         static final double UPPER_FEED_INTAKE_SPEED = 0.7;
         static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
-        static final double LOWER_FEED_SPEED = 1.0;
+        static final double LOWER_FEED_SPEED = -1.0;
         static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
         static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
         static final double SHOOTER_SPEED = -0.92;

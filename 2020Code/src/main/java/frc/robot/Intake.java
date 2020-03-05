@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.Robot.Constants;
 import frc.robot.Robot.MC;
 import frc.robot.Robot.Sensors;
+import edu.wpi.first.wpilibj.Timer;
 
 //Everything associated with robot intake goes here
 
@@ -21,18 +22,32 @@ public class Intake{
 
     Controller left;
     Controller right;
+    Timer intakeTimer = new Timer();
+    double setFeedServoHighTime = 2;
+    double setFeedServoLowTime = 0.5;
+    double currentCycleTime;
+    double timerPrevState;
 
     Intake(Controller left, Controller right){
         this.left = left;
         this.right = right;
+        intakeTimer.start();
     }
 
     public void intakeAll(){
+        setCurrentCycleTime();
         if(Sensors.lineSensor.get() == false){
             MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
         }
         MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
         MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+        if(currentCycleTime < setFeedServoHighTime){
+            
+        }
+        else if(currentCycleTime < setFeedServoLowTime){
+
+        }
+        
     }
     public void stopAllIntake(){
         MC.upperFeed.set(0);
@@ -81,6 +96,10 @@ public class Intake{
         else{
             MC.upperFeed.set(0);
         }
+    }
+
+    public void setCurrentCycleTime(){
+        currentCycleTime = intakeTimer.get() - timerPrevState;
     }
 }
 	
