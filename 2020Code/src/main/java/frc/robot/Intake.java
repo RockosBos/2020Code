@@ -27,6 +27,8 @@ public class Intake{
     double setFeedServoLowTime = 0.5;
     double currentCycleTime;
     double timerPrevState;
+    boolean isR3LastPressed;
+    final double BRAKE = .10;
 
     Intake(Controller left, Controller right){
         this.left = left;
@@ -100,6 +102,18 @@ public class Intake{
 
     public void setCurrentCycleTime(){
         currentCycleTime = intakeTimer.get() - timerPrevState;
+    }
+
+    public void intakeBrake(){
+        if(left.R3){
+            isR3LastPressed = true;
+        }
+        else if(left.R6){
+            isR3LastPressed = false;
+        }
+        if(!left.R6 && !left.R3 && isR3LastPressed){
+            MC.intakeLift.set(BRAKE);
+        }
     }
 }
 	
