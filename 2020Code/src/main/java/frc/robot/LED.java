@@ -91,6 +91,19 @@ class LED{
         
     }
 
+    public void setOff(){
+        for(int i = 0; i < ledBuffer.getLength(); i++){
+            ledBuffer.setHSV(i, 0, 0, 0);
+        }
+        led.setData(ledBuffer);
+
+    }
+
+
+
+
+
+
     public void rainbow(){
         
     for (var i = 0; i < ledBuffer.getLength(); i++) {
