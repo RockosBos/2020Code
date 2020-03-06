@@ -135,6 +135,7 @@ public class Robot extends TimedRobot {
         boolean currentState = false;
         boolean prevState = false;
         boolean value = false;
+<<<<<<< Updated upstream
      }
      class Constants{
          static final double INTAKE_LIFT_SPEED = 1.0;
@@ -165,6 +166,52 @@ public class Robot extends TimedRobot {
 >>>>>>> Stashed changes
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+>>>>>>> Stashed changes
+=======
+    }
+    class Constants{
+        static final double INTAKE_LIFT_SPEED = .5;
+        static final double INTAKE_WHEELS_SPEED = .75;
+        static final double UPPER_FEED_INTAKE_SPEED = 0.7;
+        static final double UPPER_FEED_SHOOTER_SPEED = 0.6;
+        static final double LOWER_FEED_SPEED = -1.0;
+        static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
+        static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
+        static final double SHOOTER_SPEED = -0.92;
+        static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
+        static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
+        static final double LIFTER_SPEED = -0.60;
+
+        static final int LEFT_SERVO_HIGH_GEAR = 50;
+        static final int RIGHT_SERVO_HIGH_GEAR = 155;
+        static final int CLIMB_SERVO_HOLD = 180;
+        static final int CLIMB_SERVO_RELEASE = 90;
+        static final int LEFT_SERVO_LOW_GEAR = 120;
+        static final int RIGHT_SERVO_LOW_GEAR = 85;
+        static final double LIMELIGHT_MAX = 1; 
+        static final double LIMELIGHT_SPEED = 0.8;
+        static final int LOW_FEED_SERVO_HIGH = 45;
+        static final int LOW_FEED_SERVO_LOW = 110;
+        
+    }
+
+    //double yShooterSpeed = robotLimeLight.ySpeed(robotLimeLight.getY());
+    double yShooterSpeed = 1.0;
+    
+
+    ToggleLogic servoToggle = new ToggleLogic();
+    
+     //Autonomous Variables
+    private static final String initiationLineMove = "initiationLineMove";
+    private static final String moveBackwards = "moveBackwards";
+    private static final String centerMoveShoot = "centerMoveShoot";
+    private static final String trenchMoveShoot = "trenchMoveShoot";
+    private static final String initiationLineToTrenchRun = "initiationLineToTrenchRun";
+    private static final String auto5 = "Auton 5";
+    private Timer autonTimer = new Timer();
+    private Timer autonDelayTimer = new Timer();
+    private int autonomousStep;
+    private double delay;
 >>>>>>> Stashed changes
 
 
@@ -198,10 +245,17 @@ public class Robot extends TimedRobot {
     
 =======
         auto_chooser.setDefaultOption("Move from Initiation line", initiationLineMove);
+<<<<<<< Updated upstream
         auto_chooser.addOption("Auto 1", auto1);
         auto_chooser.addOption("Auto 2", auto2);
         auto_chooser.addOption("Auto 3", auto3);
         auto_chooser.addOption("Auto 4", auto4);
+=======
+        auto_chooser.addOption("Move Backwards", moveBackwards);
+        auto_chooser.addOption("Center start, shoot, get balls, shoot", centerMoveShoot);
+        auto_chooser.addOption("Trench start, shoot, get balls, shoot", trenchMoveShoot);
+        auto_chooser.addOption("Initiation Line to Trench Run", initiationLineToTrenchRun);
+>>>>>>> Stashed changes
         auto_chooser.addOption("Auto 5", auto5);
         override_chooser.setDefaultOption("Override Off", false);
         override_chooser.addOption("Override On", true);
@@ -370,8 +424,13 @@ public class Robot extends TimedRobot {
             case auto3:
                     //Auto 3 Logic
                 break;
-            case auto4:
-                    //Auto 4 Logic
+            case initiationLineToTrenchRun:
+                    switch(autonomousStep){
+                        case 0:
+                            robotShooter.autoAim();
+                            robotShooter.autoShoot();
+                            
+                    }
                 break;
             case auto5:
                     //Auto 5 Logic
@@ -435,6 +494,7 @@ public class Robot extends TimedRobot {
             }
             MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
             MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+            ledStrip.changeLEDState("SolidYellow");
         }
         else{
             MC.lowerFeed.set(0);
@@ -607,6 +667,7 @@ public class Robot extends TimedRobot {
     }
    
     //Climb Logic//
+<<<<<<< Updated upstream
 
     if(right.L6){
         MC.lifter.set(Constants.LIFTER_SPEED);
@@ -622,6 +683,34 @@ public class Robot extends TimedRobot {
     }
     else if(right.L4){
         MC.liftRotate.set(-.2);
+=======
+    if(right.R3){
+        climbServo.setAngle(Constants.CLIMB_SERVO_RELEASE);
+        climb = true;
+        if(!MC.leftDrive.getInverted() && !MC.rightDrive.getInverted()){
+            MC.leftDrive.setInverted(true);
+            MC.rightDrive.setInverted(true);
+        }
+        else{
+            MC.leftDrive.setInverted(false);
+            MC.rightDrive.setInverted(false);
+        }
+    }
+    else{
+        climbServo.setAngle(Constants.CLIMB_SERVO_HOLD);
+        
+    }
+
+    if(right.L3 && climb){
+        MC.lifter1.set(Constants.LIFTER_SPEED);
+        MC.lifter2.set(Constants.LIFTER_SPEED);
+        ledStrip.changeLEDState("SolidPurple");
+        
+    } else if(right.L6 && climb){
+        MC.lifter1.set(-Constants.LIFTER_SPEED);
+        MC.lifter2.set(-Constants.LIFTER_SPEED);
+        ledStrip.changeLEDState("SolidPurple");
+>>>>>>> Stashed changes
     }
     else{
         MC.liftRotate.set(0);
