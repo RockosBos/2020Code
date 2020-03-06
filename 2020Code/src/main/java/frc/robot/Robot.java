@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.cameraserver.CameraServer;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -236,7 +235,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic(){
-      //ledStrip.rainbow();
+      ledStrip.setOff();
   }
   
 
@@ -534,8 +533,12 @@ public class Robot extends TimedRobot {
     /*----------------------------------------------------
         Intake Logic
     ----------------------------------------------------*/
+    
+    robotIntake.intakeBrake();
+
     if(!isOverrideOn){ //Auto Intake Logic
-        if(left.BottomFace){
+        if(left.Trigger){
+        //if(left.BottomFace){
             //System.out.println("bottom face pressed");
             if(Sensors.lineSensor.get()){
                 MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
@@ -604,6 +607,7 @@ public class Robot extends TimedRobot {
     robotLimeLight.displayData();
     robotLimeLight.getState();
     if(left.Trigger){
+    //if(left.BottomFace){
         robotLimeLight.setMode("ledMode", 0);
         robotLimeLight.setMode("camMode", 0);            
     }
@@ -611,6 +615,15 @@ public class Robot extends TimedRobot {
         robotLimeLight.setMode("ledMode", 1);
         robotLimeLight.setMode("camMode", 1);
     }
+    /*if(left.Trigger){
+        robotLimeLight.setMode("ledMode", 0);
+        robotLimeLight.setMode("camMode", 0);            
+    }
+    else{
+        robotLimeLight.setMode("ledMode", 1);
+        robotLimeLight.setMode("camMode", 1);
+    }
+    */
 
   robotControlWheel.wheelRotation();
 
@@ -630,9 +643,11 @@ public class Robot extends TimedRobot {
     ////climb logic
   
     //trigger logic
-    if(!left.BottomFace){
+    if(!left.Trigger){
+    //if(!left.BottomFace){
         if(!isOverrideOn){
-            if(left.Trigger){
+            if(left.BottomFace){
+            //if(left.Trigger){
                 if(!triggerPrev){
                     timer.start();
                 }
