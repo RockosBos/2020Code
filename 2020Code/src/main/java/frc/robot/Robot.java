@@ -148,7 +148,7 @@ public class Robot extends TimedRobot {
     private static final String centerMoveShoot = "centerMoveShoot";
     private static final String trenchMoveShoot = "trenchMoveShoot";
     private static final String initiationLineTrenchShoot = "initLineTrenchShoot";
-    private static final String auto5 = "Auton 5";
+    private static final String pushShoot = "pushShoot";
     private Timer autonTimer = new Timer();
     private Timer autonDelayTimer = new Timer();
     private int autonomousStep;
@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
         auto_chooser.addOption("Center start, shoot, get balls, shoot", centerMoveShoot);
         auto_chooser.addOption("Trench start, shoot, get balls, shoot", trenchMoveShoot);
         auto_chooser.addOption("initiation line shoot, get balls from trench", initiationLineTrenchShoot);
-        auto_chooser.addOption("Auto 5", auto5);
+        auto_chooser.addOption("Shoot then push", pushShoot);
 
         
         climb = false;
@@ -560,9 +560,48 @@ public class Robot extends TimedRobot {
                    }
                     //Auto 4 Logic
                 break;
-            case auto5:
+            case pushShoot:
+                switch (autonomousStep){
+                    case 0:
+                        
+                        robotLimeLight.setMode("ledMode", 0);
+                        robotLimeLight.setMode("camMode", 0);  
+                        robotShooter.autoAim();
+                        robotShooter.autoShoot();
+                        if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
+                            shotNum++;
+                        }
+                        if(shotNum > 2 || autonTimer.get() > 5){
+                            autonomousStep = 1;
+                            autonTimer.reset();
+                        }
+                    break;
+                    case 1:
+                        robotShooter.autoShootStop();
+                        if (autonTimer.get() < 1){
+                            autonomous.setDrive(.5, .5);
+                        }
+                        else{
+                            autonomous.setDrive(0, 0);
+                            autonTimer.reset();
+                            autonomousStep = 2;
+                        }
+                  
+                    break;
+                    case 2:
+                        if(autonTimer.get() < 1.5){
+                            autonomous.setDrive(-.5, -.5);
+                        }
+                        else{
+                            autonomous.setDrive(0, 0);
+                        }
+                    break;
+                  
+                    
+                }
+
                     //Auto 5 Logic
-                break;
+            break;
             case initiationLineMove:
                 default:
                 if(autonomousStep == 0){
