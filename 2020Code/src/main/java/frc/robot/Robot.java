@@ -484,7 +484,7 @@ public class Robot extends TimedRobot {
             case initiationLineTrenchShoot:
                    switch(autonomousStep){
                     case 0:
-                        timer.start();
+                        robotShooter.shootTimer.start();
                         robotLimeLight.setMode("ledMode", 0);
                         robotLimeLight.setMode("camMode", 0);  
                         robotShooter.autoAim();
@@ -510,7 +510,7 @@ public class Robot extends TimedRobot {
                             MC.intakeLift.set(0);
                         }
                         if(autonTimer.get() < 3){
-                            autonomous.driveForward(0.3, 0.25);
+                            autonomous.setDrive(0.2, 0.2);
                         }
                         else{
                             autonomousStep++;
@@ -519,12 +519,13 @@ public class Robot extends TimedRobot {
                     case 2:
                         robotLimeLight.setMode("ledMode", 0);
                         robotLimeLight.setMode("camMode", 0);
+                        robotShooter.shootTimer.reset();
                         robotShooter.autoAim();
                         if(autonTimer.get() < 2){
                             MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
                         }
                         if(autonTimer.get() < 3){
-                            autonomous.driveForward(-0.3, 0.25);
+                            autonomous.setDrive(-0.2, -0.2);
                         }
                         else{
                             autonomousStep++;
@@ -536,7 +537,7 @@ public class Robot extends TimedRobot {
                         robotShooter.autoAim();
                         robotShooter.autoShoot();
                         autonomous.driveForward(0,0.25);
-                        
+
                     
 
                    }
