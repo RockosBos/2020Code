@@ -484,6 +484,9 @@ public class Robot extends TimedRobot {
             case initiationLineTrenchShoot:
                    switch(autonomousStep){
                     case 0:
+                        timer.start();
+                        robotLimeLight.setMode("ledMode", 0);
+                        robotLimeLight.setMode("camMode", 0);  
                         robotShooter.autoAim();
                         robotShooter.autoShoot();
                         if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
@@ -497,6 +500,8 @@ public class Robot extends TimedRobot {
                         break;
                     case 1:
                         robotShooter.autoShootStop();
+                        robotLimeLight.setMode("ledMode", 1);
+                        robotLimeLight.setMode("camMode", 1);
                         robotIntake.intakeAll();
                         if(autonTimer.get() < 0.25){
                             MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
@@ -512,6 +517,8 @@ public class Robot extends TimedRobot {
                             autonTimer.reset();
                         }
                     case 2:
+                        robotLimeLight.setMode("ledMode", 0);
+                        robotLimeLight.setMode("camMode", 0);
                         robotShooter.autoAim();
                         if(autonTimer.get() < 2){
                             MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
@@ -523,9 +530,14 @@ public class Robot extends TimedRobot {
                             autonomousStep++;
                         }
                     case 3:
+                        timer.start();
+                        robotLimeLight.setMode("ledMode", 0);
+                        robotLimeLight.setMode("camMode", 0);
                         robotShooter.autoAim();
                         robotShooter.autoShoot();
                         autonomous.driveForward(0,0.25);
+                        
+                    
 
                    }
                     //Auto 4 Logic
@@ -595,11 +607,16 @@ public class Robot extends TimedRobot {
             }
             MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
             MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
+            ledStrip.changeLEDState("SolidYellow");
         }
         else{
-            MC.lowerFeed.set(0);
-            MC.upperFeed.set(0);
-            MC.intakeWheels.set(0);
+            
+            if(left.L3){
+                robotIntake.outtakeAll();
+            }
+            else{
+                robotIntake.stopAllIntake();
+            }
         }
         if(left.R3){
             MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
@@ -611,13 +628,15 @@ public class Robot extends TimedRobot {
             MC.intakeLift.set(0);
             MC.intakeLift.setNeutralMode(NeutralMode.Brake);
         }
+        
 
         
     }
     else{ //Manual Intake Logic
         robotIntake.operateManually();   
     }
-
+    //outake//
+    
 
     //////servo logic
     
@@ -627,7 +646,7 @@ public class Robot extends TimedRobot {
           ledStrip.changeLEDState("SolidBlue");
     }
     else{
-      servoToggle.currentState = right.BottomFace;
+      servoToggle.currentState = right.L1;
       if(right.toggleButton(servoToggle)){
           leftServo.setAngle(Constants.LEFT_SERVO_LOW_GEAR);  //Low Gear 
           rightServo.setAngle(Constants.RIGHT_SERVO_LOW_GEAR);  //Low Gear
@@ -689,7 +708,7 @@ public class Robot extends TimedRobot {
                 }
                 
                 MC.shooters.set(Constants.SHOOTER_SPEED);
-                ledStrip.changeLEDState("SolidYellow");
+                ledStrip.changeLEDState("SolidGreen");
                 
                 robotShooter.autoAim();
                 if(timer.get() > 2.5){
@@ -698,10 +717,11 @@ public class Robot extends TimedRobot {
                 triggerPrev = true;
             }
             else{
+                if(!left.L3){
+                    robotIntake.stopAllIntake();
+                }
                 MC.shooters.set(0);
-                MC.upperFeed.set(0);
-                MC.lowerFeed.set(0);
-                robotShooter.manRotate(Constants.SHOOTER_ROTATE_FAST_SPEED);
+                robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
                 timer.stop();
                 timer.reset();
                 triggerPrev = false;
@@ -726,21 +746,25 @@ public class Robot extends TimedRobot {
     if(right.L3 && climb){
         MC.lifter1.set(Constants.LIFTER_SPEED);
         MC.lifter2.set(Constants.LIFTER_SPEED);
-        //ledStrip.changeLEDState("BlinkRed");
+        ledStrip.changeLEDState("SolidPurple");
         
     } else if(right.L6 && climb){
         MC.lifter1.set(-Constants.LIFTER_SPEED);
         MC.lifter2.set(-Constants.LIFTER_SPEED);
-        //ledStrip.changeLEDState("BlinkBlue");
+        ledStrip.changeLEDState("SolidPurple");
     }
     else{
         MC.lifter1.set(0);
         MC.lifter2.set(0);
     }
-
+    if(isOverrideOn){
+        ledStrip.changeLEDState("SolidRed");
+    }
     ledStrip.setLED();
     
     last = testTimer.get();
+
+
     
     //Teleop Dashboard Value
     if(displayTeleopDashboard){

@@ -60,8 +60,7 @@ public class Intake{
     }
     public void outtakeAll(){
         MC.upperFeed.set(-Constants.UPPER_FEED_INTAKE_SPEED);
-        MC.lowerFeed.set(-Constants.LOWER_FEED_SPEED);
-        MC.intakeWheels.set(-Constants.INTAKE_WHEELS_SPEED);
+        
     }
     public void operateManually(){
         if(left.BottomFace){
