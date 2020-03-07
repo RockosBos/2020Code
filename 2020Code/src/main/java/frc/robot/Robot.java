@@ -39,8 +39,8 @@ public class Robot extends TimedRobot {
 
   DifferentialDrive diffDrive = new DifferentialDrive(leftDrive, rightDrive);
 
-  Joystick right = new Joystick(0);
-  Joystick left = new Joystick(1);
+  Joystick controller = new Joystick(0);
+  
   XboxController xbox = new XboxController(0);
   Gyros Gyroscope = new Gyros(leftDrive, rightDrive);
   DigitalInput lineDetect = new DigitalInput(2);
@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
     if(xbox.getYButton()){
         Gyroscope.gyro.reset();
     }*/
-    
+    diffDrive.arcadeDrive(controller.getRawAxis(1), controller.getRawAxis(0));
     SmartDashboard.putNumber("Gyro Value", Gyroscope.gyro.getAngle());
     SmartDashboard.putString("Gyro State", Gyroscope.state);
     SmartDashboard.putBoolean("Line Detector", lineDetect.get());

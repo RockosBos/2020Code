@@ -62,7 +62,7 @@ public class LimeLight{
             limelightState = "Not Found";
         }
         else{
-
+            
             if(getX() < -4){
                 limelightState = "fastLeft";
             } else if(getX() > 4){
