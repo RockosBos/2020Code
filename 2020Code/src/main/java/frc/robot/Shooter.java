@@ -116,5 +116,3 @@ public class Shooter{
             MC.shooterRotate.set(0);
     }
 }
-
-

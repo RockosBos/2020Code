@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
     private static final String moveBackwards = "moveBackwards";
     private static final String centerMoveShoot = "centerMoveShoot";
     private static final String trenchMoveShoot = "trenchMoveShoot";
-    private static final String auto4 = "Auton 4";
+    private static final String initiationLineTrenchShoot = "initLineTrenchShoot";
     private static final String auto5 = "Auton 5";
     private Timer autonTimer = new Timer();
     private Timer autonDelayTimer = new Timer();
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot {
         auto_chooser.addOption("Move Backwards", moveBackwards);
         auto_chooser.addOption("Center start, shoot, get balls, shoot", centerMoveShoot);
         auto_chooser.addOption("Trench start, shoot, get balls, shoot", trenchMoveShoot);
-        auto_chooser.addOption("Auto 4", auto4);
+        auto_chooser.addOption("initiation line shoot, get balls from trench", initiationLineTrenchShoot);
         auto_chooser.addOption("Auto 5", auto5);
 
         
@@ -256,7 +256,7 @@ public class Robot extends TimedRobot {
         m_autoSelected = auto_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
-
+        autonTimer.start();
         delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
@@ -480,7 +480,53 @@ public class Robot extends TimedRobot {
                        break;
                    }
                 break;
-            case auto4:
+            case initiationLineTrenchShoot:
+                   switch(autonomousStep){
+                    case 0:
+                        robotShooter.autoAim();
+                        robotShooter.autoShoot();
+                        if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
+                            shotNum++;
+                        }
+                        if(shotNum > 2 || autonTimer.get() > 5){
+                            autonomousStep++;
+                            autonTimer.reset();
+                        }
+
+                        break;
+                    case 1:
+                        robotShooter.autoShootStop();
+                        robotIntake.intakeAll();
+                        if(autonTimer.get() < 0.25){
+                            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+                        }
+                        else{
+                            MC.intakeLift.set(0);
+                        }
+                        if(autonTimer.get() < 3){
+                            autonomous.driveForward(0.3, 0.25);
+                        }
+                        else{
+                            autonomousStep++;
+                            autonTimer.reset();
+                        }
+                    case 2:
+                        robotShooter.autoAim();
+                        if(autonTimer.get() < 2){
+                            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+                        }
+                        if(autonTimer.get() < 3){
+                            autonomous.driveForward(-0.3, 0.25);
+                        }
+                        else{
+                            autonomousStep++;
+                        }
+                    case 3:
+                        robotShooter.autoAim();
+                        robotShooter.autoShoot();
+                        autonomous.driveForward(0,0.25);
+
+                   }
                     //Auto 4 Logic
                 break;
             case auto5:
