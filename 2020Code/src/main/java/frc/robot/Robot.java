@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
 
     static final class Sensors{
         static final DigitalInput lineSensor = new DigitalInput(0);
+        
     }
     
 
@@ -211,8 +212,8 @@ public class Robot extends TimedRobot {
 
         //rotatePID.setSetpoint(0);
         testTimer.start();
-        CameraServer.getInstance().startAutomaticCapture();
-        
+        CameraServer.getInstance().startAutomaticCapture(1);
+        CameraServer.getInstance().startAutomaticCapture(0);
         
   }
 
@@ -235,7 +236,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic(){
-      ledStrip.setOff();
+      ledStrip.rainbow();
   }
   
 
@@ -537,8 +538,8 @@ public class Robot extends TimedRobot {
     robotIntake.intakeBrake();
 
     if(!isOverrideOn){ //Auto Intake Logic
-        if(left.Trigger){
-        //if(left.BottomFace){
+        
+        if(left.BottomFace){
             //System.out.println("bottom face pressed");
             if(Sensors.lineSensor.get()){
                 MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
@@ -607,7 +608,6 @@ public class Robot extends TimedRobot {
     robotLimeLight.displayData();
     robotLimeLight.getState();
     if(left.Trigger){
-    //if(left.BottomFace){
         robotLimeLight.setMode("ledMode", 0);
         robotLimeLight.setMode("camMode", 0);            
     }
@@ -615,15 +615,6 @@ public class Robot extends TimedRobot {
         robotLimeLight.setMode("ledMode", 1);
         robotLimeLight.setMode("camMode", 1);
     }
-    /*if(left.Trigger){
-        robotLimeLight.setMode("ledMode", 0);
-        robotLimeLight.setMode("camMode", 0);            
-    }
-    else{
-        robotLimeLight.setMode("ledMode", 1);
-        robotLimeLight.setMode("camMode", 1);
-    }
-    */
 
   robotControlWheel.wheelRotation();
 
@@ -643,11 +634,10 @@ public class Robot extends TimedRobot {
     ////climb logic
   
     //trigger logic
-    if(!left.Trigger){
-    //if(!left.BottomFace){
+    
+    if(!left.BottomFace){
         if(!isOverrideOn){
-            if(left.BottomFace){
-            //if(left.Trigger){
+            if(left.Trigger){
                 if(!triggerPrev){
                     timer.start();
                 }

@@ -28,7 +28,7 @@ public class Intake{
     double currentCycleTime;
     double timerPrevState;
     boolean isR3LastPressed;
-    final double BRAKE = .10;
+    final double BRAKE                                                                                                                                                                                                                                                                                                           = .10;
 
     Intake(Controller left, Controller right){
         this.left = left;
