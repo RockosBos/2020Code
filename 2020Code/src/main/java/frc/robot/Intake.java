@@ -4,6 +4,7 @@ import frc.robot.Robot.Constants;
 import frc.robot.Robot.MC;
 import frc.robot.Robot.Sensors;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //Everything associated with robot intake goes here
 
@@ -28,7 +29,8 @@ public class Intake{
     double currentCycleTime;
     double timerPrevState;
     boolean isR3LastPressed;
-    final double BRAKE = .10;
+    final double BRAKE = .3;
+    boolean brakeOn = false;
 
     Intake(Controller left, Controller right){
         this.left = left;
@@ -113,6 +115,11 @@ public class Intake{
         }
         if(!left.R6 && !left.R3 && isR3LastPressed){
             MC.intakeLift.set(BRAKE);
+            brakeOn = true;
+            SmartDashboard.putBoolean("Brake On", brakeOn);
+        }
+        else{
+            brakeOn = false;
         }
     }
 }
