@@ -35,10 +35,10 @@ class Autonomous{
 
     
     public void setDrive(double leftSpeed, double rightSpeed){   
-       // if()
+       
         
-        leftDrive.set(leftSpeed);
-        rightDrive.set(-rightSpeed);
+        leftDrive.set(-leftSpeed);
+        rightDrive.set(rightSpeed);
     }
     public void driveForward(double speed, double variance){
         gyroAngle = gyros.gyro.getAngle();

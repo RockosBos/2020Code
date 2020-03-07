@@ -72,6 +72,7 @@ public class Shooter{
             if(!Sensors.lineSensor.get() && Sensors.lineSensor.get() != linePreviousState){
                 prevTimer = shootTimer.get();
             }
+            System.out.println(shootTimer.get() - prevTimer);
             if(shootTimer.get() - prevTimer < SHOOT_DELAY){
                 MC.upperFeed.set(0);
                 MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);

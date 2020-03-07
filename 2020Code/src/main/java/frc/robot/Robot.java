@@ -227,7 +227,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+        robotLimeLight.getState();
+        SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
+        
         isOverrideOn = override_chooser.getSelected();
         displayAutoDashboard = autonDashboard_chooser.getSelected();
         displayTeleopDashboard = teleopDashboard_chooser.getSelected();
@@ -261,6 +263,7 @@ public class Robot extends TimedRobot {
         delay = SmartDashboard.getNumber("Autonomous Delay", 0);
         autonDelayTimer.start();
         autonomousStep = 0;
+        robotShooter.shootTimer.start();
         
     }
 
@@ -484,7 +487,7 @@ public class Robot extends TimedRobot {
             case initiationLineTrenchShoot:
                    switch(autonomousStep){
                     case 0:
-                        robotShooter.shootTimer.start();
+                        
                         robotLimeLight.setMode("ledMode", 0);
                         robotLimeLight.setMode("camMode", 0);  
                         robotShooter.autoAim();
@@ -492,7 +495,7 @@ public class Robot extends TimedRobot {
                         if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
                             shotNum++;
                         }
-                        if(shotNum > 2 || autonTimer.get() > 5){
+                        if(autonTimer.get() > 5){
                             autonomousStep++;
                             autonTimer.reset();
                         }
@@ -503,41 +506,55 @@ public class Robot extends TimedRobot {
                         robotLimeLight.setMode("ledMode", 1);
                         robotLimeLight.setMode("camMode", 1);
                         robotIntake.intakeAll();
-                        if(autonTimer.get() < 0.25){
-                            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+                        if(autonTimer.get() < 1){
+                            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
                         }
                         else{
                             MC.intakeLift.set(0);
                         }
-                        if(autonTimer.get() < 3){
-                            autonomous.setDrive(0.2, 0.2);
+                        if(autonTimer.get() < 2.4){
+                            autonomous.setDrive(0.97, 1);
                         }
                         else{
+                            autonomous.setDrive(0, 0);
                             autonomousStep++;
                             autonTimer.reset();
                         }
+                        break;
                     case 2:
+                        autonomous.setDrive(0, 0);
+                        if(autonTimer.get() < 0.5){
+                            autonTimer.reset();
+                            autonomousStep++;
+
+                        }
+                        break;
+                    case 3:
                         robotLimeLight.setMode("ledMode", 0);
                         robotLimeLight.setMode("camMode", 0);
                         robotShooter.shootTimer.reset();
                         robotShooter.autoAim();
-                        if(autonTimer.get() < 2){
-                            MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+                        if(autonTimer.get() < 1){
+                            MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
                         }
-                        if(autonTimer.get() < 3){
-                            autonomous.setDrive(-0.2, -0.2);
+                        if(autonTimer.get() < 2){
+                            autonomous.setDrive(-0.97, -1);
                         }
                         else{
                             autonomousStep++;
+                            robotShooter.shootTimer.reset();
+                            timer.start();
                         }
-                    case 3:
-                        timer.start();
+                        break;
+                    case 4:
+                        
+                        
                         robotLimeLight.setMode("ledMode", 0);
                         robotLimeLight.setMode("camMode", 0);
                         robotShooter.autoAim();
                         robotShooter.autoShoot();
-                        autonomous.driveForward(0,0.25);
-
+                        autonomous.setDrive(0, 0);
+                        break;
                     
 
                    }
@@ -574,6 +591,8 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber("Auton Step", autonomousStep);
             SmartDashboard.putNumber("Auton Timer", autonTimer.get());
             SmartDashboard.putNumber("Number Shot", shotNum);
+            SmartDashboard.putString("Limelight State", robotLimeLight.getLLState());
+            SmartDashboard.putNumber("Shoot Timer", robotShooter.shootTimer.get());
         }
     }
 
