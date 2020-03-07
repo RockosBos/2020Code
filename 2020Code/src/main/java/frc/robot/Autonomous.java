@@ -73,6 +73,10 @@ class Autonomous{
         MC.upperFeed.set(Constants.UPPER_FEED_INTAKE_SPEED);
         MC.lowerFeed.set(Constants.LOWER_FEED_SPEED);
     }
+
+    public void stopDrive(){
+        setDrive(0, 0);
+    }
     
 
 

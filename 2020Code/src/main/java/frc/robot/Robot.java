@@ -84,6 +84,8 @@ public class Robot extends TimedRobot {
     boolean displayTeleopDashboard = false;
     boolean firing;
     boolean climb;
+    boolean brakeOn;
+    boolean upLast;
 
     int shotNum = 0;
 
@@ -212,8 +214,7 @@ public class Robot extends TimedRobot {
 
         //rotatePID.setSetpoint(0);
         testTimer.start();
-        CameraServer.getInstance().startAutomaticCapture(1);
-        CameraServer.getInstance().startAutomaticCapture(0);
+        CameraServer.getInstance().startAutomaticCapture();
         
   }
 
@@ -325,88 +326,54 @@ public class Robot extends TimedRobot {
                     //Auto 2 Logic
                     switch (autonomousStep){
                         case 0:
-                             if(shotNum < 3){
-                                 MC.shooters.set(Constants.SHOOTER_SPEED);
-                                 robotShooter.autoAim();
-                                     if(autonTimer.get() >= 2.5){
-                                         autonomous.shootAndFeed();
-                                            if(Sensors.lineSensor.get() == true){
-                                                shotNum = shotNum + 1;
-                                            }                        
-                                    }
-                            }
-                            if(shotNum == 3){
+                            robotLimeLight.setMode("ledMode", 0);
+                            robotLimeLight.setMode("camMode", 0);  
+                            robotShooter.autoAim();
+                            robotShooter.autoShoot();
+                            if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
+                                shotNum++;
+                        }
+                            if(shotNum > 2 || autonTimer.get() > 5){
                                 autonomousStep = 1;
-                                MC.shooters.set(0);
-                                 
-                            }
- 
-                        break;
- 
-                        case 1:
-                            gyro.GyroRotate(135);
-                            if(gyro.state == "Good"){
-                                autonomousStep = 2;
                                 autonTimer.reset();
-                                }
+                        }
                         break;
- 
-                        case 2:
-                             if(autonTimer.get() <= 1.5){
+                        case 1:
+                            if(autonTimer.get() < .4){
+                                MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+                            }
+                            if(autonTimer.get() < 2){
+                                autonomous.setDrive(.5, .5);
                                 MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                                autonomous.driveForward(.25, 2);                                
-                                if(autonTimer.get() > 1.5){
-                                    autonomous.setDrive(0, 0);
-                                    autonomousStep = 3;
-                                    autonTimer.reset();
-                                }
-                             }
+                            }
+                            else{
+                                autonomous.stopDrive();
+                                MC.intakeWheels.set(0);
+                                MC.intakeLift.set(0);
+                                autonomousStep++;
+                            }
+
+                        break;
+                        case 2:
+                            robotShooter.shootTimer.reset();
+                            shotNum = 0;
+                            autonomousStep++;
                         break;
                         case 3:
-                            gyro.GyroRotate(45);
-                            if(robotLimeLight.getState() == "Good") {
-                                autonTimer.reset();
-                                autonomousStep = 4;
-                             }
-                        break;     
+                            
+                            robotLimeLight.setMode("ledMode", 0);
+                            robotLimeLight.setMode("camMode", 0);  
+                            robotShooter.autoAim();
+                            robotShooter.autoShoot();
+                            if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
+                                shotNum++;
+                            }
+                            if(shotNum > 2 || autonTimer.get() > 5){
+                                autonomousStep++;
+                            }
+                        break;
                         case 4:
-                            if(autonTimer.get() <= 1.5){
-                                autonomous.driveForward(.25, 2);                               
-                                    if(autonTimer.get() > 1.5){
-                                        autonomous.setDrive(0, 0);
-                                        autonomousStep = 5;
-                                        autonTimer.reset();
-                                        MC.intakeWheels.set(0);
-                                    }
-                            }
-                        break;
-                        
-                        case 5:
-                            if(autonTimer.get() <= 3){
-                                autonomous.driveForward(-.25, 2);                               
-                                    if(autonTimer.get() > 3){
-                                        autonomous.setDrive(0, 0);
-                                        autonomousStep = 6;
-                                        shotNum = 0;
-                                        autonTimer.reset();
-                                    }
-                            }
-                        break;
-                        case 6:
-                             if(shotNum < 3){
-                                MC.shooters.set(Constants.SHOOTER_SPEED);
-                                robotShooter.autoAim();
-                                    if(autonTimer.get() >= 2.5){
-                                        autonomous.shootAndFeed();
-                                            if(Sensors.lineSensor.get() == true){
-                                                shotNum = shotNum + 1;
-                                            }                                   
-                                    }
-                            }           
-                            if(shotNum == 3){
-                                MC.shooters.set(0);
-                                autonomous.turnOffShootAndFeed();
-                            }
+                            robotShooter.autoShootStop();
                         break;
                     }
                 break;
@@ -645,14 +612,13 @@ public class Robot extends TimedRobot {
         left.updateValues();
     /*-----------------------------------------------------
         Drive Logic
-    ------------------------------------------------------*/
+    ------------------------------------------------------*/   
     diffDrive.arcadeDrive(-right.js.getRawAxis(1), -right.js.getRawAxis(0));
   
     /*----------------------------------------------------
         Intake Logic
     ----------------------------------------------------*/
     
-    robotIntake.intakeBrake();
 
     if(!isOverrideOn){ //Auto Intake Logic
         
@@ -679,13 +645,21 @@ public class Robot extends TimedRobot {
         }
         if(left.R3){
             MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
+            upLast = true;
+            brakeOn = false;
         }
         else if(left.R6){
             MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
+            upLast = false;
+            brakeOn = false;
+        }
+        else if(upLast){
+            MC.intakeLift.set(robotIntake.BRAKE);
+            brakeOn = true;
         }
         else{
+            brakeOn = false;
             MC.intakeLift.set(0);
-            MC.intakeLift.setNeutralMode(NeutralMode.Brake);
         }
         
 
@@ -841,6 +815,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Servo", climb);
         SmartDashboard.putBoolean("R3", right.R3);
         SmartDashboard.putBoolean("L3", right.L3);
+        SmartDashboard.putBoolean("Is Brake On", brakeOn);
     }
 } 
 

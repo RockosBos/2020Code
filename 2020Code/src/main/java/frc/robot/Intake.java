@@ -29,8 +29,8 @@ public class Intake{
     double currentCycleTime;
     double timerPrevState;
     boolean isR3LastPressed;
-    final double BRAKE = .3;
-    boolean brakeOn = false;
+    final double BRAKE = 0.10;
+    
 
     Intake(Controller left, Controller right){
         this.left = left;
@@ -77,7 +77,7 @@ public class Intake{
             MC.intakeLift.set(-Constants.INTAKE_LIFT_SPEED);
         }
         else{
-            MC.intakeLift.set(0);
+            MC.intakeLift.set(BRAKE);
         }
 
         if(left.R2){
@@ -105,21 +105,6 @@ public class Intake{
         currentCycleTime = intakeTimer.get() - timerPrevState;
     }
 
-    public void intakeBrake(){
-        if(left.R3){
-            isR3LastPressed = true;
-        }
-        else if(left.R6){
-            isR3LastPressed = false;
-        }
-        if(!left.R6 && !left.R3 && isR3LastPressed){
-            MC.intakeLift.set(BRAKE);
-            brakeOn = true;
-            SmartDashboard.putBoolean("Brake On", brakeOn);
-        }
-        else{
-            brakeOn = false;
-        }
-    }
+    
 }
 	
