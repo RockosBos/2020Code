@@ -265,6 +265,7 @@ public class Robot extends TimedRobot {
         autonDelayTimer.start();
         autonomousStep = 0;
         robotShooter.shootTimer.start();
+        // timer.reset();
         
     }
 
@@ -479,8 +480,8 @@ public class Robot extends TimedRobot {
                         else{
                             MC.intakeLift.set(0);
                         }
-                        if(autonTimer.get() < 2.4){
-                            autonomous.setDrive(0.97, 1);
+                        if(autonTimer.get() < 3){
+                            autonomous.setDrive(0.76, .8);
                         }
                         else{
                             autonomous.setDrive(0, 0);
@@ -504,8 +505,8 @@ public class Robot extends TimedRobot {
                         if(autonTimer.get() < 1){
                             MC.intakeLift.set(Constants.INTAKE_LIFT_SPEED);
                         }
-                        if(autonTimer.get() < 2){
-                            autonomous.setDrive(-0.97, -1);
+                        if(autonTimer.get() < 3){
+                            autonomous.setDrive(-0.76,- .8);
                         }
                         else{
                             autonomousStep++;
@@ -538,7 +539,7 @@ public class Robot extends TimedRobot {
                         if(robotShooter.linePreviousState != Sensors.lineSensor.get() && Sensors.lineSensor.get() == false){
                             shotNum++;
                         }
-                        if(shotNum > 2 || autonTimer.get() > 5){
+                        if(shotNum > 2 || autonTimer.get() > 10){
                             autonomousStep = 1;
                             autonTimer.reset();
                         }
