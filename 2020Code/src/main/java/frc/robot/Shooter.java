@@ -45,19 +45,11 @@ public class Shooter{
     }
     
     
-    
-
-    public void manFire(double speed, double offset){
-        if(left.Trigger)
-            MC.shooters.set(speed);
-        else MC.shooters.set(offset);
-    }
-    
     public void manRotate(double speed){
         if(left.LeftFace)
-            MC.shooterRotate.set(-speed);
-        else if(left.RightFace)
             MC.shooterRotate.set(speed);
+        else if(left.RightFace)
+            MC.shooterRotate.set(-speed);
         else MC.shooterRotate.set(0.0);
     }
 

@@ -654,6 +654,7 @@ public class Robot extends TimedRobot {
             brakeOn = false;
         }
         else if(upLast){
+            
             MC.intakeLift.set(robotIntake.BRAKE);
             brakeOn = true;
         }
