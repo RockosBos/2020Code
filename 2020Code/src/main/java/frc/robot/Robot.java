@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
         static final double LOWER_FEED_SPEED = -1.0;
         static final double SHOOTER_ROTATE_SLOW_SPEED = 0.1;
         static final double SHOOTER_ROTATE_FAST_SPEED = 0.4;
-        static final double SHOOTER_SPEED = -0.92;
+        static final double SHOOTER_SPEED = -.92;
         static final double CONTROL_WHEEL_ROTATE_SPEED = 0.1;
         static final double CONTROL_WHEEL_WHEEL_SPEED = 0.1;
         static final double LIFTER_SPEED = -0.60;
@@ -266,6 +266,7 @@ public class Robot extends TimedRobot {
         autonomousStep = 0;
         robotShooter.shootTimer.start();
         // timer.reset();
+        autonomous.straightStep = 0;
         
     }
 
@@ -411,25 +412,28 @@ public class Robot extends TimedRobot {
                        case 2:
                             if(autonTimer.get() <= 3){
                                 MC.intakeWheels.set(Constants.INTAKE_WHEELS_SPEED);
-                                autonomous.driveForward(.25, 2);                                
+                                autonomous.driveForward();                                
                                 if(autonTimer.get() > 3){
                                     autonomous.setDrive(0, 0);
                                     autonomousStep = 3;
                                     MC.intakeWheels.set(0);
                                     autonTimer.reset();
+                                    autonomous.straightStep = 0;
                                 }
                             }
                        break;
                             
                        case 3:
                             if(autonTimer.get() <= 3){
-                                autonomous.driveForward(-.25, 2); 
+                                autonomous.driveForward(); 
                                 MC.shooters.set(Constants.SHOOTER_SPEED);                               
                                     if(autonTimer.get() > 3){
                                         autonomous.setDrive(0, 0);
-                                        autonomousStep = 4;
+                                        
                                         MC.intakeWheels.set(0);
                                         shotNum = 0;
+                                        autonomous.straightStep = 0;
+                                        autonomousStep = 4;
                                         
                                     }
                             }

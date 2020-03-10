@@ -17,12 +17,15 @@ class Autonomous{
     //double driveValue 
     Gyros gyros = new Gyros(MC.rightDrive, MC.leftDrive);
     double gyroAngle;
-    double straightLowerVariance;
-    double straightUpperVarience;
+    double lowestVar;
+    double lowVar;
+    double uppestVar;
+    double upVar;
+    int straightStep = 0;
+    final double STRAIGHTSPEED = .25;
+    final double CLOSEVARIANCE = .025;
+    final double FARVARAINCE = .05;
     
-    
-    
-
     Autonomous(SpeedControllerGroup leftDrive, SpeedControllerGroup rightDrive){
         
         this.leftDrive = leftDrive;
@@ -40,19 +43,33 @@ class Autonomous{
         leftDrive.set(-leftSpeed);
         rightDrive.set(rightSpeed);
     }
-    public void driveForward(double speed, double variance){
-        gyroAngle = gyros.gyro.getAngle();
-        straightUpperVarience = gyroAngle + variance;
-        straightLowerVariance = gyroAngle - variance;
-        
-        if(gyros.gyro.getAngle() < straightLowerVariance){
-            setDrive(speed + .5, speed);
-        }
-        else if(gyros.gyro.getAngle() > straightLowerVariance){
-            setDrive(speed, speed + .5);
-        }
-        else{
-            setDrive(speed, speed);
+    public void driveForward(){
+        switch(straightStep){
+            case 0:
+                gyroAngle = gyro.getAngle();
+                uppestVar = gyroAngle + 10;
+                upVar = gyroAngle + 5;
+                lowestVar = gyroAngle - 10;
+                lowVar = gyroAngle - 5;
+                straightStep++;
+            break;
+            case 1:
+                if(gyro.getAngle() > uppestVar){
+                    setDrive(STRAIGHTSPEED, STRAIGHTSPEED + FARVARAINCE);
+                }
+                else if(gyro.getAngle() > upVar){
+                    setDrive(STRAIGHTSPEED, STRAIGHTSPEED + CLOSEVARIANCE);
+                }
+                else if(gyro.getAngle() < lowestVar){
+                    setDrive(STRAIGHTSPEED + FARVARAINCE, STRAIGHTSPEED);
+                }
+                else if(gyro.getAngle() < lowVar){
+                    setDrive(STRAIGHTSPEED + CLOSEVARIANCE, STRAIGHTSPEED);
+                }
+                else{
+                    setDrive(STRAIGHTSPEED, STRAIGHTSPEED);
+                }
+            break;
         }
 
     }
