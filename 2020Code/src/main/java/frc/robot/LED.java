@@ -128,7 +128,7 @@ class LED{
             solid(0);
             break;
         case "SolidYellow":
-            solid(40);
+            solid(20);
             break;   
         case "SolidBlue":
             solid(120);

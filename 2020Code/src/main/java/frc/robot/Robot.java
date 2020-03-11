@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
 
     static final class Sensors{
         static final DigitalInput lineSensor = new DigitalInput(0);
+        static final DigitalInput climbLimitSwitch = new DigitalInput(1);
         
     }
     
@@ -86,6 +87,7 @@ public class Robot extends TimedRobot {
     boolean climb;
     boolean brakeOn;
     boolean upLast;
+    boolean climbStop;
 
     int shotNum = 0;
 
@@ -735,7 +737,7 @@ public class Robot extends TimedRobot {
     
     robotShooter.manRotate(-Constants.SHOOTER_ROTATE_FAST_SPEED);
     
-    ////climb logic
+  
   
     //trigger logic
     
@@ -774,6 +776,17 @@ public class Robot extends TimedRobot {
     }
    
     //Climb Logic//
+    if(isOverrideOn){
+        climbStop = false;
+    }
+    else{
+        if(Sensors.climbLimitSwitch.get()){
+            climbStop = true;
+        }
+        else{
+            climbStop = false;
+        }
+    }
     if(right.R3){
         climbServo.setAngle(Constants.CLIMB_SERVO_RELEASE);
         climb = true;
@@ -781,21 +794,27 @@ public class Robot extends TimedRobot {
     else{
         climbServo.setAngle(Constants.CLIMB_SERVO_HOLD);
     }
-
-    if(right.L3 && climb){
-        MC.lifter1.set(Constants.LIFTER_SPEED);
-        MC.lifter2.set(Constants.LIFTER_SPEED);
-        ledStrip.changeLEDState("SolidPurple");
+    
+    
+       
+    if(right.L3 && climb && !climbStop){
+            MC.lifter1.set(Constants.LIFTER_SPEED);
+            MC.lifter2.set(Constants.LIFTER_SPEED);
+            ledStrip.changeLEDState("SolidPurple");
+            
+    }
         
-    } else if(right.L6 && climb){
-        MC.lifter1.set(-Constants.LIFTER_SPEED);
-        MC.lifter2.set(-Constants.LIFTER_SPEED);
-        ledStrip.changeLEDState("SolidPurple");
+    else if(right.L6 && climb){
+            MC.lifter1.set(-Constants.LIFTER_SPEED);
+            MC.lifter2.set(-Constants.LIFTER_SPEED);
+            ledStrip.changeLEDState("SolidPurple");
     }
     else{
-        MC.lifter1.set(0);
-        MC.lifter2.set(0);
+            MC.lifter1.set(0);
+            MC.lifter2.set(0);
     }
+    
+    
     if(isOverrideOn){
         ledStrip.changeLEDState("SolidRed");
     }
